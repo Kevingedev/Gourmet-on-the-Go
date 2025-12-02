@@ -14,7 +14,7 @@
   --nav-radius: 1rem;
   --shadow-soft: 0 18px 45px rgba(24, 42, 15, 0.45);
 
-  --radial-gradient: radial-gradient(circle at top left, #0d1702 0, #0D8200 55%);
+  --radial-gradient: radial-gradient(circle at top left, #224200 0, #0D8200 55%);
   --background: rgba(24, 42, 15, 0.9);
   --color-green-blue: rgba(13, 130, 0, 0.24);
   --color-green: #0D8200;
@@ -96,9 +96,8 @@ body {
   padding: 0;
   margin: 0;
   border-radius: var(--nav-radius);
-  background: var(--background);
-  border: var(--nav-border);
-  padding: 4px;
+  background: rgba(31, 80, 26, 1);
+  border: 2px solid var(--color-green-blue);
 }
 
 .nav__links li a {
@@ -257,7 +256,7 @@ body {
 
 /* RESPONSIVE: TABLET Y MÓVIL */
 
-@media (max-width: 1030px) {
+@media (max-width: 1110px) {
   .nav {
     padding-inline: 14px;
     width: 100%;
@@ -314,9 +313,12 @@ body {
 
   .nav__links {
     width: 100%;
+    padding: 5px 12px;
     flex-wrap: wrap;
     justify-content: flex-start;
-    background: rgba(31, 80, 26, 0.95);
+    background: rgba(31, 80, 26, 0.5);
+    /* background: rgba(31, 80, 26, 0.95); */
+
   }
 
   .nav__actions {
@@ -382,20 +384,19 @@ input:-webkit-autofill:active {
   /* Asegúrate de que el color del texto sea visible sobre el nuevo fondo */
   -webkit-text-fill-color: white !important;
 
-  /* También puedes ajustar otras propiedades como el color de borde si es necesario */
-  /* border: 1px solid #0056b3 !important; */
 }
 
 /* Ajustes responsive del buscador */
 
-@media (max-width: 860px) {
+@media (max-width: 1110px) {
   .nav__search {
-    min-width: 150px;
-    max-width: 200px;
+    width: 100%;
+    /* min-width:150px;
+    max-width: 200px; */
   }
-}
+/* }
 
-@media (max-width: 720px) {
+@media (max-width: 720px) { */
   .nav__right {
     gap: 12px;
   }
@@ -405,6 +406,10 @@ input:-webkit-autofill:active {
     max-width: none;
     order: 3;
     /* aparece debajo de categorías y encima de acciones, si quieres puedes ajustar */
+  }
+
+  .nav__search-input {
+    padding: 2px 12px;
   }
 
   .nav__links {
