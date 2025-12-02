@@ -1,8 +1,11 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    const userLanguage = localStorage.getItem('userLanguage');
     const header = document.getElementById('header');
     const cartDrawer = document.getElementById('cart-drawer');
+
+    console.log(userLanguage);
 
     const navbar = `
 <nav class="nav">
@@ -19,11 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         </button>
 
         <div class="nav__right">
-            <ul class="nav__links">
-                <li><a href="#categoria1">Platos preparados</a></li>
-                <li><a href="#categoria2">Vegano</a></li>
-                <li><a href="#categoria3">Sin gluten</a></li>
-                <li><a href="#categoria4">Ofertas</a></li>
+            <ul class="nav__links" id="nav-links">
             </ul>
             <!-- BUSCADOR -->
             <div class="nav__search" aria-label="Buscar productos">
@@ -33,14 +32,21 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
 
             <div class="nav__actions">
-                <button class="icon-btn" aria-label="Favoritos">
+                <button class="icon-btn" aria-label="Favoritos" title="Favoritos">
                     <i class="fa-solid fa-heart"></i>
                 </button>
-                <button class="icon-btn js-cart-toggle" aria-label="Carrito" aria-expanded="false">
+                <button class="icon-btn js-cart-toggle" aria-label="Carrito" aria-expanded="false" title="Carrito">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span class="badge">3</span>
                 </button>
-                <a href="#login" class="btn-login">Iniciar sesión</a>
+                <a href="#login" class="btn-login" title="Iniciar sesión"><i class="fa-solid fa-user"></i></a>
+                <div class="lang-select-wrapper">
+                    <select class="lang-select" aria-label="Seleccionar idioma">
+                        <option value="es" selected>Español</option>
+                        <option value="en">English</option>
+                        <!-- Puedes agregar más idiomas aquí -->
+                    </select>
+                </div>
             </div>
         </div>
     </nav>
@@ -72,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </aside>
 `;
 
+    // estoy insertando el navbar y el cartDrawer
     header.innerHTML = navbar;
     cartDrawer.innerHTML = cartDrawerHTML;
 
@@ -82,6 +89,70 @@ document.addEventListener('DOMContentLoaded', () => {
         const isOpen = navRight.classList.toggle('is-open');
         navToggle.classList.toggle('is-open', isOpen);
         navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    // traer las categorias e insertarlas en el nav
+
+
+    // FUNCIÓN ASÍNCRONA PARA CARGAR LAS CATEGORÍAS 
+    // Obtener el contenedor específico de los enlaces de categorías
+    const categoryLinksContainer = document.getElementById('nav-links');
+    const jsonPath = '../../assets/data/categories.json';
+
+    async function fetchCategories(container) {
+        try {
+            // 1. Espera a que la promesa de fetch se resuelva
+            const response = await fetch(jsonPath);
+
+            if (!response.ok) {
+                // Lanza un error si el estado HTTP no es 200
+                throw new Error(`Error ${response.status}: No se pudo cargar el archivo.`);
+            }
+
+            // 2. Espera a que la promesa de response.json() se resuelva
+            const categories = await response.json();
+
+            // console.log(categories);
+
+            let linksHTML = '';
+
+            // 3. Iterar y construir el HTML
+            categories.forEach(category => {
+                console.log(category);
+                linksHTML += `
+                    <li>
+                        <a href="${category.url_slug.es}">${category.nombre.es}</a>
+                    </li>
+                `;
+            });
+
+            // 4. Insertar los enlaces
+            container.innerHTML = linksHTML;
+
+        } catch (error) {
+            // Captura cualquier error de fetch o de la promesa
+            console.error('Fallo al cargar la navegación de categorías:', error);
+            // Podrías poner enlaces estáticos o un mensaje de error aquí
+        }
+    }
+
+
+    fetchCategories(categoryLinksContainer);
+
+
+
+
+
+
+    // CODIGO DE ACCIONES PARA EL CAMBIO DE IDIOMA
+
+    document.querySelector('.lang-select').addEventListener('change', function () {
+        const lang = this.value;
+        // Aquí tu lógica para traducir la página:
+        // changeLanguage(lang);
+        // o guarda la preferencia:
+        // localStorage.setItem('lang', lang);
+        console.log(lang);
+        localStorage.setItem('userLanguage', lang);
     });
 
 });

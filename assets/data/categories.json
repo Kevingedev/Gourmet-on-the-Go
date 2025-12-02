@@ -1,0 +1,66 @@
+[
+  {
+    "id_categoria": "protein_meat",
+    "nombre": {
+      "es": "Carne y Aves",
+      "en": "Meat and Poultry"
+    },
+    "descripcion": {
+      "es": "Recetas de vacuno, cerdo, pollo y pavo listas para servir.",
+      "en": "Ready-to-serve beef, pork, chicken, and turkey recipes."
+    },
+    "icono_clase": "fa-solid fa-drumstick-bite",
+    "url_slug": {
+      "es": "/catalogo/carne-aves",
+      "en": "/catalog/meat-poultry"
+    }
+  },
+  {
+    "id_categoria": "fish_seafood",
+    "nombre": {
+      "es": "Pescados y Mariscos",
+      "en": "Fish and Seafood"
+    },
+    "descripcion": {
+      "es": "Platos preparados con pescado, marisco y opciones de base de agua.",
+      "en": "Dishes prepared with fish, shellfish, and water-based options."
+    },
+    "icono_clase": "fa-solid fa-fish",
+    "url_slug": {
+      "es": "/catalogo/pescados-mariscos",
+      "en": "/catalog/fish-seafood"
+    }
+  },
+  {
+    "id_categoria": "sides_comp",
+    "nombre": {
+      "es": "Guarniciones y Acompañamientos",
+      "en": "Sides and Complements"
+    },
+    "descripcion": {
+      "es": "Arroces, pastas, verduras y salsas listos para combinar con tu plato principal.",
+      "en": "Rice, pasta, vegetables, and sauces ready to combine with your main dish."
+    },
+    "icono_clase": "fa-solid fa-plate-wheat",
+    "url_slug": {
+      "es": "/catalogo/guarniciones",
+      "en": "/catalog/sides"
+    }
+  },
+  {
+    "id_categoria": "breakfast_brunch",
+    "nombre": {
+      "es": "Desayuno y Brunch",
+      "en": "Breakfast and Brunch"
+    },
+    "descripcion": {
+      "es": "Opciones precocinadas y semi-preparadas para empezar el día o disfrutar del fin de semana.",
+      "en": "Pre-cooked and semi-prepared options to start the day or enjoy the weekend."
+    },
+    "icono_clase": "fa-solid fa-mug-hot",
+    "url_slug": {
+      "es": "/catalogo/desayuno-brunch",
+      "en": "/catalog/breakfast-brunch"
+    }
+  }
+]
