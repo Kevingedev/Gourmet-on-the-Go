@@ -1,21 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
-    <link rel="stylesheet" href="assets/css/nav.css">
-    <link rel="stylesheet" href="assets/icons/font-awesome.css">
-</head>
 
-<body>
+document.addEventListener('DOMContentLoaded', () => {
+    const header = document.getElementById('header');
+    const cartDrawer = document.getElementById('cart-drawer');
 
-    <nav class="nav">
+    const navbar = `
+<nav class="nav">
         <div class="nav__logo">
-            <img src="assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="25" class="logo-icon">
+            <img src="../../assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="25" class="logo-icon">
             <a href="#">Gourmet on the Go</a>
-            <img src="assets/img/gourmet-logo-text.png" alt="Logo Gourmet on the Go" width="35" class="logo-text">
+            <img src="../../assets/img/gourmet-logo-text.png" alt="Logo Gourmet on the Go" width="35" class="logo-text">
         </div>
 
         <button class="nav__toggle" aria-label="Abrir menú" aria-expanded="false">
@@ -40,13 +34,8 @@
 
             <div class="nav__actions">
                 <button class="icon-btn" aria-label="Favoritos">
-                    <!-- ♥ -->
                     <i class="fa-solid fa-heart"></i>
                 </button>
-                <!-- <button class="icon-btn" aria-label="Carrito">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="badge">3</span>
-                </button> -->
                 <button class="icon-btn js-cart-toggle" aria-label="Carrito" aria-expanded="false">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span class="badge">3</span>
@@ -55,10 +44,9 @@
             </div>
         </div>
     </nav>
-
-
-
-    <div class="cart-drawer-overlay" data-cart-overlay></div>
+`;
+    const cartDrawerHTML = `
+<div class="cart-drawer-overlay" data-cart-overlay></div>
 
     <aside class="cart-drawer" aria-label="Carrito de compras" data-cart-drawer>
         <header class="cart-drawer__header">
@@ -82,12 +70,18 @@
             <button class="cart-drawer__checkout">Finalizar compra</button>
         </footer>
     </aside>
+`;
 
+    header.innerHTML = navbar;
+    cartDrawer.innerHTML = cartDrawerHTML;
 
-    <script src="assets/js/nav.js"></script>
-    <script src="assets/js/cart.js"></script>
+    const navToggle = document.querySelector('.nav__toggle');
+    const navRight = document.querySelector('.nav__right');
 
+    navToggle.addEventListener('click', () => {
+        const isOpen = navRight.classList.toggle('is-open');
+        navToggle.classList.toggle('is-open', isOpen);
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
 
-</body>
-
-</html>
+});
