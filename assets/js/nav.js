@@ -111,13 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Espera a que la promesa de response.json() se resuelva
             const categories = await response.json();
 
-            // console.log(categories);
+            console.log(categories);
 
             let linksHTML = '';
 
             // 3. Iterar y construir el HTML
             categories.forEach(category => {
-                console.log(category);
+                // console.log(category);
                 linksHTML += `
                     <li>
                         <a href="${category.url_slug.es}">${category.nombre.es}</a>
