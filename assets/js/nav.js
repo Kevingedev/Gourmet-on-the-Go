@@ -1,18 +1,31 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    const url = window.location.href;
+    const urlCategoria = url.split('/');
     const userLanguage = localStorage.getItem('userLanguage');
     const header = document.getElementById('header');
     const cartDrawer = document.getElementById('cart-drawer');
-
+    const PATH = urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' ? '../../../' : '../../';
     console.log(userLanguage);
+    const currentUser = localStorage.getItem('currentUser');
+    const currentUserData = JSON.parse(currentUser);
+    // console.log(currentUserData);
+    let btnSesion;
+
+    console.log(currentUser);
+    if (currentUser) {
+        btnSesion = `<button class="btn-login" title="Cerrar sesión" data-modal-open="#logoutModal" id="btn-logout">${currentUserData.username}</button>`;
+    } else {
+        btnSesion = `<button class="btn-login" title="Iniciar sesión" data-modal-open="#loginModal" id="btn-login"><i class="fa-solid fa-user"></i></button>`;
+    }
 
     const navbar = `
 <nav class="nav">
         <div class="nav__logo">
-            <img src="../../assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="25" class="logo-icon">
-            <a href="#">Gourmet on the Go</a>
-            <img src="../../assets/img/gourmet-logo-text.png" alt="Logo Gourmet on the Go" width="35" class="logo-text">
+            <img src="${PATH}assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="25" class="logo-icon">
+            <a href="/${userLanguage}">Gourmet on the Go</a>
+            <img src="${PATH}assets/img/gourmet-logo-text.png" alt="Logo Gourmet on the Go" width="35" class="logo-text">
         </div>
 
         <button class="nav__toggle" aria-label="Abrir menú" aria-expanded="false">
@@ -27,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- BUSCADOR -->
             <div class="nav__search" aria-label="Buscar productos">
                 <span class="nav__search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="search" name="q" class="nav__search-input" placeholder="Buscar alimentos..."
+                <input type="search" name="q" class="nav__search-input" autocomplete="off" placeholder="Buscar alimentos..."
                     aria-label="Buscar">
             </div>
 
@@ -39,11 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span class="badge">3</span>
                 </button>
-                <a href="#login" class="btn-login" title="Iniciar sesión"><i class="fa-solid fa-user"></i></a>
+                ${btnSesion}
                 <div class="lang-select-wrapper">
-                    <select class="lang-select" aria-label="Seleccionar idioma">
-                        <option value="es" selected>Español</option>
-                        <option value="en">English</option>
+                    <select class="lang-select select-custom" aria-label="Seleccionar idioma">
+                        <option selected disabled>Idioma...</option>
+                        <option value="ES">🇪🇸 Español</option>
+                        <option value="EN">🇬🇧 English</option>
                         <!-- Puedes agregar más idiomas aquí -->
                     </select>
                 </div>
@@ -96,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // FUNCIÓN ASÍNCRONA PARA CARGAR LAS CATEGORÍAS 
     // Obtener el contenedor específico de los enlaces de categorías
     const categoryLinksContainer = document.getElementById('nav-links');
-    const jsonPath = '../../assets/data/categories.json';
+    const jsonPath = `${PATH}/assets/data/categories.json`;
 
     async function fetchCategories(container) {
         try {
@@ -111,18 +125,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // 2. Espera a que la promesa de response.json() se resuelva
             const categories = await response.json();
 
-            console.log(categories);
+            // console.log(categories);
 
             let linksHTML = '';
 
             // 3. Iterar y construir el HTML
             categories.forEach(category => {
                 // console.log(category);
-                linksHTML += `
+                if (userLanguage === 'ES') {
+                    linksHTML += `
                     <li>
-                        <a href="${category.url_slug.es}">${category.nombre.es}</a>
+                        <a href="${PATH}${userLanguage}${category.url_slug.ES}">${category.nombre.ES}</a>
                     </li>
                 `;
+                } else {
+                    linksHTML += `
+                    <li>
+                        <a href="${PATH}${userLanguage}${category.url_slug.EN}">${category.nombre.EN}</a>
+                    </li>
+                `;
+                }
             });
 
             // 4. Insertar los enlaces
@@ -138,20 +160,81 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchCategories(categoryLinksContainer);
 
+    // FUNCION DE ACCIONES PARA EL CAMBIO DE IDIOMA
+    async function changeUrl(lang, url) {
+        try {
+            const response = await fetch(jsonPath);
+            if (!response.ok) {
+                //Mensaje de Error ups!
+                throw new Error(`Error ${response.status}: No se pudo cargar el archivo.`);
+            }
+            const data = await response.json();
+
+            // console.log(data);
+            let url_slug = data.find(category => category.url_slug[lang] === url);
+            // console.log("url_slug desde la funcion:: " + url_slug.url_slug[lang]);
+            return url_slug;
+
+        } catch (error) {
+            console.error('Fallo al cargar la navegación de categorías:', error);
+        }
+    }
+
+    //    changeUrl('ES', '/catalogo/carne-aves');
 
 
 
-
+    console.log(url);
 
     // CODIGO DE ACCIONES PARA EL CAMBIO DE IDIOMA
 
     document.querySelector('.lang-select').addEventListener('change', function () {
-        const lang = this.value;
-        // Aquí tu lógica para traducir la página:
-        // changeLanguage(lang);
-        // o guarda la preferencia:
-        // localStorage.setItem('lang', lang);
-        console.log(lang);
+        const lang = this.value; // El VALOR DEL SELECT
+        // AQUI CONSTRUYO LA LOGICA PARA CAMBIAR DE IDIOMA
+        let currentUrl;
+        let currentLang = url.split('/')[3]; // EL IDIOMA ACTUAL en la URL
+        let newUrl;
+
+        console.log(url);
+
+
+        console.log("Posiciones: " + urlCategoria[4]);
+
+        if (urlCategoria[4] == 'catalogo' && currentLang == 'ES' && lang == 'EN') {
+            currentUrl = "/" + urlCategoria[4] + "/" + urlCategoria[5];
+            let urlSlug;
+            changeUrl(currentLang, currentUrl).then((result) => {
+                urlSlug = result;
+                newUrl = "../../../" + lang + urlSlug.url_slug[lang];
+                window.location.href = newUrl;
+            }).catch((err) => {
+                console.log(err);
+            });
+        } else if (urlCategoria[4] == 'catalog' && currentLang == 'EN' && lang == 'ES') {
+            currentUrl = "/" + urlCategoria[4] + "/" + urlCategoria[5];
+            let urlSlug;
+            changeUrl(currentLang, currentUrl).then((result) => {
+                urlSlug = result;
+                newUrl = "../../../" + lang + urlSlug.url_slug[lang];
+                window.location.href = newUrl;
+            }).catch((err) => {
+                console.log(err);
+            });
+        } else if (urlCategoria[4] == '' && currentLang == 'ES' && lang == 'EN') {
+            console.log("hola está vacio");
+            newUrl = "../../../" + lang;
+            window.location.href = newUrl;
+
+        } else if (urlCategoria[4] == '' && currentLang == 'EN' && lang == 'ES') {
+            console.log("hola está vacio");
+            newUrl = "../../../" + lang;
+            window.location.href = newUrl;
+
+        }
+
+
+
+
         localStorage.setItem('userLanguage', lang);
     });
 

@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const url = window.location.href;
+    const urlCategoria = url.split('/');
+    const PATH = urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' ? '../../../' : '../../';
 
     const footer = document.getElementById('footer');
     const footerContent = `
@@ -7,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- Columna 1: Branding y contacto -->
             <div class="footer-col">
                 <div class="logo-and-text">
-                    <img src="../../assets/img/gourmet-logo-icon.png" alt="Logo" width="35">
+                    <img src="${PATH}assets/img/gourmet-logo-icon.png" alt="Logo" width="35">
                     <h3 class="footer-logo">Gourmet on the Go</h3>
                 </div>
                 <p class="footer-text">

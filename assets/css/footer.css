@@ -168,13 +168,13 @@
     color: #ffffff;
     box-shadow: 0 10px 22px rgba(13, 130, 0, 0.4);
     transition:
-        transform 0.03s ease-in-out,
-        box-shadow 0.03s ease-in-out,
-        filter 0.03s ease-in-out;
+        transform 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out,
+        filter 0.3s ease-in-out;
 }
 
 .footer-btn:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     box-shadow: 0 14px 30px rgba(13, 130, 0, 0.5);
     filter: brightness(1.02);
 }
