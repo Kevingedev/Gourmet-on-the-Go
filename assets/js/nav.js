@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
 
             <div class="nav__actions">
-            <a href="http://127.0.0.1:5500/ES/lista-deseos.html" aria-label="Ir a Favoritos" title="Ir a Favoritos">
+            <a href="${PATH}${userLanguage}/lista-deseos.html" aria-label="Ir a Favoritos" title="Ir a Favoritos">
                 <button class="icon-btn" aria-label="Favoritos" title="Favoritos">
                     <i class="fa-solid fa-heart"></i>
                 </button>
