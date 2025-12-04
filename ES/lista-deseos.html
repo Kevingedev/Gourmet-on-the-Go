@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
-    <link rel="stylesheet" href="../../assets/css/nav.css">
-    <link rel="stylesheet" href="../../assets/css/footer.css">
-    <link rel="stylesheet" href="../../assets/icons/font-awesome.css">
+    <link rel="stylesheet" href="../assets/css/nav.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/modal.css">
+    <link rel="stylesheet" href="../assets/css/select.css">
+    <link rel="stylesheet" href="../assets/icons/font-awesome.css">
 
     <style>
         /* Estilos CSS básicos integrados */
@@ -18,10 +20,10 @@
             background-color: #f4f4f4;
             color: #333;
         }
-        .container {
-            width: 90%;
-            margin: 20px auto;
-            max-width: 1200px;
+        .wishlist-container{
+            width: 100%;
+            margin: 50px auto;
+            max-width: 1500px;
         }
       
         
@@ -37,11 +39,11 @@
     <!-- FIN DE BARRA DE NAVEGACION -->
 
     <!-- CONTENIDO DE LA PAGINA AQUI -->
-    <div class="container">
-        <h1>Mi Lista de Deseos</h1>
-        <body>
-
-<div class="wishlist-container">
+    <!-- <div class="container">
+        <body> -->
+            
+            <div class="wishlist-container">
+    <h1>Mi Lista de Deseos</h1>
     
     <ul id="wishlist-items">
         <!-- Los elementos de la lista se cargarán aquí -->
@@ -98,8 +100,6 @@
     renderWishlist();
 </script>
 
-</body>
-</html>
 
         <div class="wishlist-grid">
            
@@ -113,11 +113,14 @@
     <footer id="footer"></footer>
     <!-- FIN DEL FOOTER -->
 
+ <!-- Modal wrapper -->
+    <div id="showModal"></div>
 
-
-    <script src="../../assets/js/nav.js"></script>
-    <script src="../../assets/js/footer.js"></script>
-    <script src="../../assets/js/cart.js"></script>
+    <script src="../assets/js/nav.js"></script>
+    <script src="../assets/js/footer.js"></script>
+    <script src="../assets/js/cart.js"></script>
+    <script src="../assets/js/auth/sesion.js" type="module"></script>
+    <script src="../assets/js/auth/validation.js" type="module"></script>
 
 
 </body>
