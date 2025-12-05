@@ -7,6 +7,7 @@
     --color-green-blue: rgba(13, 130, 0, 0.24);
     --color-primary: #0c8038;
     --shadow: 0 18px 45px rgba(24, 42, 15, 0.45);
+    --shadow-cards: 0 3px 15px rgba(24, 42, 15, 0.30);
     --nav-border: rgba(148, 163, 184, 0.25);
     --border-radius: 0.9rem;
     --muted: #aaaaaa;

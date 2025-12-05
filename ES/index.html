@@ -37,8 +37,25 @@
             </div>
         </section>
 
-        <section>
+        <section class="section-productos-destacados">
             <h2>Productos destacados</h2>
+
+            <div class="section-productos-destacados__viewport">
+                <div class="section-productos-destacados__flex" id="featured-products-loader">
+                <!-- aquí JS inyecta los <article> -->
+                </div>
+            </div>
+
+            <button class="prev-btn" type="button" aria-label="Productos anteriores">◀</button>
+            <button class="next-btn" type="button" aria-label="Productos siguientes">▶</button>
+        </section>
+
+        <section class="section-categorias">
+            <h2>Categorias</h2>
+            <hr>
+            <div class="section-categorias__flex" id="inicio-categorias">
+
+            </div>
         </section>
 
     </main>
@@ -54,6 +71,31 @@
     <script src="../assets/js/cart.js"></script>
     <script src="../assets/js/auth/sesion.js" type="module"></script>
     <script src="../assets/js/auth/validation.js" type="module"></script>
+    <script src="../assets/js/data-loader/productService.js" type="module"></script>
+    <script src="../assets/js/main.js" type="module"></script>
+
+    <script>
+const viewport = document.querySelector('.section-productos-destacados__viewport');
+const track = document.querySelector('#featured-products-loader');
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+
+function getCardWidth() {
+  const card = track.querySelector('.section-productos-destacados__item');
+  if (!card) return viewport.clientWidth;
+  const style = window.getComputedStyle(card);
+  const gap = parseFloat(style.marginRight) || 24; // fallback
+  return card.offsetWidth + gap;
+}
+
+prevBtn.addEventListener('click', () => {
+  viewport.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+});
+
+nextBtn.addEventListener('click', () => {
+  viewport.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+});
+    </script>
 
 
 </body>
