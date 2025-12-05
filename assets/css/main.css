@@ -1,48 +1,13 @@
-:root {
-    /* 1. Base Principal */
-    --color-white: #f1f1f1;
-
-    /* 2. Color Primario */
-    --color-red: #e84504;
-    /* Naranja Terracota o Calabaza */
-
-    /* 3. Color Secundario */
-    --color-green: #007b8b;
-    /* Verde Azulado Oscuro */
-
-    /* 4. Color de Texto*/
-    --color-dark: #333333;
-
-    /* 5. Color de Éxito/Confirmación */
-    --color-green-highlight: #70e000;
-    /* Verde Lima Brillante */
-
-    /* shadow */
-    --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-    --border-radius: 0.9rem;
-
-    /* El Gradiente de tu Color Secundario */
-    --gradiente-color-green: linear-gradient(180deg,
-            /* Dirección del degradado: de arriba a abajo */
-            #0099AA 0%,
-            /* Empieza con el tono más claro */
-            #007b8b 50%,
-            /* El color base en el medio */
-            #005F6B 100%
-            /* Termina con el tono más oscuro para profundidad */
-        );
-    --gradiente-color-red: linear-gradient(
-        135deg, /* Dirección: Diagonal, de inferior izquierda a superior derecha */
-        #ff6e3c 0%,  /* Empieza brillante (esquina inferior izquierda) */
-        #e84504 50%, /* Color principal en el centro */
-        #c92d00 100% /* Termina profundo (esquina superior derecha) */
-    );
-}
+@import "./vars.css";
+@import "./modal.css";
+@import "./select.css";
+@import "./nav.css";
+@import "./styles.css";
+@import "./footer.css";
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: montserrat;
+    font-family: 'Montserrat', sans-serif;
 }
