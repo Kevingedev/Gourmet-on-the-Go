@@ -20,29 +20,48 @@
 
     <main id="main" class="main-container">
         <section class="gallery-3">
-            <figure class="gallery-3__item gallery-3__item--left">
+            <!-- <figure class="gallery-3__item gallery-3__item--left">
                 <a href="../../ES/catalogo/carne-aves/">
-                    <img src="../assets/img/banner-with-link-2.png" alt="Promocion de carnes">
-                    <img src="../assets/img/banner-with-link.png" alt="Promocion de carnes">
+                    <img src="../assets/img/banners/banner-with-link-2.png" alt="Promocion de carnes" class="carousel__slide active">
+                    <img src="../assets/img/banners/gambas.png" alt="Promocion de carnes" class="carousel__slide ">
+                    <img src="../assets/img/banners/complementos.png" alt="Promocion de carnes" class="carousel__slide ">
+                    <img src="../assets/img/banners/desayunito.png" alt="Promocion de carnes" class="carousel__slide ">
+                    
                 </a>
+            </figure> -->
+            <figure class="gallery-3__item gallery-3__item--left carousel">
+                <div class="carousel__slide active">
+                    <img src="../assets/img/banners/banner-with-link-2.png" alt="Promocion de Carnes">
+                </div>
+                <div class="carousel__slide">
+                    <a href="../../ES/catalogo/mariscos/"><img src="../assets/img/banners/gambas.png" alt="Promocion de Gambas"></a>
+                </div>
+                <div class="carousel__slide">
+                    <a href="../../ES/catalogo/guarniciones/"><img src="../assets/img/banners/complementos.png" alt="Promocion de Complementos"></a>
+                </div>
+                <div class="carousel__slide">
+                    <a href="../../ES/catalogo/desayuno/"><img src="../assets/img/banners/desayunito.png" alt="Promocion de Desayunito"></a>
+                </div>
+                <div class="carousel__slide">
+                    <a href="../../ES/catalogo/carnes/"><img src="../assets/img/banners/banner-with-link-2.png" alt="Promocion de Carnes"></a>
+                </div>
             </figure>
 
             <div class="gallery-3__right">
                 <figure class="gallery-3__item">
-                    <img src="../assets/img/hazte-club.png" alt="Imagen superior derecha">
+                    <img src="../assets/img/banners/hazte-club.png" alt="Imagen superior derecha">
                 </figure>
                 <figure class="gallery-3__item">
-                    <img src="../assets/img/online-shop.png" alt="Imagen inferior derecha">
+                    <img src="../assets/img/banners/online-shop.png" alt="Imagen inferior derecha">
                 </figure>
             </div>
         </section>
-
         <section class="section-productos-destacados">
-            <h2>Productos destacados</h2>
+            <h2 class="text-dark">Productos destacados</h2>
 
             <div class="section-productos-destacados__viewport">
                 <div class="section-productos-destacados__flex" id="featured-products-loader">
-                <!-- aquí JS inyecta los <article> -->
+                    <!-- aquí JS inyecta los <article> -->
                 </div>
             </div>
 
@@ -51,10 +70,34 @@
         </section>
 
         <section class="section-categorias">
-            <h2>Categorias</h2>
+            <h2 class="text-dark">Categorias</h2>
             <hr>
-            <div class="section-categorias__flex" id="inicio-categorias">
+            <div class="section-categorias__flex" id="categorias-loader"></div>
+        </section>
 
+        <section class="section-online-buy">
+            <h2 class=>¿Por qué Comprar en Gourmet on the Go?</h2>
+            <div class="container-online-buy">
+                <article class="online-buy">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h2>Compra en línea</h2>
+                    <p>Entrega en franjas horarias gratuito a partir de 49,90€</p>
+                </article>
+                <article class="online-buy">
+                    <i class="fas fa-store"></i>
+                    <h2>Recogida en Tienda</h2>
+                    <p>Más de 250 puntos de recogida gratuita</p>
+                </article>
+                <article class="online-buy">
+                    <i class="fas fa-snowflake"></i>
+                    <h2>Cadena de frío asegurada</h2>
+                    <p>Mantenemos y monitorizamos la cadena de frío hasta la entrega</p>
+                </article>
+                <article class="online-buy">
+                    <i class="fas fa-gift"></i>
+                    <h2>Las mejores ofertas</h2>
+                    <p>Encuentra ofertas exclusivas y únete al Club lleno de ventajas</p>
+                </article>
             </div>
         </section>
 
@@ -73,29 +116,7 @@
     <script src="../assets/js/auth/validation.js" type="module"></script>
     <script src="../assets/js/data-loader/productService.js" type="module"></script>
     <script src="../assets/js/main.js" type="module"></script>
-
-    <script>
-const viewport = document.querySelector('.section-productos-destacados__viewport');
-const track = document.querySelector('#featured-products-loader');
-const prevBtn = document.querySelector('.prev-btn');
-const nextBtn = document.querySelector('.next-btn');
-
-function getCardWidth() {
-  const card = track.querySelector('.section-productos-destacados__item');
-  if (!card) return viewport.clientWidth;
-  const style = window.getComputedStyle(card);
-  const gap = parseFloat(style.marginRight) || 24; // fallback
-  return card.offsetWidth + gap;
-}
-
-prevBtn.addEventListener('click', () => {
-  viewport.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
-});
-
-nextBtn.addEventListener('click', () => {
-  viewport.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
-});
-    </script>
+    <script src="../assets/js/utils.js"></script>
 
 
 </body>

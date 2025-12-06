@@ -21,7 +21,7 @@ body {
   max-width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 12px;
   border-radius: 0 0 var(--border-radius) var(--border-radius);
   /* background: var(--radial-gradient); */
@@ -189,7 +189,7 @@ body {
   cursor: pointer;
   background: var(--background);
   transform: translateY(-1px);
-  box-shadow: var(--shadow);  
+  box-shadow: var(--shadow);
 }
 
 /* BOTÓN HAMBURGUESA */
@@ -330,8 +330,8 @@ body {
   transition:
     border-color 0.3s ease-in-out,
     box-shadow 0.3s ease-in-out,
-    background 0.3s ease-in-out,
-    transform 0.3s ease-in-out;
+    background 0.3s ease-in-out;
+    /* transform 0.3s ease-in-out; */
 }
 
 .nav__search:hover,
@@ -340,7 +340,7 @@ body {
   border-color: var(--color-green-blue);
   /* background: rgba(31, 80, 26, 0.98); */
   box-shadow: var(--shadow);
-  transform: translate3d(0, 2px, 2px);
+  /* transform: translate3d(0, 2px, 2px); */
 }
 
 .nav__search-icon {
@@ -552,39 +552,41 @@ input:-webkit-autofill:active {
   align-items: center;
   text-align: center;
   /* background: var(--color-primary); */
-  border: 2px solid var(--color-green-blue);
-  border-radius: var(--border-radius);
-  padding: 3px 7px;
+  /* border: 2px solid var(--color-green-blue);
+  border-radius: var(--border-radius); */
+  /* padding: 3px 0; */
   margin-left: 6px;
 }
 
 /* SELECT */
 .lang-select {
-  background: none !important;
+  background: var(--color-primary) !important;
   border: none;
-  color: #9ca3af;
-  font-size: 0.83rem;
+  color: var(--color-white) !important;
+  font-size: 1.2rem;
   height: 2rem;
   /* padding: 2px 0 2px 8px; */
   /* padding: 3px 7px; */
+  /* padding: 0.5rem; */
 
   border-radius: var(--border-radius);
   outline: none;
   cursor: pointer;
-  min-width: 88px;
+  min-width: 70px;
   appearance: none;
 }
 
 .select-custom {
-  color: var(--color-primary) !important;
+  color: var(--color-white) !important;
   padding: 0.5rem;
-  background: none !important;
+  background: var(--color-primary) !important;
   border: none !important;
+  height: 2.5rem;
 }
 
 .select-custom:focus {
-  background: none !important;
-  color: #e5e7eb;
+  background: var(--background) !important;
+  color: var(--color-white) !important;
   box-shadow: var(--shadow);
   font-weight: bold;
   /* background: rgba(40, 54, 36, 0.9); */
@@ -601,7 +603,7 @@ input:-webkit-autofill:active {
   font-size: 0.65rem;
   padding: 3px 7px;
 
-  color: var(--color-primary);
+  color: var(--color-white);
   position: absolute;
   right: 11px;
   pointer-events: none;

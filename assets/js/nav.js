@@ -13,7 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(currentUserData);
     let btnSesion;
 
-    console.log(currentUser);
+    // console.log(currentUser);
+
+    let langSelect;
+    if (userLanguage === 'ES') {
+        langSelect = `
+        <select class="lang-select select-custom" aria-label="Seleccionar idioma">
+            <option value="ES" selected>🇪🇸</option>
+            <option value="EN">🇬🇧</option>
+            <!-- Puedes agregar más idiomas aquí -->
+        </select>
+    `;
+    } else {
+        langSelect = `
+        <select class="lang-select select-custom" aria-label="Seleccionar idioma">
+            <option value="ES">🇪🇸</option>
+            <option value="EN" selected>🇬🇧</option>
+        </select>
+    `;
+    }
     if (currentUser) {
         btnSesion = `<button class="btn-login" title="Cerrar sesión" data-modal-open="#logoutModal" id="btn-logout">${currentUserData.username}</button>`;
     } else {
@@ -56,12 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
                 ${btnSesion}
                 <div class="lang-select-wrapper">
-                    <select class="lang-select select-custom" aria-label="Seleccionar idioma">
-                        <option selected disabled>Idioma...</option>
-                        <option value="ES">🇪🇸 Español</option>
-                        <option value="EN">🇬🇧 English</option>
-                        <!-- Puedes agregar más idiomas aquí -->
-                    </select>
+                ${langSelect}
                 </div>
             </div>
         </div>

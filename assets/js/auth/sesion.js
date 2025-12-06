@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         document.getElementById('loginForm').reset();
                         window.location.reload();
-                    }, 2000);
+                    }, 1000);
 
                 } else {
 
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
                 window.location.reload();
-            }, 2000);
+            }, 1000);
         });
 
     }

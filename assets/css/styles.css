@@ -61,8 +61,36 @@
   box-shadow: var(--shadow) !important;
 }
 
-.gallery-3__item--left img:last-child {
+/* .gallery-3__item--left img:last-child {
   display: none;
+} */
+
+/* CARRUSEL */
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.carousel__slide {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  display: none;
+  height: 100%;
+}
+
+.carousel__slide.active {
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.carousel__slide img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 
@@ -73,13 +101,13 @@
     gap: 8px;
   }
 
-  .gallery-3__item--left img:first-child {
+  /* .gallery-3__item--left img:first-child {
     display: none;
   }
 
   .gallery-3__item--left img:last-child {
     display: block;
-  }
+  } */
 
   .gallery-3__right {
     grid-template-rows: none;
@@ -176,6 +204,10 @@
   margin: 5rem auto;
 }
 
+.text-dark {
+  font-size: 2.5rem;
+  color: var(--color-dark);
+}
 
 
 /* CODIGO DE PRUEBA */
@@ -183,12 +215,7 @@
   position: relative;
   padding: 2rem 1rem;
   max-width: 80%;
-  margin: 0 auto;
-}
-
-.section-productos-destacados h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin: 3rem auto 0 auto;
 }
 
 /* Ventana del carrusel */
@@ -218,8 +245,8 @@
 /* Tarjeta base */
 .section-productos-destacados__item {
   scroll-snap-align: start;
-  flex: 0 0 80%;
-  max-width: 80%;
+  flex: 0 0 100%;
+  max-width: 100%;
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 1rem;
@@ -317,12 +344,106 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.20);
 }
 
+.section-categorias__flex {
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-around;
+  margin: 3rem 0;
+}
+
+.section-categorias__item {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+
+.category__item i {
+  border: 3px solid var(--muted);
+  border-radius: 50%;
+  padding: 0.7rem;
+  color: var(--color-dark);
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.category__item i:hover {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.category__item h3:hover {
+  color: var(--color-primary);
+}
+
+.section-online-buy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  text-align: center;
+  background-image: var(--linear-gradient),
+    url('../img/bg-with.icons.png');
+}
+
+.section-online-buy h2 {
+  font-size: 2.2rem;
+  color: var(--color-white);
+}
+
+.container-online-buy {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  background-size: cover;
+  object-position: fixed;
+  width: 100%;
+  height: 30%;
+  margin: 4rem auto;
+  padding: 0;
+  text-align: center;
+}
+
+.online-buy {
+  width: 15%;
+  max-height: 30px;
+}
+
+.online-buy i {
+  color: var(--color-white);
+  font-size: 4rem;
+}
+
+.online-buy h2 {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--color-white);
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+}
+
+.online-buy p {
+  /* margin-top:0.5rem; */
+  font-size: 1rem;
+  color: var(--color-white);
+}
+
 /* Responsivo: más tarjetas visibles en pantallas grandes */
 @media (min-width: 600px) {
   .section-productos-destacados__item {
     flex: 0 0 48%;
     max-width: 48%;
   }
+
+
 }
 
 @media (min-width: 900px) {
@@ -330,7 +451,37 @@
     flex: 0 0 24%;
     max-width: 24%;
   }
+
+  /* .section-online-buy{
+    padding-top: 5rem;
+    height:min-content;
+  }
+  .online-buy {
+    width: 40%;
+    margin-bottom:10rem;
+  } */
 }
+
+@media (max-width: 600px) {
+  .section-online-buy {
+    padding-top: 5rem;
+    height: min-content;
+  }
+
+  .online-buy {
+    width: 40%;
+    margin-bottom: 10rem;
+  }
+}
+
+.translate-animation {
+  transition: transform 0.3s ease;
+}
+
+.translate-animation:hover {
+  transform: translateY(-10px);
+}
+
 
 
 /* FIN DEL CODIGO DE PRUEBA */
