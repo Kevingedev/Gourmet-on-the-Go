@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // estoy insertando el navbar y el cartDrawer
     header.innerHTML = navbar;
-    
+
 
     const navToggle = document.querySelector('.nav__toggle');
     const navRight = document.querySelector('.nav__right');
@@ -228,3 +228,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+function updateDateTime() {
+    // Obtener el elemento HTML
+    const displayElement = document.getElementById('datetime-display');
+    if (!displayElement) return;
+
+    // Crear objeto de fecha actual
+    const now = new Date();
+
+    // --- Obtener las partes en español con el formato solicitado ---
+
+    // 1. Día de la Semana (en letras)
+    const dayOfWeek = now.toLocaleDateString('es-ES', { weekday: 'long' }); // Ej: "lunes"
+
+    // 2. Hora (formato 24h, incluyendo minutos)
+    const time = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+    // 3. Mes (en letras)
+    const month = now.toLocaleDateString('es-ES', { month: 'long' });
+
+    // 4. Año (completo)
+    const year = now.getFullYear();
+
+    // Capitalizar la primera letra del día y del mes
+    const formattedDay = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
+    const formattedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+
+    // --- Construir el string final con separadores ---
+
+    // Usamos la etiqueta <span> para estilizar los separadores si es necesario
+    const separator = '<span class="separator">-</span>';
+
+    const finalContent =
+        formattedDay +
+        separator + time +
+        separator + formattedMonth +
+        separator + year;
+
+    // Insertar el contenido en el HTML
+    displayElement.innerHTML = finalContent;
+}
+
+// Ejecutar la función inmediatamente para cargar la hora al inicio
+updateDateTime();
+
+// Actualizar la hora cada segundo (1000 milisegundos)
+setInterval(updateDateTime, 1000);

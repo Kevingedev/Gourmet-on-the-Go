@@ -15,7 +15,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 50;
-  margin: 0 auto 16px auto;
+  margin: 0 auto 0 auto;
   padding: 2rem 18px;
   /* max-width: 1440px; */
   max-width: 100%;
@@ -631,4 +631,37 @@ background: var(--background);
     width: 100%;
     min-width: 0;
   }
+}
+
+/* --- Estilos para el elemento de Fecha/Hora --- */
+.minimal-datetime {
+    width: 80%;
+    font-size: 1rem;
+    color: var(--color-primary);
+    /* background-color: #f7f7f7; */
+    padding: 10px 15px;
+    border-radius: 6px;
+    /* border: var(--nav-border); */
+    /* box-shadow: var(--shadow-cards); */
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto 0 auto;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Estilo para el separador (el guion) */
+.minimal-datetime span {
+    color: var(--color-primary); /* Color de contraste sutil para los guiones */
+    margin: 0 8px; /* Espacio alrededor de los guiones */
+}
+
+/* Responsividad: Ajuste para pantallas más pequeñas (móviles) */
+@media (max-width: 600px) {
+    .minimal-datetime {
+        /* Reduce el tamaño y el padding para móviles */
+        font-size: 0.9rem; 
+        padding: 8px 12px;
+        /* Opcional: si el contenido es demasiado largo, puedes forzar un tamaño de fuente menor */
+    }
 }
