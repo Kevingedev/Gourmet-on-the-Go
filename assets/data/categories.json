@@ -13,7 +13,8 @@
     "url_slug": {
       "ES": "/catalogo/carnes",
       "EN": "/catalog/meat"
-    }
+    },
+    "img": "../assets/img/carnes.png"
   },
   {
     "id_categoria": "fish_seafood",
@@ -29,7 +30,8 @@
     "url_slug": {
       "ES": "/catalogo/mariscos",
       "EN": "/catalog/seafood"
-    }
+    },
+    "img": "../assets/img/mariscos.png"
   },
   {
     "id_categoria": "sides_comp",
@@ -45,7 +47,8 @@
     "url_slug": {
       "ES": "/catalogo/complementos",
       "EN": "/catalog/complements"
-    }
+    },
+    "img": "../assets/img/acompañamientos.png"
   },
   {
     "id_categoria": "breakfast_brunch",
@@ -61,6 +64,7 @@
     "url_slug": {
       "ES": "/catalogo/desayuno",
       "EN": "/catalog/breakfast"
-    }
+    },
+    "img": "../assets/img/desayunos.png"
   }
 ]

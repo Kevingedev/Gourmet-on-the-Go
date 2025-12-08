@@ -16,7 +16,6 @@
 <body>
 
     <header id="header"></header>
-    <div id="cart-drawer"></div>
 
     <main id="main" class="main-container">
         <section class="gallery-3">
@@ -34,16 +33,20 @@
                     <img src="../assets/img/banners/banner-with-link-2.png" alt="Promocion de Carnes">
                 </div>
                 <div class="carousel__slide">
-                    <a href="../../ES/catalogo/mariscos/"><img src="../assets/img/banners/gambas.png" alt="Promocion de Gambas"></a>
+                    <a href="../../ES/catalogo/mariscos/"><img src="../assets/img/banners/gambas.png"
+                            alt="Promocion de Gambas"></a>
                 </div>
                 <div class="carousel__slide">
-                    <a href="../../ES/catalogo/guarniciones/"><img src="../assets/img/banners/complementos.png" alt="Promocion de Complementos"></a>
+                    <a href="../../ES/catalogo/guarniciones/"><img src="../assets/img/banners/complementos.png"
+                            alt="Promocion de Complementos"></a>
                 </div>
                 <div class="carousel__slide">
-                    <a href="../../ES/catalogo/desayuno/"><img src="../assets/img/banners/desayunito.png" alt="Promocion de Desayunito"></a>
+                    <a href="../../ES/catalogo/desayuno/"><img src="../assets/img/banners/desayunito.png"
+                            alt="Promocion de Desayunito"></a>
                 </div>
                 <div class="carousel__slide">
-                    <a href="../../ES/catalogo/carnes/"><img src="../assets/img/banners/banner-with-link-2.png" alt="Promocion de Carnes"></a>
+                    <a href="../../ES/catalogo/carnes/"><img src="../assets/img/banners/banner-with-link-2.png"
+                            alt="Promocion de Carnes"></a>
                 </div>
             </figure>
 
@@ -60,7 +63,7 @@
             <h2 class="text-dark">Productos destacados</h2>
 
             <div class="section-productos-destacados__viewport">
-                <div class="section-productos-destacados__flex" id="featured-products-loader">
+                <div class="section-productos-destacados__flex container-products" id="featured-products-loader">
                     <!-- aquí JS inyecta los <article> -->
                 </div>
             </div>
@@ -69,10 +72,17 @@
             <button class="next-btn" type="button" aria-label="Productos siguientes">▶</button>
         </section>
 
-        <section class="section-categorias">
+        <!-- <section class="section-categorias">
             <h2 class="text-dark">Categorias</h2>
             <hr>
             <div class="section-categorias__flex" id="categorias-loader"></div>
+
+
+        </section> -->
+
+        <section class="section-categorias">
+            <h2 class="text-dark text-center" style="margin-bottom: 2rem;">Categorias</h2>
+            <div class="category-gallery" id="categorias-loader"></div>
         </section>
 
         <section class="section-online-buy">
@@ -108,15 +118,18 @@
     <!-- <button class="btn" data-modal-open="#loginModal">Iniciar sesión</button> -->
     <!-- Modal wrapper -->
     <div id="showModal"></div>
+    <div id="cart-drawer"></div>
+
 
     <script src="../assets/js/nav.js"></script>
     <script src="../assets/js/footer.js"></script>
-    <script src="../assets/js/cart.js"></script>
+    <script src="../assets/js/cart/cartView.js" type="module"></script>
     <script src="../assets/js/auth/sesion.js" type="module"></script>
     <script src="../assets/js/auth/validation.js" type="module"></script>
     <script src="../assets/js/data-loader/productService.js" type="module"></script>
     <script src="../assets/js/main.js" type="module"></script>
     <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/cart/cartStore.js" type="module"></script>
 
 
 </body>

@@ -8,8 +8,8 @@ gestorDeDatos.cargarProductosDestacados().then(productos => {
 
     productos.forEach(producto => {
         featuredProductsLoader.innerHTML += `
-        <article class="section-productos-destacados__item">
-            <img src="../assets/img/img-test.jpg" alt="${producto.nombre[LANGUAGE]}">
+        <article class="section-productos-destacados__item cart-item" data-product-id="${producto.id_producto}">
+            <img src="../assets/img/product-images/img-test.jpg" alt="${producto.nombre[LANGUAGE]}">
             <h3 class="item_title">${producto.nombre[LANGUAGE]}</h3>
             <p class="item_description">${producto.descripcion[LANGUAGE]}</p>
             <p class="item_price">${producto.precio}€</p>
@@ -28,11 +28,12 @@ gestorDeDatos.cargarCategorias().then(categorias => {
     categorias.forEach(categoria => {
 
         categoriesLoader.innerHTML += `
-        <article class="category__item translate-animation">
-            <label>
-                <h3><i class="${categoria.icono_clase}"></i><br>${categoria.nombre[LANGUAGE]}</h3>
-            </label>
-        </article>
+            <a href="../${LANGUAGE}${categoria.url_slug[LANGUAGE]}" class="category-card">
+                <img src="${categoria.img}" alt="${categoria.nombre[LANGUAGE]}">
+                <div class="category-overlay">
+                    <h3>${categoria.nombre[LANGUAGE]}</h3>
+                </div>
+            </a>
         `;
     });
 

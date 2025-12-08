@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlCategoria = url.split('/');
     const userLanguage = localStorage.getItem('userLanguage');
     const header = document.getElementById('header');
-    const cartDrawer = document.getElementById('cart-drawer');
     const PATH = urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' ? '../../../' : '../../';
     console.log(userLanguage);
     const currentUser = localStorage.getItem('currentUser');
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </a>
                 <button class="icon-btn js-cart-toggle" aria-label="Carrito" aria-expanded="false" title="Carrito">
                     <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="badge">3</span>
+                    <span class="badge" id="cart-count">0</span>
                 </button>
                 ${btnSesion}
                 <div class="lang-select-wrapper">
@@ -80,36 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
     </nav>
 `;
-    const cartDrawerHTML = `
-<div class="cart-drawer-overlay" data-cart-overlay></div>
 
-    <aside class="cart-drawer" aria-label="Carrito de compras" data-cart-drawer>
-        <header class="cart-drawer__header">
-            <h2>Carrito</h2>
-            <button class="cart-drawer__close js-cart-toggle" aria-label="Cerrar carrito">
-                &times;
-            </button>
-        </header>
-
-        <div class="cart-drawer__body">
-            <!-- Ejemplo de contenido minimal -->
-            <p class="cart-drawer__empty">Tu carrito está vacío.</p>
-            <!-- Aquí irían los productos del carrito -->
-        </div>
-
-        <footer class="cart-drawer__footer">
-            <div class="cart-drawer__total">
-                <span>Total</span>
-                <strong>$0.00</strong>
-            </div>
-            <button class="cart-drawer__checkout">Finalizar compra</button>
-        </footer>
-    </aside>
-`;
 
     // estoy insertando el navbar y el cartDrawer
     header.innerHTML = navbar;
-    cartDrawer.innerHTML = cartDrawerHTML;
+    
 
     const navToggle = document.querySelector('.nav__toggle');
     const navRight = document.querySelector('.nav__right');
