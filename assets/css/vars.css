@@ -9,6 +9,7 @@
     --linear-gradient: linear-gradient(rgba(12, 128, 56, 0.9), rgba(12, 128, 56, 0.9));
     --shadow: 0 18px 45px rgba(24, 42, 15, 0.45);
     --shadow-cards: 0 3px 15px rgba(24, 42, 15, 0.30);
+    --shadow-items: 0 3px 15px rgba(24, 42, 15, 0.10);
     --nav-border: rgba(148, 163, 184, 0.25);
     --border-radius: 0.5rem; /* 0.9rem */
     --muted: #aaaaaa;

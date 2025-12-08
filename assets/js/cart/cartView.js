@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Evento para agregar productos al carrito
     productList.addEventListener('click', (event) => {
 
-        if(event.target.classList.contains('btn-add-to-cart')){
+        if (event.target.classList.contains('btn-add-to-cart')) {
             const products = cartStore.addToCart(event);
             drawerEmpty.style.display = 'none';
 
@@ -106,17 +106,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    const quantityInput = document.querySelector('.quantity-input');
     // Evento para eliminar productos del carrito
     cartDrawerContainer.addEventListener('click', (event) => {
 
-        if(event.target.classList.contains('btn-remove')){
-            
+        const idProduct = event.target.parentElement.parentElement.parentElement.getAttribute('data-product-id');
+        const eventTarget = event.target;
+
+        if (eventTarget.classList.contains('btn-remove')) {
+
             const products = cartStore.removeFromCart(event);
-    
+
             uploadItems(products, cartDrawerContainer);
+        } else if (eventTarget.classList.contains('btn-quantity') && eventTarget.getAttribute('data-action') === 'increase') {
+
+            const itemCart = cartStore.increaseQuantity(idProduct); // obtengo el id del producto al que quiero aumentar la cantidad
+            quantityInput.value = itemCart.quantity; // actualizo el valor del input
+            amountCart.textContent = cartStore.amountCart(); // actualizo el valor del total
+            // console.log(itemCart);
+            // console.log("varlor de quantityInput", quantityInput.value + " valor de itemCart.quantity " + itemCart.quantity);
+        } else if (eventTarget.classList.contains('btn-quantity') && eventTarget.getAttribute('data-action') === 'decrease') {
+
+            const itemCart = cartStore.decreaseQuantity(idProduct); // obtengo el id del producto al que quiero disminuir la cantidad
+            quantityInput.value = itemCart.quantity;
+            amountCart.textContent = cartStore.amountCart();
+
         }
 
     });
+
+
 
 
 });
@@ -143,10 +162,10 @@ function uploadItems(products, cartDrawerContainer) {
                 <span class="cart-item__price">${product.price}</span>
                 
                 <div class="cart-item__controls">
-                    <button class="btn-quantity" data-action="decrease">-</button>
+                    <button class="btn-quantity" data-action="decrease"><i class="fa-solid fa-minus"></i></button>
                     <input type="number" class="quantity-input" value="${product.quantity}" min="1">
-                    <button class="btn-quantity" data-action="increase">+</button>
-                    <button class="btn-remove" data-action="remove">×</button>
+                    <button class="btn-quantity" data-action="increase"><i class="fa-solid fa-plus"></i></button>
+                    <button class="btn-remove" data-action="remove"><i class="fa-regular fa-trash-can"></i></button>
                 </div>
             </div>
         `;

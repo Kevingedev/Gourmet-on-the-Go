@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navbar = `
 <nav class="nav">
         <div class="nav__logo">
-            <img src="${PATH}assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="25" class="logo-icon">
+            <img src="${PATH}assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="40" class="logo-icon">
             <a href="/${userLanguage}">Gourmet on the Go</a>
             <img src="${PATH}assets/img/gourmet-logo-text.png" alt="Logo Gourmet on the Go" width="35" class="logo-text">
         </div>

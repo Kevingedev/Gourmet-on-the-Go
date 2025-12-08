@@ -105,7 +105,23 @@ export const cartStore = {
         }
         return total.toFixed(2);
 
-    }
+    },
+    increaseQuantity(param) {
+
+        // console.log(param);
+        let itemCart = cart.find(product => product.id === param);
+        itemCart.quantity++;
+        this.syncStorage();
+        // console.log(itemCart);
+        return itemCart;
+    },
+    decreaseQuantity(param){
+
+        let itemCart = cart.find(product => product.id === param);
+        itemCart.quantity--;
+        this.syncStorage();
+        return itemCart;
+    } 
 
 }
 
