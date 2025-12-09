@@ -18,16 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userLanguage === 'ES') {
         langSelect = `
         <select class="lang-select select-custom" aria-label="Seleccionar idioma">
-            <option value="ES" selected>🇪🇸</option>
-            <option value="EN">🇬🇧</option>
+            <option value="ES" selected>ES - Español</option>
+            <option value="EN">EN - English</option>
             <!-- Puedes agregar más idiomas aquí -->
         </select>
     `;
     } else {
         langSelect = `
-        <select class="lang-select select-custom" aria-label="Seleccionar idioma">
-            <option value="ES">🇪🇸</option>
-            <option value="EN" selected>🇬🇧</option>
+        <select class="lang-select select-custom" aria-label="Select language">
+            <option value="ES">ES - Español</option>
+            <option value="EN" selected>EN - English</option>
         </select>
     `;
     }
@@ -176,56 +176,113 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log(url);
 
+    // Mapeo de páginas entre español e inglés
+    const pageMapping = {
+        ES: {
+            'contacto.html': 'contact.html',
+            'quienes-somos.html': 'about-us.html',
+            'aviso-legal.html': 'legal-notice.html',
+            'politica-privacidad.html': 'privacy-policy.html',
+            'politica-cookies.html': 'cookie-policy.html',
+            'pago.html': 'payment.html',
+            'envio.html': 'shipping.html',
+            'condiciones-uso.html': 'terms-of-use.html',
+            'busqueda.html': 'search.html',
+            'carrito.html': 'cart.html',
+            'lista-deseos.html': 'wishlist.html',
+            'perfil.html': 'profile.html',
+            'producto-detalle.html': 'product-detail.html',
+            'productos.html': 'products.html',
+            'sesion.html': 'session.html',
+            'index.html': 'index.html'
+        },
+        EN: {
+            'contact.html': 'contacto.html',
+            'about-us.html': 'quienes-somos.html',
+            'legal-notice.html': 'aviso-legal.html',
+            'privacy-policy.html': 'politica-privacidad.html',
+            'cookie-policy.html': 'politica-cookies.html',
+            'payment.html': 'pago.html',
+            'shipping.html': 'envio.html',
+            'terms-of-use.html': 'condiciones-uso.html',
+            'search.html': 'busqueda.html',
+            'cart.html': 'carrito.html',
+            'wishlist.html': 'lista-deseos.html',
+            'profile.html': 'perfil.html',
+            'product-detail.html': 'producto-detalle.html',
+            'products.html': 'productos.html',
+            'session.html': 'sesion.html',
+            'index.html': 'index.html'
+        }
+    };
+
     // CODIGO DE ACCIONES PARA EL CAMBIO DE IDIOMA
 
     document.querySelector('.lang-select').addEventListener('change', function () {
         const lang = this.value; // El VALOR DEL SELECT
-        // AQUI CONSTRUYO LA LOGICA PARA CAMBIAR DE IDIOMA
         let currentUrl;
         let currentLang = url.split('/')[3]; // EL IDIOMA ACTUAL en la URL
         let newUrl;
 
-        console.log(url);
-
-
-        console.log("Posiciones: " + urlCategoria[4]);
-
-        if (urlCategoria[4] == 'catalogo' && currentLang == 'ES' && lang == 'EN') {
-            currentUrl = "/" + urlCategoria[4] + "/" + urlCategoria[5];
-            let urlSlug;
-            changeUrl(currentLang, currentUrl).then((result) => {
-                urlSlug = result;
-                newUrl = "../../../" + lang + urlSlug.url_slug[lang];
-                window.location.href = newUrl;
-            }).catch((err) => {
-                console.log(err);
-            });
-        } else if (urlCategoria[4] == 'catalog' && currentLang == 'EN' && lang == 'ES') {
-            currentUrl = "/" + urlCategoria[4] + "/" + urlCategoria[5];
-            let urlSlug;
-            changeUrl(currentLang, currentUrl).then((result) => {
-                urlSlug = result;
-                newUrl = "../../../" + lang + urlSlug.url_slug[lang];
-                window.location.href = newUrl;
-            }).catch((err) => {
-                console.log(err);
-            });
-        } else if (urlCategoria[4] == '' && currentLang == 'ES' && lang == 'EN') {
-            console.log("hola está vacio");
-            newUrl = "../../../" + lang;
-            window.location.href = newUrl;
-
-        } else if (urlCategoria[4] == '' && currentLang == 'EN' && lang == 'ES') {
-            console.log("hola está vacio");
-            newUrl = "../../../" + lang;
-            window.location.href = newUrl;
-
+        // Si el idioma es el mismo, no hacer nada
+        if (currentLang === lang) {
+            return;
         }
 
+        // Obtener el nombre del archivo actual
+        const currentFileName = urlCategoria[urlCategoria.length - 1] || 'index.html';
+        
+        // Determinar la ruta base según la ubicación
+        let basePath = '';
+        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+            basePath = '../../../';
+        } else if (urlCategoria[4] == '404') {
+            basePath = '../../../';
+        } else {
+            basePath = '../';
+        }
 
-
-
-        localStorage.setItem('userLanguage', lang);
+        // Manejar páginas del catálogo
+        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+            currentUrl = "/" + urlCategoria[4] + "/" + urlCategoria[5];
+            changeUrl(currentLang, currentUrl).then((result) => {
+                const urlSlug = result;
+                newUrl = basePath + lang + urlSlug.url_slug[lang];
+                localStorage.setItem('userLanguage', lang);
+                window.location.href = newUrl;
+            }).catch((err) => {
+                console.log(err);
+                localStorage.setItem('userLanguage', lang);
+            });
+        } 
+        // Manejar páginas normales (contacto, etc.)
+        else if (currentFileName.includes('.html')) {
+            // Verificar si existe un mapeo para esta página
+            const mapping = pageMapping[currentLang];
+            if (mapping && mapping[currentFileName]) {
+                newUrl = basePath + lang + '/' + mapping[currentFileName];
+            } else if (currentFileName === 'index.html') {
+                // Para index.html, solo cambiar el idioma en la URL
+                newUrl = basePath + lang + '/';
+            } else {
+                // Si no hay mapeo, intentar usar el mismo nombre de archivo
+                newUrl = basePath + lang + '/' + currentFileName;
+            }
+            localStorage.setItem('userLanguage', lang);
+            window.location.href = newUrl;
+        }
+        // Manejar páginas index (raíz)
+        else if (!urlCategoria[4] || urlCategoria[4] === '') {
+            newUrl = basePath + lang + '/';
+            localStorage.setItem('userLanguage', lang);
+            window.location.href = newUrl;
+        }
+        // Fallback: redirigir al index del idioma seleccionado
+        else {
+            newUrl = basePath + lang + '/';
+            localStorage.setItem('userLanguage', lang);
+            window.location.href = newUrl;
+        }
     });
 
     // BUSCADOR - Funcionalidad de búsqueda con autocompletado
@@ -418,7 +475,8 @@ async function inicializarBuscador() {
 
         const idioma = localStorage.getItem('userLanguage') || 'ES';
         const rutaBase = obtenerRutaBase();
-        window.location.href = `${rutaBase}${idioma}/busqueda.html?q=${encodeURIComponent(consulta)}`;
+        const paginaBusqueda = idioma === 'EN' ? 'search.html' : 'busqueda.html';
+        window.location.href = `${rutaBase}${idioma}/${paginaBusqueda}?q=${encodeURIComponent(consulta)}`;
     }
 
     function obtenerRutaBase() {
@@ -437,19 +495,23 @@ function updateDateTime() {
     const displayElement = document.getElementById('datetime-display');
     if (!displayElement) return;
 
+    // Obtener el idioma del usuario desde localStorage
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    const locale = userLanguage === 'EN' ? 'en-US' : 'es-ES';
+
     // Crear objeto de fecha actual
     const now = new Date();
 
-    // --- Obtener las partes en español con el formato solicitado ---
+    // --- Obtener las partes con el formato solicitado según el idioma ---
 
     // 1. Día de la Semana (en letras)
-    const dayOfWeek = now.toLocaleDateString('es-ES', { weekday: 'long' }); // Ej: "lunes"
+    const dayOfWeek = now.toLocaleDateString(locale, { weekday: 'long' }); // Ej: "lunes" o "Monday"
 
     // 2. Hora (formato 24h, incluyendo minutos)
-    const time = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    const time = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });
 
     // 3. Mes (en letras)
-    const month = now.toLocaleDateString('es-ES', { month: 'long' });
+    const month = now.toLocaleDateString(locale, { month: 'long' });
 
     // 4. Año (completo)
     const year = now.getFullYear();

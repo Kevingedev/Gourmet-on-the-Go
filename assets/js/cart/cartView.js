@@ -1,21 +1,46 @@
 
 import { cartStore } from "./cartStore.js";
 
+// Obtener idioma
+const language = localStorage.getItem('userLanguage') || 'ES';
+
+// Textos según idioma
+const cartTexts = {
+    ES: {
+        cart: 'Carrito',
+        empty: 'Tu carrito está vacío.',
+        total: 'Total',
+        checkout: 'Finalizar compra',
+        close: 'Cerrar carrito',
+        added: '✓ Añadido'
+    },
+    EN: {
+        cart: 'Cart',
+        empty: 'Your cart is empty.',
+        total: 'Total',
+        checkout: 'Checkout',
+        close: 'Close cart',
+        added: '✓ Added'
+    }
+};
+
+const texts = cartTexts[language] || cartTexts.ES;
+
 const cartDrawer = document.getElementById('cart-drawer');
 const cartDrawerHTML = `
 <div class="cart-drawer-overlay" data-cart-overlay></div>
 
-    <aside class="cart-drawer" aria-label="Carrito de compras" data-cart-drawer>
+    <aside class="cart-drawer" aria-label="${texts.cart}" data-cart-drawer>
         <header class="cart-drawer__header">
-            <h2>Carrito</h2>
-            <button class="cart-drawer__close js-cart-toggle" aria-label="Cerrar carrito">
+            <h2>${texts.cart}</h2>
+            <button class="cart-drawer__close js-cart-toggle" aria-label="${texts.close}">
                 &times;
             </button>
         </header>
 
         <div class="cart-drawer__body">
             <!-- Ejemplo de contenido minimal -->
-            <p class="cart-drawer__empty">Tu carrito está vacío.</p>
+            <p class="cart-drawer__empty">${texts.empty}</p>
             <!-- Aquí irían los productos del carrito -->
             <div class="cart-drawer__products">
                 
@@ -24,10 +49,10 @@ const cartDrawerHTML = `
 
         <footer class="cart-drawer__footer">
             <div class="cart-drawer__total">
-                <span>Total</span>
+                <span>${texts.total}</span>
                 <strong>0.00€</strong>
             </div>
-            <button class="cart-drawer__checkout">Finalizar compra</button>
+            <button class="cart-drawer__checkout">${texts.checkout}</button>
         </footer>
     </aside>
 `;
@@ -91,10 +116,25 @@ document.addEventListener('DOMContentLoaded', () => {
     productList.addEventListener('click', (event) => {
 
         if (event.target.classList.contains('btn-add-to-cart')) {
+            const button = event.target;
+            const originalText = button.textContent;
+            
             const products = cartStore.addToCart(event);
             drawerEmpty.style.display = 'none';
 
             uploadItems(products, cartDrawerContainer); // Cargando los items al carrito si hace click en el boton de agregar al carrito
+            
+            // Feedback visual en el botón
+            button.textContent = texts.added;
+            button.style.background = '#22c55e';
+            button.style.color = 'white';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+                button.style.color = '';
+            }, 2000);
+            
             // console.log(product);
             if (slideCart <= 0) {
                 toggleCart(true);

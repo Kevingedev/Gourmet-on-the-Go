@@ -756,63 +756,80 @@ background: var(--background);
 .lang-select-wrapper {
   display: inline-flex;
   align-items: center;
-  text-align: center;
-  /* background: var(--color-primary); */
-  /* border: 2px solid var(--color-green-blue);
-  border-radius: var(--border-radius); */
-  /* padding: 3px 0; */
+  position: relative;
   margin-left: 6px;
 }
 
-/* SELECT */
-.lang-select {
-  background: var(--color-primary) !important;
-  border: none;
-  color: var(--color-white) !important;
-  font-size: 1.2rem;
-  height: 2rem;
-  /* padding: 2px 0 2px 8px; */
-  /* padding: 3px 7px; */
-  /* padding: 0.5rem; */
-
-  border-radius: var(--border-radius);
-  outline: none;
-  cursor: pointer;
-  min-width: 70px;
-  appearance: none;
-}
-
-.select-custom {
-  color: var(--color-white) !important;
-  padding: 0.5rem;
-  background: var(--color-primary) !important;
-  border: none !important;
-  height: 2.5rem;
-}
-
-.select-custom:focus {
-  background: var(--background) !important;
-  color: var(--color-white) !important;
-  box-shadow: var(--shadow);
-  font-weight: bold;
-  /* background: rgba(40, 54, 36, 0.9); */
-
-}
-
-/* Estilo para flechita (opcional, compatible con la mayoría de navegadores) */
-.lang-select-wrapper {
-  position: relative;
+.lang-select-wrapper::before {
+  content: "\f0ac";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 1rem;
+  color: var(--color-white);
+  position: absolute;
+  left: 0.75rem;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .lang-select-wrapper::after {
   content: "▼";
   font-size: 0.65rem;
-  padding: 3px 7px;
-
   color: var(--color-white);
   position: absolute;
-  right: 11px;
+  right: 0.75rem;
   pointer-events: none;
+  z-index: 2;
+}
+
+/* SELECT */
+.lang-select {
+  background: rgba(12, 128, 56, 0.85) !important;
+  border: 1px solid rgba(12, 128, 56, 0.3);
+  color: var(--color-white) !important;
+  font-size: 0.95rem;
+  font-weight: 500;
+  height: 2.5rem;
+  padding: 0.5rem 2rem 0.5rem 2.5rem;
+  border-radius: 1.5rem;
+  outline: none;
+  cursor: pointer;
+  min-width: 140px;
+  appearance: none;
+  transition: all 0.25s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.lang-select:hover {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(12, 128, 56, 0.3);
+  transform: translateY(-1px);
+}
+
+.lang-select:focus {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(12, 128, 56, 0.2);
+  outline: none;
+}
+
+.select-custom {
+  color: var(--color-white) !important;
+  padding: 0.5rem 2rem 0.5rem 2.5rem !important;
+  background: rgba(12, 128, 56, 0.85) !important;
+  border: 1px solid rgba(12, 128, 56, 0.3) !important;
+  height: 2.5rem;
+  border-radius: 1.5rem !important;
+}
+
+.select-custom:focus {
+  background: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  box-shadow: 0 0 0 3px rgba(12, 128, 56, 0.2);
+  font-weight: bold;
 }
 
 .lang-select::-ms-expand {

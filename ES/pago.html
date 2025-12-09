@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información de Pago</title>
+    <link rel="icon" type="image/png" href="/assets/img/gourmet-logo-icon.png">
+    <link rel="stylesheet" href="../assets/css/nav.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/modal.css">
+    <link rel="stylesheet" href="../assets/css/select.css">
+    <link rel="stylesheet" href="../assets/icons/font-awesome.css">
+</head>
+
+<body>
+
+    <header id="header"></header>
+    <div id="datetime-display" class="minimal-datetime"></div>
+    
+    <main id="main" class="main-container">
+        <section class="content-page">
+            <div class="content-wrapper">
+                <h1 class="page-title">Información de Pago</h1>
+                
+                <div class="payment-content">
+                    <div class="payment-section">
+                        <h2>Métodos de Pago Aceptados</h2>
+                        <div class="payment-methods">
+                            <div class="payment-method">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <h3>Tarjeta de Crédito/Débito</h3>
+                                <p>Aceptamos Visa, Mastercard y American Express. Todos los pagos se procesan de forma segura a través de nuestro sistema de pago encriptado.</p>
+                            </div>
+                            <div class="payment-method">
+                                <i class="fa-brands fa-paypal"></i>
+                                <h3>PayPal</h3>
+                                <p>Puede realizar sus pagos de forma rápida y segura mediante PayPal si tiene una cuenta registrada.</p>
+                            </div>
+                            <div class="payment-method">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <h3>Pago Contra Reembolso</h3>
+                                <p>Puede pagar en efectivo al recibir su pedido. Este método tiene un coste adicional de 2,50€.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-section">
+                        <h2>Seguridad en los Pagos</h2>
+                        <p>Todos los pagos se procesan de forma segura mediante protocolos de encriptación SSL. Sus datos bancarios nunca se almacenan en nuestros servidores y son procesados directamente por entidades financieras autorizadas.</p>
+                    </div>
+
+                    <div class="payment-section">
+                        <h2>Precios y Facturación</h2>
+                        <p>Todos los precios mostrados en nuestro sitio web incluyen IVA. Los gastos de envío se calcularán durante el proceso de compra según el destino y el método de envío seleccionado.</p>
+                    </div>
+
+                    <div class="payment-section">
+                        <h2>Reembolsos</h2>
+                        <p>Si no está satisfecho con su compra, puede solicitar un reembolso en un plazo de 14 días desde la recepción del pedido. Los reembolsos se procesarán en un plazo de 5-7 días laborables.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer"></footer>
+    <div id="showModal"></div>
+    <div id="cart-drawer"></div>
+
+    <script src="../assets/js/nav.js"></script>
+    <script src="../assets/js/footer.js"></script>
+    <script src="../assets/js/cart/cartView.js" type="module"></script>
+    <script src="../assets/js/auth/sesion.js" type="module"></script>
+    <script src="../assets/js/auth/validation.js" type="module"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/cart/cartStore.js" type="module"></script>
+
+</body>
+
+</html>
+
