@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userLanguage = localStorage.getItem('userLanguage');
     const header = document.getElementById('header');
     const PATH = urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' ? '../../../' : '../../';
-    console.log(userLanguage);
+    // console.log(userLanguage);
     const currentUser = localStorage.getItem('currentUser');
     const currentUserData = JSON.parse(currentUser);
     // console.log(currentUserData);
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    console.log(url);
+    // console.log(url);
 
     // Mapeo de páginas entre español e inglés
     const pageMapping = {
@@ -342,7 +342,7 @@ async function inicializarBuscador() {
         }
 
         try {
-            const { gestorDeDatos } = await import('../data-loader/productService.js');
+            const { gestorDeDatos } = await import('./data-loader/productService.js');
             const productos = await gestorDeDatos.cargarProductosPorNombre(consulta);
             resultadosActuales = productos;
             mostrarSugerencias(productos, consulta);
@@ -508,7 +508,8 @@ function updateDateTime() {
     const dayOfWeek = now.toLocaleDateString(locale, { weekday: 'long' }); // Ej: "lunes" o "Monday"
 
     // 2. Hora (formato 24h, incluyendo minutos)
-    const time = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false });
+    const time = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false, second: '2-digit' });
+    
 
     // 3. Mes (en letras)
     const month = now.toLocaleDateString(locale, { month: 'long' });

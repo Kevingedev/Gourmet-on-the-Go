@@ -1,8 +1,9 @@
 
 import { cartStore } from "./cartStore.js";
+import { gestorDeDatos } from "../data-loader/productService.js";
 
 // Obtener idioma
-const language = localStorage.getItem('userLanguage') || 'ES';
+const language = gestorDeDatos.language;
 
 // Textos según idioma
 const cartTexts = {

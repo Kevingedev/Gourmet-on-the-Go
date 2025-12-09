@@ -1393,3 +1393,18 @@
     padding: 0.75rem 0.5rem;
   }
 }
+
+.links-sesion{
+  list-style: none;
+  text-decoration: none;
+  font-style: none;
+  color: var(--color-dark);
+  text-align: end;
+}
+
+.icon-sesion{
+  color: var(--color-primary);
+  font-size: 1rem;
+  display: block;
+  font-weight: 600;
+}
