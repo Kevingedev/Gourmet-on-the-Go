@@ -2,10 +2,11 @@
 const pathProducts = "/assets/data/products.json";
 const pathCategories = "/assets/data/categories.json";
 let language;
-if (localStorage.getItem("userLanguage") !== null ) {
-    language = localStorage.getItem("userLanguage")
-}else{
-    language = localStorage.setItem("userLanguage", "ES")
+if (localStorage.getItem("userLanguage") !== null) {
+    language = localStorage.getItem("userLanguage");
+} else {
+    language = "ES"; // Por defecto es español el sitio.
+    localStorage.setItem("userLanguage", language);
 }
 // Objeto Gestor de datos
 
