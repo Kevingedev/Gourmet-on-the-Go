@@ -1,0 +1,30 @@
+@import "./vars.css";
+
+/* Estilos Base para el Elemento Select */
+.select-custom {
+    background-color: rgba(5, 68, 21, 0.9);
+    color: white;
+    border: 1px solid rgba(5, 68, 21, 0.9);
+    border-radius: 1rem;
+
+    /* Para asegurar que los estilos se apliquen correctamente */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+/* Estilos para el estado de Enfoque */
+.select-custom:focus {
+    outline: none;
+    border-color: transparent;
+    /* Indicador visual de foco */
+}
+
+/* Estilos para la lista desplegable (options) */
+.select-custom option {
+    background-color: rgba(5, 68, 21, 0.5);
+    color: white;
+    border-radius: 1rem;
+    border: 1px solid rgba(240, 240, 240, 0.98);
+}

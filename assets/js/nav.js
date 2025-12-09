@@ -1,0 +1,277 @@
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const url = window.location.href;
+    const urlCategoria = url.split('/');
+    const userLanguage = localStorage.getItem('userLanguage');
+    const header = document.getElementById('header');
+    const PATH = urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' ? '../../../' : '../../';
+    console.log(userLanguage);
+    const currentUser = localStorage.getItem('currentUser');
+    const currentUserData = JSON.parse(currentUser);
+    // console.log(currentUserData);
+    let btnSesion;
+
+    // console.log(currentUser);
+
+    let langSelect;
+    if (userLanguage === 'ES') {
+        langSelect = `
+        <select class="lang-select select-custom" aria-label="Seleccionar idioma">
+            <option value="ES" selected>🇪🇸</option>
+            <option value="EN">🇬🇧</option>
+            <!-- Puedes agregar más idiomas aquí -->
+        </select>
+    `;
+    } else {
+        langSelect = `
+        <select class="lang-select select-custom" aria-label="Seleccionar idioma">
+            <option value="ES">🇪🇸</option>
+            <option value="EN" selected>🇬🇧</option>
+        </select>
+    `;
+    }
+    if (currentUser) {
+        btnSesion = `<button class="btn-login" title="Cerrar sesión" data-modal-open="#logoutModal" id="btn-logout">${currentUserData.username}</button>`;
+    } else {
+        btnSesion = `<button class="btn-login" title="Iniciar sesión" data-modal-open="#loginModal" id="btn-login"><i class="fa-solid fa-user"></i></button>`;
+    }
+
+    const navbar = `
+<nav class="nav">
+        <div class="nav__logo">
+            <img src="${PATH}assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="40" class="logo-icon">
+            <a href="/${userLanguage}">Gourmet on the Go</a>
+            <img src="${PATH}assets/img/gourmet-logo-text.png" alt="Logo Gourmet on the Go" width="35" class="logo-text">
+        </div>
+
+        <button class="nav__toggle" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="nav__right">
+            <ul class="nav__links" id="nav-links">
+            </ul>
+            <!-- BUSCADOR -->
+            <div class="nav__search" aria-label="Buscar productos">
+                <span class="nav__search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="search" name="q" class="nav__search-input" autocomplete="off" placeholder="Buscar alimentos..."
+                    aria-label="Buscar">
+            </div>
+
+            <div class="nav__actions">
+            <a href="${PATH}${userLanguage}/lista-deseos.html" aria-label="Ir a Favoritos" title="Ir a Favoritos">
+                <button class="icon-btn" aria-label="Favoritos" title="Favoritos">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
+                </a>
+                <button class="icon-btn js-cart-toggle" aria-label="Carrito" aria-expanded="false" title="Carrito">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="badge" id="cart-count">0</span>
+                </button>
+                ${btnSesion}
+                <div class="lang-select-wrapper">
+                ${langSelect}
+                </div>
+            </div>
+        </div>
+    </nav>
+`;
+
+
+    // estoy insertando el navbar y el cartDrawer
+    header.innerHTML = navbar;
+
+
+    const navToggle = document.querySelector('.nav__toggle');
+    const navRight = document.querySelector('.nav__right');
+
+    navToggle.addEventListener('click', () => {
+        const isOpen = navRight.classList.toggle('is-open');
+        navToggle.classList.toggle('is-open', isOpen);
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    // traer las categorias e insertarlas en el nav
+
+
+    // FUNCIÓN ASÍNCRONA PARA CARGAR LAS CATEGORÍAS 
+    // Obtener el contenedor específico de los enlaces de categorías
+    const categoryLinksContainer = document.getElementById('nav-links');
+    const jsonPath = `${PATH}/assets/data/categories.json`;
+
+    async function fetchCategories(container) {
+        try {
+            // 1. Espera a que la promesa de fetch se resuelva
+            const response = await fetch(jsonPath);
+
+            if (!response.ok) {
+                // Lanza un error si el estado HTTP no es 200
+                throw new Error(`Error ${response.status}: No se pudo cargar el archivo.`);
+            }
+
+            // 2. Espera a que la promesa de response.json() se resuelva
+            const categories = await response.json();
+
+            // console.log(categories);
+
+            let linksHTML = '';
+
+            // 3. Iterar y construir el HTML
+            categories.forEach(category => {
+                // console.log(category);
+                if (userLanguage === 'ES') {
+                    linksHTML += `
+                    <li>
+                        <a href="${PATH}${userLanguage}${category.url_slug.ES}">${category.nombre.ES}</a>
+                    </li>
+                `;
+                } else {
+                    linksHTML += `
+                    <li>
+                        <a href="${PATH}${userLanguage}${category.url_slug.EN}">${category.nombre.EN}</a>
+                    </li>
+                `;
+                }
+            });
+
+            // 4. Insertar los enlaces
+            container.innerHTML = linksHTML;
+
+        } catch (error) {
+            // Captura cualquier error de fetch o de la promesa
+            console.error('Fallo al cargar la navegación de categorías:', error);
+            // Podrías poner enlaces estáticos o un mensaje de error aquí
+        }
+    }
+
+
+    fetchCategories(categoryLinksContainer);
+
+    // FUNCION DE ACCIONES PARA EL CAMBIO DE IDIOMA
+    async function changeUrl(lang, url) {
+        try {
+            const response = await fetch(jsonPath);
+            if (!response.ok) {
+                //Mensaje de Error ups!
+                throw new Error(`Error ${response.status}: No se pudo cargar el archivo.`);
+            }
+            const data = await response.json();
+
+            // console.log(data);
+            let url_slug = data.find(category => category.url_slug[lang] === url);
+            // console.log("url_slug desde la funcion:: " + url_slug.url_slug[lang]);
+            return url_slug;
+
+        } catch (error) {
+            console.error('Fallo al cargar la navegación de categorías:', error);
+        }
+    }
+
+    //    changeUrl('ES', '/catalogo/carne-aves');
+
+
+
+    console.log(url);
+
+    // CODIGO DE ACCIONES PARA EL CAMBIO DE IDIOMA
+
+    document.querySelector('.lang-select').addEventListener('change', function () {
+        const lang = this.value; // El VALOR DEL SELECT
+        // AQUI CONSTRUYO LA LOGICA PARA CAMBIAR DE IDIOMA
+        let currentUrl;
+        let currentLang = url.split('/')[3]; // EL IDIOMA ACTUAL en la URL
+        let newUrl;
+
+        console.log(url);
+
+
+        console.log("Posiciones: " + urlCategoria[4]);
+
+        if (urlCategoria[4] == 'catalogo' && currentLang == 'ES' && lang == 'EN') {
+            currentUrl = "/" + urlCategoria[4] + "/" + urlCategoria[5];
+            let urlSlug;
+            changeUrl(currentLang, currentUrl).then((result) => {
+                urlSlug = result;
+                newUrl = "../../../" + lang + urlSlug.url_slug[lang];
+                window.location.href = newUrl;
+            }).catch((err) => {
+                console.log(err);
+            });
+        } else if (urlCategoria[4] == 'catalog' && currentLang == 'EN' && lang == 'ES') {
+            currentUrl = "/" + urlCategoria[4] + "/" + urlCategoria[5];
+            let urlSlug;
+            changeUrl(currentLang, currentUrl).then((result) => {
+                urlSlug = result;
+                newUrl = "../../../" + lang + urlSlug.url_slug[lang];
+                window.location.href = newUrl;
+            }).catch((err) => {
+                console.log(err);
+            });
+        } else if (urlCategoria[4] == '' && currentLang == 'ES' && lang == 'EN') {
+            console.log("hola está vacio");
+            newUrl = "../../../" + lang;
+            window.location.href = newUrl;
+
+        } else if (urlCategoria[4] == '' && currentLang == 'EN' && lang == 'ES') {
+            console.log("hola está vacio");
+            newUrl = "../../../" + lang;
+            window.location.href = newUrl;
+
+        }
+
+
+
+
+        localStorage.setItem('userLanguage', lang);
+    });
+
+});
+
+function updateDateTime() {
+    // Obtener el elemento HTML
+    const displayElement = document.getElementById('datetime-display');
+    if (!displayElement) return;
+
+    // Crear objeto de fecha actual
+    const now = new Date();
+
+    // --- Obtener las partes en español con el formato solicitado ---
+
+    // 1. Día de la Semana (en letras)
+    const dayOfWeek = now.toLocaleDateString('es-ES', { weekday: 'long' }); // Ej: "lunes"
+
+    // 2. Hora (formato 24h, incluyendo minutos)
+    const time = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+    // 3. Mes (en letras)
+    const month = now.toLocaleDateString('es-ES', { month: 'long' });
+
+    // 4. Año (completo)
+    const year = now.getFullYear();
+
+    // Capitalizar la primera letra del día y del mes
+    const formattedDay = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
+    const formattedMonth = month.charAt(0).toUpperCase() + month.slice(1);
+
+    // --- Construir el string final con separadores ---
+
+    // Usamos la etiqueta <span> para estilizar los separadores si es necesario
+    const separator = '<span class="separator">-</span>';
+
+    const finalContent =
+        formattedDay +
+        separator + time +
+        separator + formattedMonth +
+        separator + year;
+
+    // Insertar el contenido en el HTML
+    displayElement.innerHTML = finalContent;
+}
+
+// Ejecutar la función inmediatamente para cargar la hora al inicio
+updateDateTime();
+
+// Actualizar la hora cada segundo (1000 milisegundos)
+setInterval(updateDateTime, 1000);

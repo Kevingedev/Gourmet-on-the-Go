@@ -1,0 +1,70 @@
+[
+  {
+    "id_categoria": "protein_meat",
+    "nombre": {
+      "ES": "Carnes",
+      "EN": "Meat"
+    },
+    "descripcion": {
+      "ES": "Recetas de vacuno, cerdo, pollo y pavo listas para servir.",
+      "EN": "Ready-to-serve beef, pork, chicken, and turkey recipes."
+    },
+    "icono_clase": "fa-solid fa-drumstick-bite",
+    "url_slug": {
+      "ES": "/catalogo/carnes",
+      "EN": "/catalog/meat"
+    },
+    "img": "../assets/img/carnes.png"
+  },
+  {
+    "id_categoria": "fish_seafood",
+    "nombre": {
+      "ES": "Mariscos",
+      "EN": "Seafood"
+    },
+    "descripcion": {
+      "ES": "Platos preparados con pescado, marisco y opciones de base de agua.",
+      "EN": "Dishes prepared with fish, shellfish, and water-based options."
+    },
+    "icono_clase": "fa-solid fa-fish",
+    "url_slug": {
+      "ES": "/catalogo/mariscos",
+      "EN": "/catalog/seafood"
+    },
+    "img": "../assets/img/mariscos.png"
+  },
+  {
+    "id_categoria": "sides_comp",
+    "nombre": {
+      "ES": "Acompañamientos",
+      "EN": "Complements"
+    },
+    "descripcion": {
+      "ES": "Arroces, pastas, verduras y salsas listos para combinar con tu plato principal.",
+      "EN": "Rice, pasta, vegetables, and sauces ready to combine with your main dish."
+    },
+    "icono_clase": "fas fa-bread-slice",
+    "url_slug": {
+      "ES": "/catalogo/complementos",
+      "EN": "/catalog/complements"
+    },
+    "img": "../assets/img/acompañamientos.png"
+  },
+  {
+    "id_categoria": "breakfast_brunch",
+    "nombre": {
+      "ES": "Desayuno",
+      "EN": "Breakfast"
+    },
+    "descripcion": {
+      "ES": "Opciones precocinadas y semi-preparadas para empezar el día o disfrutar del fin de semana.",
+      "EN": "Pre-cooked and semi-prepared options to start the day or enjoy the weekend."
+    },
+    "icono_clase": "fa-solid fa-mug-hot",
+    "url_slug": {
+      "ES": "/catalogo/desayuno",
+      "EN": "/catalog/breakfast"
+    },
+    "img": "../assets/img/desayunos.png"
+  }
+]

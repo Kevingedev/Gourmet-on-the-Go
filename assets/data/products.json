@@ -1,0 +1,362 @@
+[
+  {
+    "id_producto": "PM001",
+    "id_categoria": "protein_meat",
+    "nombre": {
+      "ES": "Pollo Asado con Hierbas",
+      "EN": "Herb-Roasted Chicken"
+    },
+    "descripcion": {
+      "ES": "Pollo entero asado a la perfección con una mezcla de hierbas mediterráneas.",
+      "EN": "Whole chicken roasted to perfection with a blend of Mediterranean herbs."
+    },
+    "unidad_medida": {
+      "ES": "1 Unidad (aprox. 1.2 kg)",
+      "EN": "1 Unit (approx. 2.6 lb)"
+    },
+    "featured": true,
+    "precio": 14.99
+  },
+  {
+    "id_producto": "PM002",
+    "id_categoria": "protein_meat",
+    "nombre": {
+      "ES": "Solomillo de Cerdo Glaseado",
+      "EN": "Glazed Pork Tenderloin"
+    },
+    "descripcion": {
+      "ES": "Tiernos medallones de solomillo de cerdo con un glaseado de miel y mostaza.",
+      "EN": "Tender pork tenderloin medallions with a honey-mustard glaze."
+    },
+    "unidad_medida": {
+      "ES": "500 gramos",
+      "EN": "1.1 lb"
+    },
+    "featured": false,
+    "precio": 12.50
+  },
+  {
+    "id_producto": "PM003",
+    "id_categoria": "protein_meat",
+    "nombre": {
+      "ES": "Guiso de Vacuno Clásico",
+      "EN": "Classic Beef Stew"
+    },
+    "descripcion": {
+      "ES": "Trozos de vacuno cocidos a fuego lento con zanahorias, patatas y un rico caldo de vino tinto.",
+      "EN": "Slow-cooked beef chunks with carrots, potatoes, and a rich red wine broth."
+    },
+    "unidad_medida": {
+      "ES": "Porción individual (350 gramos)",
+      "EN": "Single serving (12.3 oz)"
+    },
+    "featured": false,
+    "precio": 9.75
+  },
+  {
+    "id_producto": "PM004",
+    "id_categoria": "protein_meat",
+    "nombre": {
+      "ES": "Albóndigas de Pavo en Salsa",
+      "EN": "Turkey Meatballs in Sauce"
+    },
+    "descripcion": {
+      "ES": "Albóndigas magras de pavo en una ligera salsa de tomate casera.",
+      "EN": "Lean turkey meatballs in a light, homemade tomato sauce."
+    },
+    "unidad_medida": {
+      "ES": "6 Unidades (300 gramos)",
+      "EN": "6 Units (10.6 oz)"
+    },
+    "featured": false,
+    "precio": 8.50
+  },
+  {
+    "id_producto": "PM005",
+    "id_categoria": "protein_meat",
+    "nombre": {
+      "ES": "Tiras de Pollo para Fajitas",
+      "EN": "Chicken Strips for Fajitas"
+    },
+    "descripcion": {
+      "ES": "Tiras de pollo sazonadas con pimientos y cebollas, listas para calentar y servir en tortillas.",
+      "EN": "Seasoned chicken strips with peppers and onions, ready to heat and serve in tortillas."
+    },
+    "unidad_medida": {
+      "ES": "500 gramos",
+      "EN": "1.1 lb"
+    },
+    "featured": false,
+    "precio": 11.25
+  },
+  {
+    "id_producto": "FS001",
+    "id_categoria": "fish_seafood",
+    "nombre": {
+      "ES": "Salmón al Horno con Limón",
+      "EN": "Lemon Baked Salmon"
+    },
+    "descripcion": {
+      "ES": "Filete de salmón fresco, horneado con rodajas de limón y eneldo.",
+      "EN": "Fresh salmon fillet, baked with lemon slices and dill."
+    },
+    "unidad_medida": {
+      "ES": "180 gramos",
+      "EN": "6.3 oz"
+    },
+    "featured": false,
+    "precio": 16.99
+  },
+  {
+    "id_producto": "FS002",
+    "id_categoria": "fish_seafood",
+    "nombre": {
+      "ES": "Gambas al Ajillo Estilo Scampi",
+      "EN": "Scampi-Style Garlic Shrimp"
+    },
+    "descripcion": {
+      "ES": "Gambas grandes salteadas en mantequilla de ajo y vino blanco.",
+      "EN": "Large shrimp sautéed in garlic butter and white wine."
+    },
+    "unidad_medida": {
+      "ES": "250 gramos",
+      "EN": "8.8 oz"
+    },
+    "featured": true,
+    "precio": 15.50
+  },
+  {
+    "id_producto": "FS003",
+    "id_categoria": "fish_seafood",
+    "nombre": {
+      "ES": "Ensalada de Atún Mediterránea",
+      "EN": "Mediterranean Tuna Salad"
+    },
+    "descripcion": {
+      "ES": "Atún enlatado mezclado con verduras frescas y aderezo ligero de aceite de oliva.",
+      "EN": "Canned tuna mixed with fresh vegetables and a light olive oil dressing."
+    },
+    "unidad_medida": {
+      "ES": "200 gramos",
+      "EN": "7.0 oz"
+    },
+    "featured": false,
+    "precio": 7.50
+  },
+  {
+    "id_producto": "FS004",
+    "id_categoria": "fish_seafood",
+    "nombre": {
+      "ES": "Relleno para Tacos de Pescado",
+      "EN": "Fish Taco Filling"
+    },
+    "descripcion": {
+      "ES": "Tiras de pescado blanco rebozadas y sazonadas, perfectas para tacos.",
+      "EN": "Battered and seasoned white fish strips, perfect for tacos."
+    },
+    "unidad_medida": {
+      "ES": "400 gramos",
+      "EN": "14.1 oz"
+    },
+    "featured": true,
+    "precio": 10.99
+  },
+  {
+    "id_producto": "FS005",
+    "id_categoria": "fish_seafood",
+    "nombre": {
+      "ES": "Mejillones a la Marinera",
+      "EN": "Mussels Marinara"
+    },
+    "descripcion": {
+      "ES": "Mejillones frescos cocidos en una rica salsa de tomate y hierbas.",
+      "EN": "Fresh mussels cooked in a rich tomato and herb sauce."
+    },
+    "unidad_medida": {
+      "ES": "500 gramos",
+      "EN": "1.1 lb"
+    },
+    "featured": true,
+    "precio": 13.50
+  },
+  {
+    "id_producto": "SC001",
+    "id_categoria": "sides_comp",
+    "nombre": {
+      "ES": "Arroz Basmati Cocido",
+      "EN": "Cooked Basmati Rice"
+    },
+    "descripcion": {
+      "ES": "Arroz Basmati de grano largo, esponjoso y listo para calentar.",
+      "EN": "Fluffy, long-grain Basmati rice, ready to heat."
+    },
+    "unidad_medida": {
+      "ES": "300 gramos",
+      "EN": "10.6 oz"
+    },
+    "featured": false,
+    "precio": 4.50
+  },
+  {
+    "id_producto": "SC002",
+    "id_categoria": "sides_comp",
+    "nombre": {
+      "ES": "Verduras Asadas de Temporada",
+      "EN": "Seasonal Roasted Vegetables"
+    },
+    "descripcion": {
+      "ES": "Brócoli, zanahorias y calabacín asados con un toque de aceite de oliva y especias.",
+      "EN": "Broccoli, carrots, and zucchini roasted with a touch of olive oil and spices."
+    },
+    "unidad_medida": {
+      "ES": "450 gramos",
+      "EN": "15.8 oz"
+    },
+    "featured": false,
+    "precio": 6.99
+  },
+  {
+    "id_producto": "SC003",
+    "id_categoria": "sides_comp",
+    "nombre": {
+      "ES": "Pasta Penne al Pesto",
+      "EN": "Penne Pasta with Pesto"
+    },
+    "descripcion": {
+      "ES": "Pasta Penne cocida mezclada con un cremoso pesto de albahaca.",
+      "EN": "Cooked Penne pasta mixed with creamy basil pesto."
+    },
+    "unidad_medida": {
+      "ES": "350 gramos",
+      "EN": "12.3 oz"
+    },
+    "featured": true,
+    "precio": 5.75
+  },
+  {
+    "id_producto": "SC004",
+    "id_categoria": "sides_comp",
+    "nombre": {
+      "ES": "Puré de Patatas Cremoso",
+      "EN": "Creamy Mashed Potatoes"
+    },
+    "descripcion": {
+      "ES": "Patatas cocidas y trituradas con leche y mantequilla.",
+      "EN": "Cooked and mashed potatoes with milk and butter."
+    },
+    "unidad_medida": {
+      "ES": "300 gramos",
+      "EN": "10.6 oz"
+    },
+    "featured": false,
+    "precio": 4.99
+  },
+  {
+    "id_producto": "SC005",
+    "id_categoria": "sides_comp",
+    "nombre": {
+      "ES": "Salsa Gravy de Vino Tinto",
+      "EN": "Red Wine Gravy Sauce"
+    },
+    "descripcion": {
+      "ES": "Salsa oscura rica y espesa, perfecta para acompañar carnes asadas.",
+      "EN": "Rich, thick dark sauce, perfect for accompanying roasted meats."
+    },
+    "unidad_medida": {
+      "ES": "200 ml",
+      "EN": "6.8 fl oz"
+    },
+    "featured": true,
+    "precio": 3.50
+  },
+  {
+    "id_producto": "BB001",
+    "id_categoria": "breakfast_brunch",
+    "nombre": {
+      "ES": "Huevos Revueltos Precocinados",
+      "EN": "Pre-cooked Scrambled Eggs"
+    },
+    "descripcion": {
+      "ES": "Huevos revueltos esponjosos, listos para calentar en el microondas.",
+      "EN": "Fluffy scrambled eggs, ready to heat in the microwave."
+    },
+    "unidad_medida": {
+      "ES": "Porción individual (150 gramos)",
+      "EN": "Single serving (5.3 oz)"
+    },
+    "featured": false,
+    "precio": 5.50
+  },
+  {
+    "id_producto": "BB002",
+    "id_categoria": "breakfast_brunch",
+    "nombre": {
+      "ES": "Mezcla para Pancakes (Semi-preparada)",
+      "EN": "Pancake Mix (Semi-prepared)"
+    },
+    "descripcion": {
+      "ES": "Mezcla seca a la que solo hay que añadir agua para hacer pancakes.",
+      "EN": "Dry mix to which you only need to add water to make pancakes."
+    },
+    "unidad_medida": {
+      "ES": "500 gramos",
+      "EN": "17.6 oz"
+    },
+    "featured": true,
+    "precio": 4.25
+  },
+  {
+    "id_producto": "BB003",
+    "id_categoria": "breakfast_brunch",
+    "nombre": {
+      "ES": "Parfait de Yogur y Frutas",
+      "EN": "Yogurt and Fruit Parfait"
+    },
+    "descripcion": {
+      "ES": "Capas de yogur griego, granola y bayas frescas.",
+      "EN": "Layers of Greek yogurt, granola, and fresh berries."
+    },
+    "unidad_medida": {
+      "ES": "1 Vaso (200 gramos)",
+      "EN": "1 Cup (7.0 oz)"
+    },
+    "featured": false,
+    "precio": 6.00
+  },
+  {
+    "id_producto": "BB004",
+    "id_categoria": "breakfast_brunch",
+    "nombre": {
+      "ES": "Salchichas de Desayuno Precocidas",
+      "EN": "Pre-cooked Breakfast Sausages"
+    },
+    "descripcion": {
+      "ES": "Pequeñas salchichas de cerdo sazonadas, listas para freír o calentar.",
+      "EN": "Small, seasoned pork sausages, ready to fry or heat."
+    },
+    "unidad_medida": {
+      "ES": "8 Unidades (250 gramos)",
+      "EN": "8 Units (8.8 oz)"
+    },
+    "featured": true,
+    "precio": 7.99
+  },
+  {
+    "id_producto": "BB005",
+    "id_categoria": "breakfast_brunch",
+    "nombre": {
+      "ES": "Mini Muffins Variados",
+      "EN": "Assorted Mini Muffins"
+    },
+    "descripcion": {
+      "ES": "Surtido de mini muffins de arándanos, chocolate y vainilla.",
+      "EN": "Assortment of blueberry, chocolate, and vanilla mini muffins."
+    },
+    "unidad_medida": {
+      "ES": "Paquete de 12 Unidades",
+      "EN": "Pack of 12 Units"
+    },
+    "featured": false,
+    "precio": 8.75
+  }
+]

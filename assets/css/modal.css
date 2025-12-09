@@ -1,0 +1,226 @@
+@import "./vars.css";
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding: .75rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: var(--color-primary);
+    color: #fff;
+    cursor: pointer;
+    transition: transform .3s ease, background .3s ease, border-color .3s ease;
+}
+
+
+
+.btn:focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+}
+
+.btn--color-primary {
+    background: var(--color-primary);
+}
+
+.btn--color-primary:hover {
+    background: var(--background);
+    transform: translate3d(0, -2px, -2px);
+    box-shadow: var(--shadow);
+}
+
+.btn--ghost {
+    background: transparent;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.btn--ghost:hover {
+    box-shadow: 0 12px 45px rgba(0, 0, 0, .20);
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    transition: opacity .2s ease, visibility .2s ease, transform .2s ease;
+    z-index: 1000;
+}
+
+.modal.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(2, 6, 23, .6);
+    backdrop-filter: blur(8px);
+}
+
+.modal__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(420px, 92vw);
+    background: var(--color-white);
+    border: 1px solid rgba(148, 163, 184, .15);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 22px 22px 20px;
+    animation: modal-in .2s ease;
+}
+
+@keyframes modal-in {
+    from {
+        transform: translateY(6px);
+        opacity: .0
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1
+    }
+}
+
+.modal__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--color-primary);
+    border: 1px solid rgba(148, 163, 184, .2);
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+.modal__close:hover {
+    background: var(--background);
+}
+
+.modal__close:focus-visible {
+    outline: none;
+    box-shadow: var(--ring);
+}
+
+.modal__header {
+    margin: 8px 8px 16px;
+}
+
+.modal__title {
+    margin: 0 0 4px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+
+.modal__subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: .9375rem;
+}
+
+.modal__form {
+    display: grid;
+    gap: 14px;
+    padding: 0 8px 4px;
+}
+
+.field {
+    display: grid;
+    gap: 8px;
+}
+
+.field__label {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.field__input {
+    width: 100%;
+    padding: .8rem .9rem;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, .25);
+    background: var(--color-green-blue);
+    color: var(--color-dark);
+}
+
+.field__input::placeholder {
+    color: #64748b;
+}
+
+.field__input:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow: var(--ring);
+}
+
+
+.loginMessage {
+    font-size: .9rem;
+    color: var(--color-dark);
+    text-align: start;
+    padding: 1rem 0.3rem;
+    border-left: 4px solid var(--color-dark);
+    border-radius: 0.5rem;
+    background-color: rgba(0, 0, 0, .20);
+}
+
+
+
+/* spiner clases */
+
+/* 1. Estilo base del SPINNER */
+#spinner {
+    display: inline-block;
+    width: 0.9rem;
+    height: 0.9rem;
+    border: 3px solid #f3f3f3;
+    /* Color de fondo del anillo */
+    border-top: 3px solid var(--color-primary);
+    /* Color de la parte giratoria */
+    border-radius: 50%;
+}
+
+/* 2. Clase para OCULTAR el spinner */
+.oculto {
+    display: none !important;
+}
+
+/* 3. Definición de la animación de giro */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 4. Clase que ACTIVA el spinner (condición) */
+.spinner-activo {
+    display: inline-block;
+    /* Asegura que el spinner se muestre */
+    animation: spin 1s linear infinite;
+    /* Aplica la animación */
+}
+
+#btn-show-password {
+    cursor: pointer;
+    color: var(--color-primary);
+    font-size: 1.2rem;
+    text-align: end;
+    margin-right: 0.3rem;
+}
