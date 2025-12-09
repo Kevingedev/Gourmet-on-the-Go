@@ -118,23 +118,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target.classList.contains('btn-add-to-cart')) {
             const button = event.target;
             const originalText = button.textContent;
-            
+
             const products = cartStore.addToCart(event);
             drawerEmpty.style.display = 'none';
 
             uploadItems(products, cartDrawerContainer); // Cargando los items al carrito si hace click en el boton de agregar al carrito
-            
+
             // Feedback visual en el botón
             button.textContent = texts.added;
             button.style.background = '#22c55e';
             button.style.color = 'white';
-            
+
             setTimeout(() => {
                 button.textContent = originalText;
                 button.style.background = '';
                 button.style.color = '';
             }, 2000);
-            
+
             // console.log(product);
             if (slideCart <= 0) {
                 toggleCart(true);
@@ -145,24 +145,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     });
 
-
-    const quantityInput = document.querySelector('.quantity-input');
-    // Evento para eliminar productos del carrito
+    // Event delegation for cart actions (remove, increase, decrease)
     cartDrawerContainer.addEventListener('click', (event) => {
+        const target = event.target.closest('button');
+        if (!target) return;
 
-        const idProduct = event.target.parentElement.parentElement.parentElement.getAttribute('data-product-id');
-        // const eventTarget = event.target;
-        console.log(idProduct);
+        const action = target.getAttribute('data-action');
+        const id = target.getAttribute('data-id');
 
-        if (event.target.dataset.action === `remove${idProduct}`) {
-            // console.log("eliminar");
-
-            const products = cartStore.removeFromCart(event);
-
-            uploadItems(products, cartDrawerContainer);
+        if (action === 'remove') {
+            const updatedCart = cartStore.removeItem(id);
+            uploadItems(updatedCart, cartDrawerContainer);
+            if (updatedCart.length === 0) {
+                drawerEmpty.style.display = 'block';
+            }
         }
 
+        if (action === 'increase') {
+            const updatedCart = cartStore.increaseItem(id);
+            uploadItems(updatedCart, cartDrawerContainer);
+        }
+
+        if (action === 'decrease') {
+            const updatedCart = cartStore.decreaseItem(id);
+            uploadItems(updatedCart, cartDrawerContainer);
+        }
     });
+
 
 });
 
@@ -177,7 +186,7 @@ function uploadItems(products, cartDrawerContainer) {
     //Tendrá el contenedor de items.
     cartDrawerContainer.innerHTML = '';
     products.forEach(product => {
-// console.log(product);
+        // console.log(product);
         const cardItem = `
         <div class="cart-item__image">
             <img src="${product.image}" alt="Producto">
@@ -188,10 +197,10 @@ function uploadItems(products, cartDrawerContainer) {
             <span class="cart-item__price">${product.price}</span>
                 
                 <div class="cart-item__controls">
-                    <button class="btn-quantity" data-action="decrease"><i class="fa-solid fa-minus"></i></button>
+                    <button class="btn-quantity" data-action="decrease" data-id="${product.id}"><i class="fa-solid fa-minus"></i></button>
                     <input type="number" class="quantity-input" value="${product.quantity}" min="1">
-                    <button class="btn-quantity" data-action="increase"><i class="fa-solid fa-plus"></i></button>
-                    <button class="btn-remove" data-action="remove${product.id}"><i class="fa-regular fa-trash-can"></i></button>
+                    <button class="btn-quantity" data-action="increase" data-id="${product.id}"><i class="fa-solid fa-plus"></i></button>
+                    <button class="btn-remove" data-action="remove" data-id="${product.id}"><i class="fa-regular fa-trash-can"></i></button>
                 </div>
             </div>
         `;
@@ -203,8 +212,6 @@ function uploadItems(products, cartDrawerContainer) {
 
     })
     let totalItems = cartStore.countCart();
-    // if (totalItems == 0 ? drawerEmpty.style.display = 'block' : "");
     document.getElementById('cart-count').textContent = totalItems;
-    // USAR amountCart para mostrar el total
-    amountCart.textContent = `${cartStore.amountCart()}€`;
+    amountCart.textContent = cartStore.totalCart() + '€';
 }

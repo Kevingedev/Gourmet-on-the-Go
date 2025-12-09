@@ -201,7 +201,7 @@
 }
 
 .section-categorias {
-  width: 100%;
+  width: 80%;
   margin: 5rem auto;
 }
 
@@ -461,6 +461,7 @@
 .category-card {
   position: relative;
   overflow: hidden;
+  border-radius: var(--border-radius);
 }
 
 .category-card img {
