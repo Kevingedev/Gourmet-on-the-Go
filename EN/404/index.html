@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page not found - 404</title>
+    <link rel="icon" type="image/png" href="/assets/img/gourmet-logo-icon.png">
+    <link rel="stylesheet" href="../../../assets/css/nav.css">
+    <link rel="stylesheet" href="../../../assets/css/footer.css">
+    <link rel="stylesheet" href="../../../assets/css/main.css">
+    <link rel="stylesheet" href="../../../assets/css/modal.css">
+    <link rel="stylesheet" href="../../../assets/css/select.css">
+    <link rel="stylesheet" href="../../../assets/icons/font-awesome.css">
+</head>
+
+<body>
+
+    <header id="header"></header>
+    <div id="datetime-display" class="minimal-datetime"></div>
+    
+    <main id="main" class="main-container">
+        <section class="error-404-section">
+            <div class="error-404-container">
+                <div class="error-404-content">
+                    <div class="error-404-icon">
+                        <i class="fa-solid fa-exclamation-triangle"></i>
+                    </div>
+                    <h1 class="error-404-title">404</h1>
+                    <h2 class="error-404-subtitle">Page not found</h2>
+                    <p class="error-404-message">
+                        Sorry, the page you are looking for does not exist or has been moved.
+                    </p>
+                    <div class="error-404-actions">
+                        <a href="../../index.html" class="btn-home">
+                            <i class="fa-solid fa-home"></i>
+                            Back to Home
+                        </a>
+                        <button onclick="window.history.back()" class="btn-back">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            Go Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer"></footer>
+    <div id="showModal"></div>
+    <div id="cart-drawer"></div>
+
+    <script src="../../../assets/js/nav.js"></script>
+    <script src="../../../assets/js/footer.js"></script>
+    <script src="../../../assets/js/cart/cartView.js" type="module"></script>
+    <script src="../../../assets/js/auth/sesion.js" type="module"></script>
+    <script src="../assets/js/auth/validation.js" type="module"></script>
+    <script src="../../../assets/js/utils.js"></script>
+    <script src="../../../assets/js/cart/cartStore.js" type="module"></script>
+
+</body>
+
+</html>
+
