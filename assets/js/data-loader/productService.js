@@ -1,8 +1,12 @@
 
 const pathProducts = "/assets/data/products.json";
 const pathCategories = "/assets/data/categories.json";
-const language = localStorage.getItem("userLanguage");
-
+let language;
+if (localStorage.getItem("userLanguage") !== null ) {
+    language = localStorage.getItem("userLanguage")
+}else{
+    language = localStorage.setItem("userLanguage", "ES")
+}
 // Objeto Gestor de datos
 
 export const gestorDeDatos = {
@@ -40,7 +44,7 @@ export const gestorDeDatos = {
         const dataProducts = await this.cargarProductos();
         const productosPorCategoria = dataProducts.filter(product => product.id_categoria === idCategoria);
         return productosPorCategoria; // Devuelve un array de objetos con los productos de la categoría
-    }, 
+    },
 
     async cargarProductoPorId(idProducto) {
         const dataProducts = await this.cargarProductos();
