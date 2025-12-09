@@ -50,8 +50,22 @@ export const gestorDeDatos = {
 
     async cargarProductosPorNombre(nombreProducto) {
         const dataProducts = await this.cargarProductos();
-        const productosPorNombre = dataProducts.filter(product => product.nombre.toLowerCase().includes(nombreProducto.toLowerCase()));
-        return productosPorNombre; // Devuelve un array de objetos con los productos que coinciden con el nombre
+        const idioma = this.language || 'ES';
+        const busqueda = nombreProducto.toLowerCase().trim();
+        
+        const productosPorNombre = dataProducts.filter(product => {
+            const nombreES = product.nombre.ES ? product.nombre.ES.toLowerCase() : '';
+            const nombreEN = product.nombre.EN ? product.nombre.EN.toLowerCase() : '';
+            const descripcionES = product.descripcion.ES ? product.descripcion.ES.toLowerCase() : '';
+            const descripcionEN = product.descripcion.EN ? product.descripcion.EN.toLowerCase() : '';
+            
+            return nombreES.includes(busqueda) || 
+                   nombreEN.includes(busqueda) || 
+                   descripcionES.includes(busqueda) || 
+                   descripcionEN.includes(busqueda);
+        });
+        
+        return productosPorNombre; // Devuelve un array de objetos con los productos que coinciden con el nombre o descripción
     },
 
     // Proximamente...

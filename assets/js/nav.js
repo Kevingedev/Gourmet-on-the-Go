@@ -57,8 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- BUSCADOR -->
             <div class="nav__search" aria-label="Buscar productos">
                 <span class="nav__search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="search" name="q" class="nav__search-input" autocomplete="off" placeholder="Buscar alimentos..."
+                <input type="search" name="q" id="nav-search-input" class="nav__search-input" autocomplete="off" placeholder="Buscar alimentos..."
                     aria-label="Buscar">
+                <div class="nav__search-results" id="search-results"></div>
             </div>
 
             <div class="nav__actions">
@@ -227,7 +228,209 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('userLanguage', lang);
     });
 
+    // BUSCADOR - Funcionalidad de búsqueda con autocompletado
+    // Inicializar después de un pequeño delay para asegurar que el DOM esté listo
+    setTimeout(() => {
+        inicializarBuscador();
+    }, 200);
+
 });
+
+async function inicializarBuscador() {
+    // Esperar un poco para asegurar que el DOM esté listo
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    const inputBusqueda = document.getElementById('nav-search-input');
+    const resultadosBusqueda = document.getElementById('search-results');
+    const contenedorBusqueda = document.querySelector('.nav__search');
+    
+    if (!inputBusqueda || !resultadosBusqueda) {
+        console.error('Elementos de búsqueda no encontrados');
+        return;
+    }
+
+    let tiempoEspera;
+    let resultadosActuales = [];
+
+    // Hacer que el input reciba foco cuando se hace clic en cualquier parte del buscador
+    if (contenedorBusqueda) {
+        contenedorBusqueda.addEventListener('click', (e) => {
+            // Si no es un resultado de búsqueda, dar foco al input
+            if (!e.target.closest('.nav__search-results')) {
+                e.preventDefault();
+                e.stopPropagation();
+                inputBusqueda.focus();
+            }
+        });
+
+        // Permitir que el icono de búsqueda también active el foco
+        const iconoBusqueda = contenedorBusqueda.querySelector('.nav__search-icon');
+        if (iconoBusqueda) {
+            iconoBusqueda.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                inputBusqueda.focus();
+            });
+            iconoBusqueda.style.cursor = 'pointer';
+        }
+    }
+
+    // Función para buscar productos
+    async function buscarProductos(consulta) {
+        if (!consulta || consulta.length < 1) {
+            resultadosBusqueda.innerHTML = '';
+            resultadosBusqueda.classList.remove('is-visible');
+            resultadosActuales = [];
+            return;
+        }
+
+        try {
+            const { gestorDeDatos } = await import('../data-loader/productService.js');
+            const productos = await gestorDeDatos.cargarProductosPorNombre(consulta);
+            resultadosActuales = productos;
+            mostrarSugerencias(productos, consulta);
+        } catch (error) {
+            console.error('Error al buscar productos:', error);
+            resultadosBusqueda.innerHTML = '';
+            resultadosBusqueda.classList.remove('is-visible');
+        }
+    }
+
+    // Mostrar resultados mientras escribes - aparece automáticamente
+    inputBusqueda.addEventListener('input', (e) => {
+        const consulta = e.target.value.trim();
+        clearTimeout(tiempoEspera);
+
+        if (consulta.length >= 1) {
+            tiempoEspera = setTimeout(() => {
+                buscarProductos(consulta);
+            }, 100);
+        } else {
+            resultadosBusqueda.innerHTML = '';
+            resultadosBusqueda.classList.remove('is-visible');
+            resultadosBusqueda.style.display = 'none';
+            resultadosActuales = [];
+        }
+    });
+
+    // También buscar con keyup para asegurar que funcione
+    inputBusqueda.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter' || e.key === 'Escape') return;
+        
+        const consulta = e.target.value.trim();
+        clearTimeout(tiempoEspera);
+
+        if (consulta.length >= 1) {
+            tiempoEspera = setTimeout(() => {
+                buscarProductos(consulta);
+            }, 100);
+        } else {
+            resultadosBusqueda.innerHTML = '';
+            resultadosBusqueda.classList.remove('is-visible');
+            resultadosBusqueda.style.display = 'none';
+            resultadosActuales = [];
+        }
+    });
+
+    // Redirigir con Enter
+    inputBusqueda.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const consulta = inputBusqueda.value.trim();
+            if (consulta.length >= 1) {
+                redirigirABusqueda(consulta);
+            }
+        }
+        if (e.key === 'Escape') {
+            resultadosBusqueda.classList.remove('is-visible');
+            inputBusqueda.blur();
+        }
+    });
+
+    // Mostrar resultados cuando el input tiene foco
+    inputBusqueda.addEventListener('focus', () => {
+        const consulta = inputBusqueda.value.trim();
+        if (consulta.length >= 1) {
+            if (resultadosActuales.length > 0) {
+                resultadosBusqueda.classList.add('is-visible');
+            } else {
+                buscarProductos(consulta);
+            }
+        }
+    });
+
+    // Cerrar dropdown al hacer clic fuera
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav__search')) {
+            resultadosBusqueda.classList.remove('is-visible');
+            resultadosBusqueda.style.display = 'none';
+        }
+    });
+
+    function mostrarSugerencias(productos, consulta) {
+        if (!resultadosBusqueda) return;
+        
+        if (productos.length === 0) {
+            resultadosBusqueda.innerHTML = `
+                <div class="search-result-item search-result-empty">
+                    <p>No se encontraron productos para "${consulta}"</p>
+                </div>
+            `;
+            resultadosBusqueda.style.display = 'block';
+            resultadosBusqueda.classList.add('is-visible');
+        } else {
+            const idioma = localStorage.getItem('userLanguage') || 'ES';
+            const rutaBase = obtenerRutaBase();
+            
+            resultadosBusqueda.innerHTML = productos.slice(0, 5).map(producto => `
+                <div class="search-result-item" data-product-id="${producto.id_producto}">
+                    <img src="${rutaBase}assets/img/product-images/img-test.jpg" alt="${producto.nombre[idioma]}">
+                    <div class="search-result-info">
+                        <h4>${producto.nombre[idioma]}</h4>
+                        <p class="search-result-desc">${producto.descripcion[idioma].substring(0, 60)}${producto.descripcion[idioma].length > 60 ? '...' : ''}</p>
+                        <div class="search-result-footer">
+                            <span class="search-result-unit">${producto.unidad_medida[idioma]}</span>
+                            <span class="search-result-price">${producto.precio}€</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Agregar evento click a cada resultado
+            resultadosBusqueda.querySelectorAll('.search-result-item:not(.search-result-empty)').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const consulta = inputBusqueda.value.trim();
+                    redirigirABusqueda(consulta);
+                });
+            });
+
+            resultadosBusqueda.style.display = 'block';
+            resultadosBusqueda.classList.add('is-visible');
+        }
+    }
+
+    function redirigirABusqueda(consulta) {
+        if (!consulta || consulta.trim().length < 1) {
+            return;
+        }
+
+        const idioma = localStorage.getItem('userLanguage') || 'ES';
+        const rutaBase = obtenerRutaBase();
+        window.location.href = `${rutaBase}${idioma}/busqueda.html?q=${encodeURIComponent(consulta)}`;
+    }
+
+    function obtenerRutaBase() {
+        const path = window.location.pathname;
+        if (path.includes('/catalogo/') || path.includes('/catalog/')) {
+            return '../../../';
+        } else if (path.includes('/ES/') || path.includes('/EN/')) {
+            return '../';
+        }
+        return '/';
+    }
+}
 
 function updateDateTime() {
     // Obtener el elemento HTML
