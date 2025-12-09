@@ -110,10 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Evento para eliminar productos del carrito
     cartDrawerContainer.addEventListener('click', (event) => {
 
-        // const idProduct = event.target.parentElement.parentElement.parentElement.getAttribute('data-product-id');
+        const idProduct = event.target.parentElement.parentElement.parentElement.getAttribute('data-product-id');
         // const eventTarget = event.target;
+        console.log(idProduct);
 
-        if (event.target.classList.contains('btn-remove')) {
+        if (event.target.dataset.action === `remove${idProduct}`) {
             // console.log("eliminar");
 
             const products = cartStore.removeFromCart(event);
@@ -122,38 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     });
-
-    cartDrawerContainer.addEventListener('click', (event) => {
-        console.log(event.target.dataset.action);
-        if (event.target.dataset.action === 'increase') {
-            // console.log("aumentar");
-
-            const itemCart = cartStore.increaseQuantity(event.target.parentElement.parentElement.parentElement.getAttribute('data-product-id')); // obtengo el id del producto al que quiero aumentar la cantidad
-            quantityInput.value = itemCart.quantity; // actualizo el valor del input
-            amountCart.textContent = cartStore.amountCart(); // actualizo el valor del total
-
-
-        }
-
-    });
-
-    /* cartDrawerContainer.addEventListener('click', (event) => {
-
-        if (event.target.getAttribute('data-action') === 'decrease') {
-            console.log("disminuir");
-
-            const itemCart = cartStore.decreaseQuantity(event.target.parentElement.parentElement.parentElement.getAttribute('data-product-id')); // obtengo el id del producto al que quiero disminuir la cantidad
-            quantityInput.value = itemCart.quantity;
-            amountCart.textContent = cartStore.amountCart();
-            // uploadItems(products, cartDrawerContainer);
-
-
-        }
-
-    }); */
-
-
-
 
 });
 
@@ -168,7 +137,7 @@ function uploadItems(products, cartDrawerContainer) {
     //Tendrá el contenedor de items.
     cartDrawerContainer.innerHTML = '';
     products.forEach(product => {
-
+// console.log(product);
         const cardItem = `
         <div class="cart-item__image">
             <img src="${product.image}" alt="Producto">
@@ -182,7 +151,7 @@ function uploadItems(products, cartDrawerContainer) {
                     <button class="btn-quantity" data-action="decrease"><i class="fa-solid fa-minus"></i></button>
                     <input type="number" class="quantity-input" value="${product.quantity}" min="1">
                     <button class="btn-quantity" data-action="increase"><i class="fa-solid fa-plus"></i></button>
-                    <button class="btn-remove" data-action="remove"><i class="fa-regular fa-trash-can"></i></button>
+                    <button class="btn-remove" data-action="remove${product.id}"><i class="fa-regular fa-trash-can"></i></button>
                 </div>
             </div>
         `;

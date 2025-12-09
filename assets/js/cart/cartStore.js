@@ -105,7 +105,7 @@ export const cartStore = {
         }
         return total.toFixed(2);
 
-    },
+    }/* ,
     increaseQuantity(param) {
 
         // console.log(param);
@@ -121,7 +121,10 @@ export const cartStore = {
         itemCart.quantity--;
         this.syncStorage();
         return itemCart;
-    } 
+    }  */,
+    renderCart() {
+        return cart;
+    }
 
 }
 
