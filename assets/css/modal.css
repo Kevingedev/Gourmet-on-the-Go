@@ -570,3 +570,36 @@
     text-align: center;
   }
 }
+
+/* Google Sign-In Styles */
+.login-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 8px 1rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.login-divider span {
+  padding: 0 1rem;
+}
+
+.google-signin-container {
+  padding: 0 8px 8px;
+  display: flex;
+  justify-content: center;
+}
+
+#google-signin-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

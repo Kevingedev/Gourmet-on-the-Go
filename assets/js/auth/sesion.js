@@ -1,4 +1,5 @@
 import { authService } from './authService.js';
+import { googleAuth } from './googleAuth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const url = window.location.href;
@@ -8,6 +9,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const PATH = url.includes('catalogo') || url.includes('catalog') ? '../../' : '../'+userLanguage+'/';
 
     if (!currentUser) {
+        const loginTexts = userLanguage === 'EN' ? {
+            title: 'Sign in',
+            subtitle: 'Sign in with your Username and Password.',
+            or: 'or',
+            continueWith: 'Continue with'
+        } : {
+            title: 'Inicia sesión',
+            subtitle: 'Accede con tu Usuario y Contraseña.',
+            or: 'o',
+            continueWith: 'Continuar con'
+        };
+
         showModal.innerHTML = `
             <div class="modal" id="loginModal" aria-hidden="true">
                 <div class="modal__backdrop" data-modal-close></div>
@@ -17,8 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button class="modal__close" type="button" aria-label="Cerrar" data-modal-close>×</button>
 
                     <header class="modal__header">
-                        <h2 id="login-title" class="modal__title">Inicia sesión</h2>
-                        <p id="login-desc" class="modal__subtitle">Accede con tu Usuario y Contraseña.</p>
+                        <h2 id="login-title" class="modal__title">${loginTexts.title}</h2>
+                        <p id="login-desc" class="modal__subtitle">${loginTexts.subtitle}</p>
                     </header>
 
                     <form class="modal__form" method="post" id="loginForm">
@@ -39,9 +52,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         <p class="loginMessage" id="loginMessageBox"><span id="loginMessage">Inicia Sesión </span> <span id="spinner" class="oculto"></span></p>
                     </form>
+
+                    <div class="login-divider">
+                        <span>${loginTexts.or}</span>
+                    </div>
+
+                    <div class="google-signin-container">
+                        <div id="google-signin-button"></div>
+                    </div>
                 </div>
             </div>    
         `;
+        
+        // Initialize Google Sign-In after modal is created
+        setTimeout(() => {
+            if (window.google && window.google.accounts) {
+                googleAuth.init();
+                googleAuth.renderButton('google-signin-button');
+            } else {
+                // Wait for Google script to load
+                const checkGoogle = setInterval(() => {
+                    if (window.google && window.google.accounts) {
+                        googleAuth.init();
+                        googleAuth.renderButton('google-signin-button');
+                        clearInterval(checkGoogle);
+                    }
+                }, 100);
+            }
+        }, 100);
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             let finderUser;
@@ -132,7 +170,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <div class="modal-logout-body">
                 <div class="user-summary">
-                    <div class="user-avatar">${authService.getAvatar()}</div>
+                    ${authService.getUser().picture 
+                        ? `<img src="${authService.getUser().picture}" alt="Avatar" class="user-avatar user-avatar-img" style="width: 40px; height: 40px; border-radius: 999px; object-fit: cover;">`
+                        : `<div class="user-avatar">${authService.getAvatar()}</div>`
+                    }
                     <div class="user-info">
                     <p class="user-name">${authService.getUser().nombre_completo}</p>
                     <p class="user-email">${authService.getUser().email}</p>

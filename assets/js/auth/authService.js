@@ -15,12 +15,25 @@ export const authService = {
         localStorage.removeItem('currentUser');
     },
     getAvatar(){
-        const nombreCompleto = this.getUser().nombre_completo;
-        const [nombre, apellido] = nombreCompleto.split(' ');
-
-        const iniciales = nombre.charAt(0) + apellido.charAt(0);
-
-        return iniciales.toUpperCase();
+        const user = this.getUser();
+        if (!user) return 'U';
+        
+        const nombreCompleto = user.nombre_completo;
+        if (!nombreCompleto) return 'U';
+        
+        // Handle Google users who might have picture
+        if (user.picture) {
+            return null; // Return null to use image instead
+        }
+        
+        const nameParts = nombreCompleto.split(' ');
+        if (nameParts.length >= 2) {
+            const iniciales = nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0);
+            return iniciales.toUpperCase();
+        } else {
+            // Single name or email
+            return nombreCompleto.charAt(0).toUpperCase();
+        }
     },
     getLanguage(){
         return localStorage.getItem('userLanguage') || 'ES';
