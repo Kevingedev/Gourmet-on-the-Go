@@ -1,6 +1,6 @@
 
-import { gestorDeDatos } from "../data-loader/productService.js";
 import { cartStore } from "./cartStore.js";
+import { gestorDeDatos } from "../data-loader/productService.js";
 
 // Obtener idioma
 const language = gestorDeDatos.language;
