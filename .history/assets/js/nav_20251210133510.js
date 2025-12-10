@@ -447,67 +447,35 @@ async function inicializarBuscador() {
     function mostrarSugerencias(productos, consulta) {
         if (!resultadosBusqueda) return;
         
-        const idioma = localStorage.getItem('userLanguage') || 'ES';
-        const closeText = idioma === 'EN' ? 'Close' : 'Cerrar';
-        
         if (productos.length === 0) {
             resultadosBusqueda.innerHTML = `
-                <div class="search-results-header">
-                    <span>${idioma === 'EN' ? 'No products found' : 'Sin resultados'}</span>
-                    <button class="search-results-close" aria-label="${closeText}" title="${closeText}">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
                 <div class="search-result-item search-result-empty">
-                    <p>${idioma === 'EN' ? `No products found for "${consulta}"` : `No se encontraron productos para "${consulta}"`}</p>
+                    <p>No se encontraron productos para "${consulta}"</p>
                 </div>
             `;
             resultadosBusqueda.style.display = 'block';
             resultadosBusqueda.classList.add('is-visible');
         } else {
+            const idioma = localStorage.getItem('userLanguage') || 'ES';
             const rutaBase = obtenerRutaBase();
             
-            resultadosBusqueda.innerHTML = `
-                <div class="search-results-header">
-                    <span>${idioma === 'EN' ? 'Search Results' : 'Resultados'}</span>
-                    <button class="search-results-close" aria-label="${closeText}" title="${closeText}">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                ${productos.slice(0, 5).map(producto => `
-                    <div class="search-result-item" data-product-id="${producto.id_producto}">
-                        <img src="${rutaBase}assets/img/product-images/img-test.jpg" alt="${producto.nombre[idioma]}">
-                        <div class="search-result-info">
-                            <h4>${producto.nombre[idioma]}</h4>
-                            <p class="search-result-desc">${producto.descripcion[idioma].substring(0, 60)}${producto.descripcion[idioma].length > 60 ? '...' : ''}</p>
-                            <div class="search-result-footer">
-                                <span class="search-result-unit">${producto.unidad_medida[idioma]}</span>
-                                <span class="search-result-price">${producto.precio}€</span>
-                            </div>
+            resultadosBusqueda.innerHTML = productos.slice(0, 5).map(producto => `
+                <div class="search-result-item" data-product-id="${producto.id_producto}">
+                    <img src="${rutaBase}assets/img/product-images/img-test.jpg" alt="${producto.nombre[idioma]}">
+                    <div class="search-result-info">
+                        <h4>${producto.nombre[idioma]}</h4>
+                        <p class="search-result-desc">${producto.descripcion[idioma].substring(0, 60)}${producto.descripcion[idioma].length > 60 ? '...' : ''}</p>
+                        <div class="search-result-footer">
+                            <span class="search-result-unit">${producto.unidad_medida[idioma]}</span>
+                            <span class="search-result-price">${producto.precio}€</span>
                         </div>
                     </div>
-                `).join('')}
-            `;
-
-            // Agregar evento click al botón de cerrar
-            const closeBtn = resultadosBusqueda.querySelector('.search-results-close');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    resultadosBusqueda.classList.remove('is-visible');
-                    resultadosBusqueda.style.display = 'none';
-                    inputBusqueda.blur();
-                });
-            }
+                </div>
+            `).join('');
 
             // Agregar evento click a cada resultado
             resultadosBusqueda.querySelectorAll('.search-result-item:not(.search-result-empty)').forEach(item => {
                 item.addEventListener('click', (e) => {
-                    // Don't trigger if clicking on the close button
-                    if (e.target.closest('.search-results-close')) {
-                        return;
-                    }
                     e.preventDefault();
                     e.stopPropagation();
                     const consulta = inputBusqueda.value.trim();

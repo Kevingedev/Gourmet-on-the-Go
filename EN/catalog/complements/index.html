@@ -4,36 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sides</title>
-    <link rel="stylesheet" href="../../../assets/css/nav.css">
-    <link rel="stylesheet" href="../../../assets/css/modal.css">
-    <link rel="stylesheet" href="../../../assets/css/footer.css">
-    <link rel="stylesheet" href="../../../assets/css/select.css">
+    <title>Sides - Gourmet on the Go</title>
+    <link rel="icon" type="image/png" href="../../../assets/img/gourmet-logo-icon.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../assets/css/main.css">
     <link rel="stylesheet" href="../../../assets/icons/font-awesome.css">
 </head>
 
 <body>
 
     <header id="header"></header>
-    <div id="cart-drawer"></div>
 
-    <div class="example" style="background-color: aqua;height: 50vh;">
-        SIDES
-    </div>
+    <main class="main-container">
 
+        <section class="section-productos-destacados search-results-section" style="max-width: 90%; margin-top: 2rem;">
+            <div class="search-header">
+                <h1 class="text-dark" id="category-title">Sides</h1>
+                <p class="search-query-info">Rice, pasta, vegetables and sauces ready to combine with your main dish.</p>
+            </div>
+            <hr class="text-dark">
+
+            <div id="category-products-container" class="products-grid container-products" data-category-id="sides_comp"
+                data-base-path="../../../">
+                <!-- JS will inject here -->
+            </div>
+        </section>
+
+    </main>
 
     <footer id="footer"></footer>
 
-
-    <!-- MOSTRAR MODAL -->
     <div id="showModal"></div>
+    <div id="cart-drawer"></div>
 
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="../../../assets/js/nav.js"></script>
     <script src="../../../assets/js/footer.js"></script>
-    <script src="../../../assets/js/cart.js"></script>
+    <script src="../../../assets/js/cart/cartView.js" type="module"></script>
     <script src="../../../assets/js/auth/sesion.js" type="module"></script>
-    <script src="../../../assets/js/auth/validation.js" type="module"></script>
-
+    <script src="../../../assets/js/auth/authService.js" type="module"></script>
+    <script src="../../../assets/js/categoryView.js" type="module"></script>
+    <script src="../../../assets/js/utils.js"></script>
+    <script src="../../../assets/js/cart/cartStore.js" type="module"></script>
 
 </body>
 
