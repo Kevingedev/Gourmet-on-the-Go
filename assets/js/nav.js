@@ -498,7 +498,7 @@ async function inicializarBuscador() {
                 </div>
                 ${productos.slice(0, 5).map(producto => `
                     <div class="search-result-item" data-product-id="${producto.id_producto}">
-                        <img src="${rutaBase}assets/img/product-images/img-test.jpg" alt="${producto.nombre[idioma]}">
+                        <img src="${rutaBase}${producto.img_url}" alt="${producto.nombre[idioma]}">
                         <div class="search-result-info">
                             <h4>${producto.nombre[idioma]}</h4>
                             <p class="search-result-desc">${producto.descripcion[idioma].substring(0, 60)}${producto.descripcion[idioma].length > 60 ? '...' : ''}</p>

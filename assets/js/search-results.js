@@ -88,7 +88,7 @@ function mostrarProductos(productos) {
             ${productos.map(producto => `
                 <article class="section-productos-destacados__item cart-item search-product-card" data-product-id="${producto.id_producto}">
                     <div class="product-image-wrapper">
-                        <img src="${rutaBase}assets/img/product-images/img-test.jpg" alt="${producto.nombre[idioma]}">
+                        <img src="${rutaBase}${producto.img_url}" alt="${producto.nombre[idioma]}">
                         ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${textos.featured}</span>` : ''}
                     </div>
                     <h3 class="item_title">${producto.nombre[idioma]}</h3>
