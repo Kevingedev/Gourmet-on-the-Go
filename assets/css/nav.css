@@ -26,7 +26,7 @@ body {
   border-radius: 0 0 var(--border-radius) var(--border-radius);
   /* background: var(--radial-gradient); */
   /* border: 1px solid transparent; */
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-items);
   backdrop-filter: blur(18px);
 }
 
