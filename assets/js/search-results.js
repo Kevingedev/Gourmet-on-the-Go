@@ -118,109 +118,11 @@ function mostrarProductos(productos) {
         </div>
     `;
     
-    // Inicializar event listeners para los botones después de renderizar
-    inicializarBotonesCarrito();
+    // No need to initialize buttons here - cartView.js already handles it
+    // The container-products class will be picked up by cartView.js automatically
 }
 
-function inicializarBotonesCarrito() {
-    // Esperar a que cartView.js esté completamente cargado
-    setTimeout(() => {
-        const containerProducts = document.querySelector('.container-products');
-        if (!containerProducts) return;
-        
-        // Agregar event listener usando event delegation
-        containerProducts.addEventListener('click', async (event) => {
-            if (event.target.classList.contains('btn-add-to-cart')) {
-                event.preventDefault();
-                event.stopPropagation();
-                
-                try {
-                    const { cartStore } = await import('./cart/cartStore.js');
-                    const products = cartStore.addToCart(event);
-                    
-                    if (products && Array.isArray(products)) {
-                        // Actualizar el drawer del carrito
-                        const cartDrawerContainer = document.querySelector('.cart-drawer__products');
-                        const drawerEmpty = document.querySelector('.cart-drawer__empty');
-                        
-                        if (cartDrawerContainer) {
-                            if (drawerEmpty) drawerEmpty.style.display = 'none';
-                            await actualizarCarrito(products, cartDrawerContainer);
-                            
-                            // Abrir el carrito automáticamente
-                            const cartDrawer = document.querySelector('[data-cart-drawer]');
-                            const cartOverlay = document.querySelector('[data-cart-overlay]');
-                            if (cartDrawer && cartOverlay) {
-                                cartDrawer.classList.add('is-open');
-                                cartOverlay.classList.add('is-open');
-                                document.body.style.overflow = 'hidden';
-                            }
-                        }
-                        
-                        // Actualizar contador del carrito
-                        const cartCount = document.getElementById('cart-count');
-                        if (cartCount) {
-                            cartCount.textContent = cartStore.countCart();
-                        }
-                        
-                        // Feedback visual
-                        const boton = event.target;
-                        const textoOriginal = boton.textContent;
-                        const textos = idioma === 'EN' ? '✓ Added' : '✓ Añadido';
-                        boton.textContent = textos;
-                        boton.style.background = '#22c55e';
-                        boton.style.color = 'white';
-                        
-                        setTimeout(() => {
-                            boton.textContent = textoOriginal;
-                            boton.style.background = '';
-                            boton.style.color = '';
-                        }, 1500);
-                    }
-                } catch (error) {
-                    console.error('Error al añadir al carrito:', error);
-                }
-            }
-        });
-    }, 1000);
-}
-
-async function actualizarCarrito(products, container) {
-    container.innerHTML = '';
-    products.forEach(product => {
-        const cardItem = `
-            <div class="cart-item__image">
-                <img src="${product.image}" alt="Producto">
-            </div>
-            <div class="cart-item__content">
-                <h3 class="cart-item__name">${product.name}</h3>
-                <span class="cart-item__price">${product.price}</span>
-                <div class="cart-item__controls">
-                    <button class="btn-quantity" data-action="decrease"><i class="fa-solid fa-minus"></i></button>
-                    <input type="number" class="quantity-input" value="${product.quantity}" min="1">
-                    <button class="btn-quantity" data-action="increase"><i class="fa-solid fa-plus"></i></button>
-                    <button class="btn-remove" data-action="remove"><i class="fa-regular fa-trash-can"></i></button>
-                </div>
-            </div>
-        `;
-        const card = document.createElement('div');
-        card.classList.add('cart-item');
-        card.setAttribute('data-product-id', product.id);
-        card.innerHTML = cardItem;
-        container.appendChild(card);
-    });
-    
-    // Actualizar total
-    try {
-        const { cartStore } = await import('./cart/cartStore.js');
-        const totalElement = document.querySelector('.cart-drawer__total strong');
-        if (totalElement) {
-            totalElement.textContent = `${cartStore.amountCart()}€`;
-        }
-    } catch (error) {
-        console.error('Error al actualizar total:', error);
-    }
-}
+// Removed duplicate event listener - cartView.js already handles add to cart functionality
 
 function obtenerNombreCategoria(idCategoria) {
     const categorias = idioma === 'EN' ? {
