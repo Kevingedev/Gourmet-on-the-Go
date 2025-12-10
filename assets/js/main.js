@@ -8,11 +8,17 @@ const LANGUAGE = gestorDeDatos.language;
 const texts = {
     ES: {
         addToCart: 'Añadir',
-        added: '✓ Añadido'
+        added: '✓ Añadido',
+        loading: 'Cargando productos...',
+        noProducts: 'No hay productos disponibles en esta categoría.',
+        featured: 'Destacado'
     },
     EN: {
         addToCart: 'Add to Cart',
-        added: '✓ Added'
+        added: '✓ Added',
+        loading: 'Loading products...',
+        noProducts: 'No products available in this category.',
+        featured: 'Featured'
     }
 };
 
@@ -23,17 +29,22 @@ if (featuredProductsLoader) {
         productos.forEach(producto => {
             featuredProductsLoader.innerHTML += `
             <article class="section-productos-destacados__item cart-item" data-product-id="${producto.id_producto}">
-            <a href="producto-detalle.html?pd=${producto.id_producto}">
-                <img src="../${producto.img_url}" alt="${producto.nombre[LANGUAGE]}">
-            </a>
-                <h3 class="item_title">${producto.nombre[LANGUAGE]}</h3>
-                <p class="item_description">${producto.descripcion[LANGUAGE]}</p>
-                <p class="item_price">${producto.precio}€</p>
-                <div class="item_actions">
-                    <button class="btn-add-to-cart">${texts[LANGUAGE]?.addToCart || texts.ES.addToCart}</button>
-                    <button class="btn-favorite"><i class="fa-solid fa-heart"></i></button>
-                </div>
+            <div class="product-image-wrapper">
+                <a href="producto-detalle.html?pd=${producto.id_producto}">
+                    <img src="../${producto.img_url}" alt="${producto.nombre[LANGUAGE]}">
+                </a>
+                ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${texts[LANGUAGE].featured}</span>` : ''}
+            </div>
+            <h3 class="item_title">${producto.nombre[LANGUAGE]}</h3>
+            <p class="item_description">${producto.descripcion[LANGUAGE]}</p>
+            <p class="item_price">${producto.precio}€</p>
+            <div class="item_actions">
+                <button class="btn-add-to-cart">${texts[LANGUAGE].addToCart}</button>
+                <button class="btn-favorite"><i class="fa-solid fa-heart"></i></button>
+            </div>
             </article>
+
+            
             `;
         });
 

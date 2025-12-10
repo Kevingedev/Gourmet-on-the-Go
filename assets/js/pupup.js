@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <h2 class="popup_title">¡CODIGO de primera Compra!</h2>
             
             <p class="popup_description">
-                ¿Cansado de cocinar? Regístrate hoy y recibe un CODIGO: <span class="popup_discount">15% de descuento</span> en tu primer pedido de comidas precocinadas, listas en 5 minutos. ¡Sabor y Nutrición garantizados!
+                ¿Cansado de cocinar? obten hoy un CODIGO: <span class="popup_discount">15% de descuento</span> en tu primer pedido de comidas precocinadas, listas en 5 minutos. ¡Sabor y Nutrición garantizados!
             </p>
 
-            <form class="popup_form">
-                <input type="email" class="popup_input" placeholder="example@example.com" required>
+
+                <input type="text" class="popup_input" placeholder="example@example.com">
                 
                 <ul class="popup_list">
                     <li class="popup_list_item">
@@ -29,16 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     </li>
                 </ul>
 
-                <button type="submit" class="popup_btn" id="subscribeBtn">
+                <button type="button" class="popup_btn" id="subscribeBtn">
                     ¡Quiero mi 15% de Descuento!
                 </button>
-            </form>
 
         </div>`;
 
 
     const closeButton = document.querySelector('.popup_close_btn');
     const acceptButton = document.getElementById('subscribeBtn');
+    // const emailInput = document.querySelector('.popup_input');
     /**
      * Función para mostrar el popup
      */

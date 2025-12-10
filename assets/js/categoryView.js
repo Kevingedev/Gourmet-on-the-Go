@@ -54,6 +54,7 @@ function renderProducts(productos, basePath) {
     }
 
     productos.forEach(producto => {
+        console.log(producto);
         const article = document.createElement('article');
         // Use same classes as search-results for proper styling
         article.className = 'section-productos-destacados__item cart-item search-product-card';
@@ -70,7 +71,7 @@ function renderProducts(productos, basePath) {
         article.innerHTML = `
             <div class="product-image-wrapper">
                 <a href="${basePath}${langPath}/${detailPage}?pd=${producto.id_producto}">
-                    <img src="${basePath}assets/img/product-images/img-test.jpg" alt="${productName}">
+                    <img src="${basePath}${producto.img_url}" alt="${productName}">
                 </a>
                 ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${texts[LANGUAGE].featured}</span>` : ''}
             </div>
