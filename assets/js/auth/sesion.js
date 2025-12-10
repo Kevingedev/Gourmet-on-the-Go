@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!currentUser) {
         const loginTexts = userLanguage === 'EN' ? {
             title: 'Sign in',
-            subtitle: 'Administrators: Sign in with your Username and Password.',
+            subtitle: 'Sign in with your Username and Password.',
             username: 'Username',
             password: 'Password',
             enter: 'Enter',
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             googleDescription: 'Sign in with Google'
         } : {
             title: 'Inicia sesión',
-            subtitle: 'Administradores: Accede con tu Usuario y Contraseña.',
+            subtitle: 'Accede con tu Usuario y Contraseña.',
             username: 'Usuario',
             password: 'Contraseña',
             enter: 'Entrar',
@@ -107,12 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const messages = userLanguage === 'EN' ? {
                     signingIn: 'Signing in...',
-                    incorrect: 'Incorrect login or not an administrator',
-                    notAdmin: 'Only administrators can login with username/password. Please use Google Sign-In.'
+                    incorrect: 'Incorrect username or password'
                 } : {
                     signingIn: 'Iniciando sesión...',
-                    incorrect: 'Login incorrecto o no es administrador',
-                    notAdmin: 'Solo los administradores pueden iniciar sesión con usuario/contraseña. Por favor usa Google.'
+                    incorrect: 'Usuario o contraseña incorrectos'
                 };
 
                 finderUser = await authService.validateLogin(username, password);
