@@ -4,6 +4,18 @@ const featuredProductsLoader = document.getElementById('featured-products-loader
 const categoriesLoader = document.getElementById('categorias-loader');
 const LANGUAGE = gestorDeDatos.language;
 
+// Textos según idioma
+const texts = {
+    ES: {
+        addToCart: 'Añadir',
+        added: '✓ Añadido'
+    },
+    EN: {
+        addToCart: 'Add to Cart',
+        added: '✓ Added'
+    }
+};
+
 gestorDeDatos.cargarProductosDestacados().then(productos => {
 
     productos.forEach(producto => {
@@ -16,7 +28,7 @@ gestorDeDatos.cargarProductosDestacados().then(productos => {
             <p class="item_description">${producto.descripcion[LANGUAGE]}</p>
             <p class="item_price">${producto.precio}€</p>
             <div class="item_actions">
-                <button class="btn-add-to-cart">Añadir</button>
+                <button class="btn-add-to-cart">${texts[LANGUAGE]?.addToCart || texts.ES.addToCart}</button>
                 <button class="btn-favorite"><i class="fa-solid fa-heart"></i></button>
             </div>
         </article>

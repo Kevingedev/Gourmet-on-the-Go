@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Information</title>
+    <link rel="icon" type="image/png" href="/assets/img/gourmet-logo-icon.png">
+    <link rel="stylesheet" href="../assets/css/nav.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/modal.css">
+    <link rel="stylesheet" href="../assets/css/select.css">
+    <link rel="stylesheet" href="../assets/icons/font-awesome.css">
+</head>
+
+<body>
+
+    <header id="header"></header>
+    <div id="datetime-display" class="minimal-datetime"></div>
+    
+    <main id="main" class="main-container">
+        <section class="content-page">
+            <div class="content-wrapper">
+                <h1 class="page-title">Payment Information</h1>
+                
+                <div class="payment-content">
+                    <div class="payment-section">
+                        <h2>Accepted Payment Methods</h2>
+                        <div class="payment-methods">
+                            <div class="payment-method">
+                                <i class="fa-solid fa-credit-card"></i>
+                                <h3>Credit/Debit Card</h3>
+                                <p>We accept Visa, Mastercard and American Express. All payments are processed securely through our encrypted payment system.</p>
+                            </div>
+                            <div class="payment-method">
+                                <i class="fa-brands fa-paypal"></i>
+                                <h3>PayPal</h3>
+                                <p>You can make payments quickly and securely through PayPal if you have a registered account.</p>
+                            </div>
+                            <div class="payment-method">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <h3>Cash on Delivery</h3>
+                                <p>You can pay in cash when you receive your order. This method has an additional cost of €2.50.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-section">
+                        <h2>Payment Security</h2>
+                        <p>All payments are processed securely using SSL encryption protocols. Your banking data is never stored on our servers and is processed directly by authorized financial institutions.</p>
+                    </div>
+
+                    <div class="payment-section">
+                        <h2>Prices and Billing</h2>
+                        <p>All prices shown on our website include VAT. Shipping costs will be calculated during the checkout process according to the destination and selected shipping method.</p>
+                    </div>
+
+                    <div class="payment-section">
+                        <h2>Refunds</h2>
+                        <p>If you are not satisfied with your purchase, you can request a refund within 14 days of receiving the order. Refunds will be processed within 5-7 business days.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer"></footer>
+    <div id="showModal"></div>
+    <div id="cart-drawer"></div>
+
+    <script src="../assets/js/nav.js"></script>
+    <script src="../assets/js/footer.js"></script>
+    <script src="../assets/js/cart/cartView.js" type="module"></script>
+    <script src="../assets/js/auth/sesion.js" type="module"></script>
+    <script src="../assets/js/auth/validation.js" type="module"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/cart/cartStore.js" type="module"></script>
+
+</body>
+
+</html>
+

@@ -122,6 +122,7 @@
     font-size: 1.25rem;
     font-weight: 600;
     letter-spacing: .2px;
+    color: var(--color-dark);
 }
 
 .modal__subtitle {
@@ -223,4 +224,382 @@
     font-size: 1.2rem;
     text-align: end;
     margin-right: 0.3rem;
+}
+
+/* Botón de ejemplo, ajusta a tu diseño */
+.btn-account {
+  background: var(--accent);
+  color: var(--text-white);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* CONTENEDOR GENERAL DEL MODAL */
+.modal-logout {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: stretch;
+  pointer-events: none;
+  opacity: 0;
+  /* transition: opacity 0.25s ease; */
+  z-index: 999; /* por encima del resto */
+}
+
+/* Estado abierto: tu JS añade .is-open */
+.modal-logout.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Fondo oscurecido */
+.modal-logout-backdrop {
+  flex: 1;
+  background: rgba(55, 55, 55, 0.50);
+}
+
+/* PANEL LATERAL QUE ENTRA DESDE LA DERECHA */
+.modal-logout-panel {
+  width: min(380px, 100%);
+  max-width: 100%;
+  background: var(--color-white);
+  border-left: var(--nav-border);
+  box-shadow: var(--shadow);
+  transform: translateX(100%);
+  transition: transform 0.28s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cuando el modal está abierto, el panel se muestra */
+.modal-logout.is-open .modal-logout-panel {
+  transform: translateX(0);
+}
+
+/* HEADER DEL PANEL */
+.modal-logout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: var(--nav-border);
+  background: var(--color-white);
+}
+
+.modal-logout-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--color-dark);
+}
+
+.modal-logout-close {
+  background: transparent;
+  border: none;
+  color: var(--color-dark);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 999px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.modal-logout-close:hover {
+  background: var(--color-white);
+  color: var(--color-red);
+}
+
+/* CUERPO DEL PANEL */
+.modal-logout-body {
+  padding: 1.25rem 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: var(--color-dark);
+}
+
+/* INFO DE USUARIO */
+.user-summary {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--muted);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.user-name {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+.user-email {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-dark);
+}
+
+/* MENÚ DE CUENTA */
+.account-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.account-item {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.7rem;
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--color-dark);
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out,
+              transform 0.15s ease-in-out;
+}
+
+.account-item:hover {
+  background: rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.account-item-danger {
+  background: rgba(208, 0, 0, 0.1);
+  color: var(--color-dark);
+  transition: all 0.3s ease-in-out;
+}
+
+.account-item-danger:hover {
+  background: rgba(208, 0, 0, 0.20);
+  /* font-weight: 600;  */
+  box-shadow: var(--shadow-items);
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .modal-logout-panel {
+    width: 100%;
+    max-width: 100%;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px 16px 0 0;
+    transform: translateY(100%);
+  }
+
+  .modal-logout.is-open .modal-logout-panel {
+    transform: translateY(0); /* En móvil se comporta más como bottom sheet */
+  }
+
+  .modal-logout {
+    align-items: flex-end;
+  }
+
+  .modal-logout-header {
+    padding-inline: 1.25rem;
+  }
+
+  .modal-logout-body {
+    padding-inline: 1.25rem;
+  }
+}
+ 
+
+/* Contenedor del modal de logout */
+
+
+
+.modal-confirm-logout {
+  position: fixed;
+  inset: 0;
+  display: flex;
+   place-items: center;
+  /* top: 80px; */
+  justify-content: center;
+  align-items: center;
+  /* left: 50%; */
+  transform: translateX(-50%) !important;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 999;
+}
+
+.modal-confirm-logout.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-confirm-logout .modal-backdrop {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.10);
+}
+
+/* Panel pequeño de confirmación */
+.modal-panel-confirm-logout {
+  width: min(360px, 100% - 2.5rem);
+  margin: 0 auto;
+  max-width: 400px;
+  background: var(--color-white);
+  border-radius: var(--border-radius);
+  border: var(--nav-border);
+  box-shadow: var(--shadow-cards);
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-confirm-logout.is-open .modal-panel-confirm-logout {
+  transform: translateY(0) scale(1);
+}
+
+/* Header del modal */
+.modal-header-confirm-logout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: var(--nav-border);
+  border-radius: var(--border-radius);
+  background: var(--color-white);
+}
+
+.modal-header-confirm-logout h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+/* Body del modal */
+.modal-body-confirm-logout {
+  padding: 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.confirm-logout-text {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-dark);
+}
+
+/* Acciones */
+.confirm-logout-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.btn-confirm-logout-primary,
+.btn-confirm-logout-secondary {
+  border-radius: var(--border-radius);
+  padding: 0.6rem 1.2rem;
+  font-size: 0.85rem;
+  border: var(--nav-border);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease,
+              box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+/* Botón confirmar */
+.btn-confirm-logout-primary {
+  background: var(--color-dark);
+  color: var(--color-white);
+}
+
+.btn-confirm-logout-primary:hover {
+  background: var(--color-red);
+  box-shadow: var(--shadow-cards);
+  transform: translateY(-1px);
+}
+
+/* Botón cancelar */
+.btn-confirm-logout-secondary {
+  background: transparent;
+  color: var(--text-secondary);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.btn-confirm-logout-secondary:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-primary);
+}
+
+@media (max-width: 480px) {
+  .modal-panel-confirm-logout {
+    width: calc(100% - 1.5rem);
+  }
+
+  .confirm-logout-actions {
+    justify-content: stretch;
+  }
+
+  .btn-confirm-logout-primary,
+  .btn-confirm-logout-secondary {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
+
+/* Google Sign-In Styles */
+.login-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 8px 1rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.login-divider span {
+  padding: 0 1rem;
+}
+
+.google-signin-container {
+  padding: 0 8px 8px;
+  display: flex;
+  justify-content: center;
+}
+
+#google-signin-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
