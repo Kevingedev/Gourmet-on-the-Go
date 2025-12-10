@@ -7,7 +7,7 @@ export const googleAuth = {
         // Wait for Google Identity Services to load
         if (window.google && window.google.accounts) {
             window.google.accounts.id.initialize({
-                client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com', // Replace with your actual Client ID
+                client_id: '874722548600-ob5nqpav0u3plvu2sbruqivrkv4u71jb.apps.googleusercontent.com', // Replace with your actual Client ID
                 callback: this.handleCredentialResponse.bind(this)
             });
         }
