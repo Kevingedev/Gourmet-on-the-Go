@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(userLanguage);
     const currentUser = localStorage.getItem('currentUser');
     const currentUserData = JSON.parse(currentUser);
+
+    const WELCOME = document.getElementById('section-bienvenida'); // ESTO RETORNA UN NODO HTML SI EXISTE Y SI NO EXISTE RETORNA UN NODO NULL
     // console.log(currentUserData);
     let btnSesion;
     let wellcome = {
@@ -88,18 +90,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // estoy insertando el navbar y el cartDrawer
     header.innerHTML = navbar;
-    if (!currentUser) {
-        document.getElementById('section-bienvenida').innerHTML = `
-        <br>
-        <h2>¡${wellcome[userLanguage]}!</h2>
-        <button class="btn"  title="Iniciar sesión" data-modal-open="#loginModal" id="btn-login">Iniciar Sesión</button>
-        <br>
-        `;
-    }else{
-        document.getElementById('section-bienvenida').innerHTML = `<br>
-        <h2>¡${wellcome[userLanguage]}!</h2>
-        <br>
-        `;
+    // console.log(WELCOME);
+    if (WELCOME != null) {
+        if (!currentUser) {
+            document.getElementById('section-bienvenida').innerHTML = `
+            <br>
+            <h2>¡${wellcome[userLanguage]}!</h2>
+            <button class="btn"  title="Iniciar sesión" data-modal-open="#loginModal" id="btn-login">Iniciar Sesión</button>
+            <br>
+            `;
+        } else {
+            document.getElementById('section-bienvenida').innerHTML = `<br>
+            <h2>¡${wellcome[userLanguage]}!</h2>
+            <br>
+            `;
+        }
     }
 
 
@@ -248,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Obtener el nombre del archivo actual
         const currentFileName = urlCategoria[urlCategoria.length - 1] || 'index.html';
-        
+
         // Determinar la ruta base según la ubicación
         let basePath = '';
         if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
@@ -271,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(err);
                 localStorage.setItem('userLanguage', lang);
             });
-        } 
+        }
         // Manejar páginas normales (contacto, etc.)
         else if (currentFileName.includes('.html')) {
             // Verificar si existe un mapeo para esta página
@@ -319,11 +324,11 @@ document.addEventListener('DOMContentLoaded', () => {
 async function inicializarBuscador() {
     // Esperar un poco para asegurar que el DOM esté listo
     await new Promise(resolve => setTimeout(resolve, 100));
-    
+
     const inputBusqueda = document.getElementById('nav-search-input');
     const resultadosBusqueda = document.getElementById('search-results');
     const contenedorBusqueda = document.querySelector('.nav__search');
-    
+
     if (!inputBusqueda || !resultadosBusqueda) {
         console.error('Elementos de búsqueda no encontrados');
         return;
@@ -396,7 +401,7 @@ async function inicializarBuscador() {
     // También buscar con keyup para asegurar que funcione
     inputBusqueda.addEventListener('keyup', (e) => {
         if (e.key === 'Enter' || e.key === 'Escape') return;
-        
+
         const consulta = e.target.value.trim();
         clearTimeout(tiempoEspera);
 
@@ -463,10 +468,10 @@ async function inicializarBuscador() {
 
     function mostrarSugerencias(productos, consulta) {
         if (!resultadosBusqueda) return;
-        
+
         const idioma = localStorage.getItem('userLanguage') || 'ES';
         const closeText = idioma === 'EN' ? 'Close' : 'Cerrar';
-        
+
         if (productos.length === 0) {
             resultadosBusqueda.innerHTML = `
                 <div class="search-results-header">
@@ -483,7 +488,7 @@ async function inicializarBuscador() {
             resultadosBusqueda.classList.add('is-visible');
         } else {
             const rutaBase = obtenerRutaBase();
-            
+
             resultadosBusqueda.innerHTML = `
                 <div class="search-results-header">
                     <span>${idioma === 'EN' ? 'Search Results' : 'Resultados'}</span>
@@ -578,7 +583,7 @@ function updateDateTime() {
 
     // 2. Hora (formato 24h, incluyendo minutos)
     const time = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit', hour12: false, second: '2-digit' });
-    
+
 
     // 3. Mes (en letras)
     const month = now.toLocaleDateString(locale, { month: 'long' });

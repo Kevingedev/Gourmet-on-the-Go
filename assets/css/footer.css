@@ -2,12 +2,10 @@
 
 /* FOOTER */
 
-/* .site-footer {
-    margin-top: 3rem;
-    background: var(--color-white);
-    color: var(--color-dark);
+.site-footer {
     border-top: 1px solid var(--nav-border);
-} */
+    box-shadow: var(--shadow-items);
+}
 
 .footer-inner {
     max-width: 1120px;
