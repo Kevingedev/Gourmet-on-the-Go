@@ -19,12 +19,19 @@ export const googleAuth = {
         const payload = this.decodeJWT(response.credential);
         
         if (payload) {
-            // Create user object similar to users.json structure
+            const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+            const messages = userLanguage === 'EN' ? {
+                signingIn: 'Signing in...'
+            } : {
+                signingIn: 'Iniciando sesión...'
+            };
+
+            // Create user object for normal users (Google login is for everyone)
             const googleUser = {
                 id: this.generateUserId(),
                 username: payload.email.split('@')[0], // Use email prefix as username
                 password: null, // No password for Google users
-                rol: 'usuario', // Default role
+                rol: 'usuario', // Normal user role
                 nombre_completo: payload.name || payload.email,
                 email: payload.email,
                 edad: null,
@@ -42,7 +49,7 @@ export const googleAuth = {
             const spinner = document.getElementById('spinner');
             
             if (loginMessage) {
-                loginMessage.textContent = 'Iniciando sesión...';
+                loginMessage.textContent = messages.signingIn;
                 loginMessageBox.style.color = 'green';
                 loginMessageBox.style.borderColor = 'green';
                 loginMessageBox.style.backgroundColor = 'rgba(63, 189, 0, 0.35)';

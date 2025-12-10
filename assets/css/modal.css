@@ -595,7 +595,15 @@
 .google-signin-container {
   padding: 0 8px 8px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.google-signin-description {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin: 0;
 }
 
 #google-signin-button {

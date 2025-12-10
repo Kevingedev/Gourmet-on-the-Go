@@ -11,14 +11,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!currentUser) {
         const loginTexts = userLanguage === 'EN' ? {
             title: 'Sign in',
-            subtitle: 'Sign in with your Username and Password.',
+            subtitle: 'Administrators: Sign in with your Username and Password.',
+            username: 'Username',
+            password: 'Password',
+            enter: 'Enter',
+            cancel: 'Cancel',
+            loginMessage: 'Sign in',
             or: 'or',
-            continueWith: 'Continue with'
+            continueWith: 'Continue with',
+            googleDescription: 'Sign in with Google'
         } : {
             title: 'Inicia sesión',
-            subtitle: 'Accede con tu Usuario y Contraseña.',
+            subtitle: 'Administradores: Accede con tu Usuario y Contraseña.',
+            username: 'Usuario',
+            password: 'Contraseña',
+            enter: 'Entrar',
+            cancel: 'Cancelar',
+            loginMessage: 'Inicia Sesión',
             or: 'o',
-            continueWith: 'Continuar con'
+            continueWith: 'Continuar con',
+            googleDescription: 'Inicia sesión con Google'
         };
 
         showModal.innerHTML = `
@@ -36,21 +48,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     <form class="modal__form" method="post" id="loginForm">
                         <label class="field">
-                            <span class="field__label">Usuario</span>
+                            <span class="field__label">${loginTexts.username}</span>
                             <input class="field__input" type="text" id="username" name="username" required />
                         </label>
 
                         <label class="field">
-                            <span class="field__label">Contraseña</span>
+                            <span class="field__label">${loginTexts.password}</span>
                             <input class="field__input" type="password" id="password" name="password" autocomplete="current-password"
                                 required />
                             <i class="fa-solid fa-eye" id="btn-show-password" role="button"></i>
                         </label>
 
-                        <button class="btn btn--primary" type="submit" id="btn-enter">Entrar</button>
-                        <button class="btn btn--ghost" type="button" data-modal-close>Cancelar</button>
+                        <button class="btn btn--primary" type="submit" id="btn-enter">${loginTexts.enter}</button>
+                        <button class="btn btn--ghost" type="button" data-modal-close>${loginTexts.cancel}</button>
 
-                        <p class="loginMessage" id="loginMessageBox"><span id="loginMessage">Inicia Sesión </span> <span id="spinner" class="oculto"></span></p>
+                        <p class="loginMessage" id="loginMessageBox"><span id="loginMessage">${loginTexts.loginMessage} </span> <span id="spinner" class="oculto"></span></p>
                     </form>
 
                     <div class="login-divider">
@@ -58,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
 
                     <div class="google-signin-container">
+                        <p class="google-signin-description">${loginTexts.googleDescription}</p>
                         <div id="google-signin-button"></div>
                     </div>
                 </div>
@@ -92,6 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const btnEnter = document.getElementById('btn-enter');
                 const spinner = document.getElementById('spinner');
 
+                const messages = userLanguage === 'EN' ? {
+                    signingIn: 'Signing in...',
+                    incorrect: 'Incorrect login or not an administrator',
+                    notAdmin: 'Only administrators can login with username/password. Please use Google Sign-In.'
+                } : {
+                    signingIn: 'Iniciando sesión...',
+                    incorrect: 'Login incorrecto o no es administrador',
+                    notAdmin: 'Solo los administradores pueden iniciar sesión con usuario/contraseña. Por favor usa Google.'
+                };
+
                 finderUser = await authService.validateLogin(username, password);
 
                 console.log("FinderUser: " + finderUser);
@@ -101,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     spinner.classList.remove('oculto'); // Aseguramos que se vea
                     spinner.classList.add('spinner-activo');    // Añadimos la clase de animación
                     btnEnter.disabled = true;
-                    loginMessage.textContent = 'Iniciando sesión...';
+                    loginMessage.textContent = messages.signingIn;
                     loginMessageBox.style.color = 'green';
                     loginMessageBox.style.borderColor = 'green';
                     loginMessageBox.style.backgroundColor = 'rgba(63, 189, 0, 0.35)';
@@ -113,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 } else {
 
-                    loginMessage.textContent = 'Login incorrecto';
+                    loginMessage.textContent = messages.incorrect;
                     loginMessageBox.style.color = 'red';
                     loginMessageBox.style.borderColor = 'red';
                     loginMessageBox.style.backgroundColor = 'rgba(231, 46, 0, 0.35)';
@@ -181,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
 
                 <nav class="account-menu">  
-                    <a href="${PATH}perfil.html" class="links-sesion account-item"><span> <i class="fa-regular fa-user icon-sesion"></i> Ver mi cuenta</span></a> 
+                    <a href="${PATH}${userLanguage === 'EN' ? 'profile.html' : 'perfil.html'}" class="links-sesion account-item"><span> <i class="fa-regular fa-user icon-sesion"></i> ${userLanguage === 'EN' ? 'View my account' : 'Ver mi cuenta'}</span></a> 
                     
                     <a href="${PATH}favoritos.html" class="links-sesion account-item"><span><i class="fa-regular fa-heart icon-sesion"></i> Mis favoritos</span></a>
 
