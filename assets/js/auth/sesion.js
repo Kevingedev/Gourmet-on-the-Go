@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!currentUser) {
         const loginTexts = userLanguage === 'EN' ? {
             title: 'Sign in',
-            subtitle: 'Sign in with your Username and Password.',
+            subtitle: 'Sign in with your Username and Password, Only administrators can sign in.',
             username: 'Username',
             password: 'Password',
             enter: 'Enter',
@@ -199,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="user-name">${authService.getUser().nombre_completo}</p>
                     <p class="user-email">${authService.getUser().email}</p>
                     </div>
+                    
                 </div>
 
                 <nav class="account-menu">  

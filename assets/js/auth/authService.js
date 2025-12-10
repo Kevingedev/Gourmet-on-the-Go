@@ -81,7 +81,8 @@ export const authService = {
                     localStorage.setItem('currentUser', JSON.stringify({
                         id: user.id,
                         username: user.username,
-                        role: user.rol,
+                        rol: user.rol, // Save as 'rol' to match users.json
+                        role: user.rol, // Also save as 'role' for compatibility
                         nombre_completo: user.nombre_completo,
                         email: user.email
                     }));

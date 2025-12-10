@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="profile-info">
                 <h1>${currentUser.nombre_completo || currentUser.email}</h1>
                 <p>${currentUser.email}</p>
-                <p style="color: var(--color-primary); font-weight: 600;">${currentUser.rol || 'usuario'}</p>
+                <p style="color: var(--color-primary); font-weight: 600;">${currentUser.rol || currentUser.role || 'usuario'}</p>
             </div>
         `;
     }
@@ -54,9 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Build profile details
     const profileDetails = document.getElementById('profile-details');
     if (profileDetails) {
-        const roleText = currentUser.rol === 'administrador' 
-            ? (userLanguage === 'EN' ? 'Administrator' : 'Administrador')
-            : (userLanguage === 'EN' ? 'User' : 'Usuario');
+        // Get role directly from user (from users.json)
+        const userRole = currentUser.rol || currentUser.role || 'usuario';
         
         const providerText = currentUser.provider === 'google'
             ? (userLanguage === 'EN' ? 'Google Sign-In' : 'Inicio con Google')
@@ -77,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="detail-item">
                 <span class="detail-label">${texts.role}:</span>
-                <span class="detail-value">${roleText}</span>
+                <span class="detail-value">${userRole}</span>
             </div>
             <div class="detail-item">
                 <span class="detail-label">${texts.provider}:</span>
