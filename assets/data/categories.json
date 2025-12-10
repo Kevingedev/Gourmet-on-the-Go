@@ -2,8 +2,8 @@
   {
     "id_categoria": "protein_meat",
     "nombre": {
-      "ES": "Carne y Aves",
-      "EN": "Meat and Poultry"
+      "ES": "Carnes",
+      "EN": "Meat"
     },
     "descripcion": {
       "ES": "Recetas de vacuno, cerdo, pollo y pavo listas para servir.",
@@ -11,15 +11,16 @@
     },
     "icono_clase": "fa-solid fa-drumstick-bite",
     "url_slug": {
-      "ES": "/catalogo/carne-aves",
-      "EN": "/catalog/meat-poultry"
-    }
+      "ES": "/catalogo/carnes",
+      "EN": "/catalog/meat"
+    },
+    "img": "../assets/img/carnes.png"
   },
   {
     "id_categoria": "fish_seafood",
     "nombre": {
-      "ES": "Pescados y Mariscos",
-      "EN": "Fish and Seafood"
+      "ES": "Mariscos",
+      "EN": "Seafood"
     },
     "descripcion": {
       "ES": "Platos preparados con pescado, marisco y opciones de base de agua.",
@@ -27,31 +28,33 @@
     },
     "icono_clase": "fa-solid fa-fish",
     "url_slug": {
-      "ES": "/catalogo/pescados-mariscos",
-      "EN": "/catalog/fish-seafood"
-    }
+      "ES": "/catalogo/mariscos",
+      "EN": "/catalog/seafood"
+    },
+    "img": "../assets/img/mariscos.png"
   },
   {
     "id_categoria": "sides_comp",
     "nombre": {
-      "ES": "Guarniciones y Acompañamientos",
-      "EN": "Sides and Complements"
+      "ES": "Acompañamientos",
+      "EN": "Complements"
     },
     "descripcion": {
       "ES": "Arroces, pastas, verduras y salsas listos para combinar con tu plato principal.",
       "EN": "Rice, pasta, vegetables, and sauces ready to combine with your main dish."
     },
-    "icono_clase": "fa-solid fa-plate-wheat",
+    "icono_clase": "fas fa-bread-slice",
     "url_slug": {
-      "ES": "/catalogo/guarniciones",
-      "EN": "/catalog/sides"
-    }
+      "ES": "/catalogo/complementos",
+      "EN": "/catalog/complements"
+    },
+    "img": "../assets/img/acompañamientos.png"
   },
   {
     "id_categoria": "breakfast_brunch",
     "nombre": {
-      "ES": "Desayuno y Brunch",
-      "EN": "Breakfast and Brunch"
+      "ES": "Desayuno",
+      "EN": "Breakfast"
     },
     "descripcion": {
       "ES": "Opciones precocinadas y semi-preparadas para empezar el día o disfrutar del fin de semana.",
@@ -59,8 +62,9 @@
     },
     "icono_clase": "fa-solid fa-mug-hot",
     "url_slug": {
-      "ES": "/catalogo/desayuno-brunch",
-      "EN": "/catalog/breakfast-brunch"
-    }
+      "ES": "/catalogo/desayuno",
+      "EN": "/catalog/breakfast"
+    },
+    "img": "../assets/img/desayunos.png"
   }
 ]

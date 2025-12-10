@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+    <title>Home</title>
+    <link rel="icon" type="image/png" href="/assets/img/gourmet-logo-icon.png">
     <link rel="stylesheet" href="../assets/css/nav.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/modal.css">
     <link rel="stylesheet" href="../assets/css/select.css">
     <link rel="stylesheet" href="../assets/icons/font-awesome.css">
@@ -15,21 +17,106 @@
 <body>
 
     <header id="header"></header>
-    <div id="cart-drawer"></div>
+    <div id="datetime-display" class="minimal-datetime"></div>
+    <main id="main" class="main-container">
+        <section class="gallery-3">
+            <figure class="gallery-3__item gallery-3__item--left carousel">
+                <div class="carousel__slide active">
+                    <img src="../assets/img/banners/banner-with-link-2.png" alt="Meat Promotion">
+                </div>
+                <div class="carousel__slide">
+                    <a href="../../EN/catalog/seafood/"><img src="../assets/img/banners/gambas.png"
+                            alt="Shrimp Promotion"></a>
+                </div>
+                <div class="carousel__slide">
+                    <a href="../../EN/catalog/complements/"><img src="../assets/img/banners/complementos.png"
+                            alt="Sides Promotion"></a>
+                </div>
+                <div class="carousel__slide">
+                    <a href="../../EN/catalog/breakfast/"><img src="../assets/img/banners/desayunito.png"
+                            alt="Breakfast Promotion"></a>
+                </div>
+                <div class="carousel__slide">
+                    <a href="../../EN/catalog/meat/"><img src="../assets/img/banners/banner-with-link-2.png"
+                            alt="Meat Promotion"></a>
+                </div>
+            </figure>
 
-    <div class="example" style="background-color: aqua;height: 50vh;"></div>
+            <div class="gallery-3__right">
+                <figure class="gallery-3__item">
+                    <img src="../assets/img/banners/hazte-club.png" alt="Join Club">
+                </figure>
+                <figure class="gallery-3__item">
+                    <img src="../assets/img/banners/online-shop.png" alt="Online Shop">
+                </figure>
+            </div>
+        </section>
+        <section class="section-productos-destacados">
+            <h2 class="text-dark">Featured Products</h2>
+            <br><hr class="text-dark"><br>
+            <div class="section-productos-destacados__viewport">
+                <div class="section-productos-destacados__flex container-products" id="featured-products-loader">
+                    <!-- JS injects <article> here -->
+                </div>
+            </div>
+
+            <button class="prev-btn" type="button" aria-label="Previous products">◀</button>
+            <button class="next-btn" type="button" aria-label="Next products">▶</button>
+        </section>
+
+        <section class="section-categorias">
+            <h2 class="text-dark text-center" style="margin-bottom: 2rem;">Categories</h2>
+            <div class="category-gallery" id="categorias-loader"></div>
+        </section>
+
+        <section class="section-online-buy">
+            <h2 class=>Why Buy from Gourmet on the Go?</h2>
+            <div class="container-online-buy">
+                <article class="online-buy">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h2>Online Shopping</h2>
+                    <p>Free delivery in time slots for orders over €49.90</p>
+                </article>
+                <article class="online-buy">
+                    <i class="fas fa-store"></i>
+                    <h2>Store Pickup</h2>
+                    <p>More than 250 free pickup points</p>
+                </article>
+                <article class="online-buy">
+                    <i class="fas fa-snowflake"></i>
+                    <h2>Cold Chain Guaranteed</h2>
+                    <p>We maintain and monitor the cold chain until delivery</p>
+                </article>
+                <article class="online-buy">
+                    <i class="fas fa-gift"></i>
+                    <h2>Best Offers</h2>
+                    <p>Find exclusive offers and join the Club full of benefits</p>
+                </article>
+            </div>
+        </section>
+
+    </main>
 
 
     <footer id="footer"></footer>
-    <!-- <button class="btn" data-modal-open="#loginModal">Iniciar sesión</button> -->
+    <!-- <button class="btn" data-modal-open="#loginModal">Sign in</button> -->
     <!-- Modal wrapper -->
     <div id="showModal"></div>
+    <div id="cart-drawer"></div>
 
+
+    <!-- Google Identity Services for Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
     <script src="../assets/js/nav.js"></script>
     <script src="../assets/js/footer.js"></script>
-    <script src="../assets/js/cart.js"></script>
+    <script src="../assets/js/cart/cartView.js" type="module"></script>
     <script src="../assets/js/auth/sesion.js" type="module"></script>
     <script src="../assets/js/auth/validation.js" type="module"></script>
+    <script src="../assets/js/data-loader/productService.js" type="module"></script>
+    <script src="../assets/js/main.js" type="module"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/cart/cartStore.js" type="module"></script>
 
 
 </body>

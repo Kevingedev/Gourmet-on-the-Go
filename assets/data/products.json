@@ -1,6 +1,6 @@
 [
   {
-    "id_producto": "roast_chicken",
+    "id_producto": "PM001",
     "id_categoria": "protein_meat",
     "nombre": {
       "ES": "Pollo Asado con Hierbas",
@@ -14,10 +14,11 @@
       "ES": "1 Unidad (aprox. 1.2 kg)",
       "EN": "1 Unit (approx. 2.6 lb)"
     },
+    "featured": true,
     "precio": 14.99
   },
   {
-    "id_producto": "pork_tenderloin",
+    "id_producto": "PM002",
     "id_categoria": "protein_meat",
     "nombre": {
       "ES": "Solomillo de Cerdo Glaseado",
@@ -31,10 +32,11 @@
       "ES": "500 gramos",
       "EN": "1.1 lb"
     },
+    "featured": false,
     "precio": 12.50
   },
   {
-    "id_producto": "beef_stew",
+    "id_producto": "PM003",
     "id_categoria": "protein_meat",
     "nombre": {
       "ES": "Guiso de Vacuno Clásico",
@@ -48,10 +50,11 @@
       "ES": "Porción individual (350 gramos)",
       "EN": "Single serving (12.3 oz)"
     },
+    "featured": false,
     "precio": 9.75
   },
   {
-    "id_producto": "turkey_meatballs",
+    "id_producto": "PM004",
     "id_categoria": "protein_meat",
     "nombre": {
       "ES": "Albóndigas de Pavo en Salsa",
@@ -65,10 +68,11 @@
       "ES": "6 Unidades (300 gramos)",
       "EN": "6 Units (10.6 oz)"
     },
+    "featured": false,
     "precio": 8.50
   },
   {
-    "id_producto": "chicken_fajitas",
+    "id_producto": "PM005",
     "id_categoria": "protein_meat",
     "nombre": {
       "ES": "Tiras de Pollo para Fajitas",
@@ -82,10 +86,11 @@
       "ES": "500 gramos",
       "EN": "1.1 lb"
     },
+    "featured": false,
     "precio": 11.25
   },
   {
-    "id_producto": "baked_salmon",
+    "id_producto": "FS001",
     "id_categoria": "fish_seafood",
     "nombre": {
       "ES": "Salmón al Horno con Limón",
@@ -99,10 +104,11 @@
       "ES": "180 gramos",
       "EN": "6.3 oz"
     },
+    "featured": false,
     "precio": 16.99
   },
   {
-    "id_producto": "shrimp_scampi",
+    "id_producto": "FS002",
     "id_categoria": "fish_seafood",
     "nombre": {
       "ES": "Gambas al Ajillo Estilo Scampi",
@@ -116,10 +122,11 @@
       "ES": "250 gramos",
       "EN": "8.8 oz"
     },
+    "featured": true,
     "precio": 15.50
   },
   {
-    "id_producto": "tuna_salad",
+    "id_producto": "FS003",
     "id_categoria": "fish_seafood",
     "nombre": {
       "ES": "Ensalada de Atún Mediterránea",
@@ -133,10 +140,11 @@
       "ES": "200 gramos",
       "EN": "7.0 oz"
     },
+    "featured": false,
     "precio": 7.50
   },
   {
-    "id_producto": "fish_tacos",
+    "id_producto": "FS004",
     "id_categoria": "fish_seafood",
     "nombre": {
       "ES": "Relleno para Tacos de Pescado",
@@ -150,10 +158,11 @@
       "ES": "400 gramos",
       "EN": "14.1 oz"
     },
+    "featured": true,
     "precio": 10.99
   },
   {
-    "id_producto": "mussels_marinara",
+    "id_producto": "FS005",
     "id_categoria": "fish_seafood",
     "nombre": {
       "ES": "Mejillones a la Marinera",
@@ -167,10 +176,11 @@
       "ES": "500 gramos",
       "EN": "1.1 lb"
     },
+    "featured": true,
     "precio": 13.50
   },
   {
-    "id_producto": "basmati_rice",
+    "id_producto": "SC001",
     "id_categoria": "sides_comp",
     "nombre": {
       "ES": "Arroz Basmati Cocido",
@@ -184,10 +194,11 @@
       "ES": "300 gramos",
       "EN": "10.6 oz"
     },
+    "featured": false,
     "precio": 4.50
   },
   {
-    "id_producto": "roasted_veg",
+    "id_producto": "SC002",
     "id_categoria": "sides_comp",
     "nombre": {
       "ES": "Verduras Asadas de Temporada",
@@ -201,10 +212,11 @@
       "ES": "450 gramos",
       "EN": "15.8 oz"
     },
+    "featured": false,
     "precio": 6.99
   },
   {
-    "id_producto": "pesto_pasta",
+    "id_producto": "SC003",
     "id_categoria": "sides_comp",
     "nombre": {
       "ES": "Pasta Penne al Pesto",
@@ -218,10 +230,11 @@
       "ES": "350 gramos",
       "EN": "12.3 oz"
     },
+    "featured": true,
     "precio": 5.75
   },
   {
-    "id_producto": "mashed_potatoes",
+    "id_producto": "SC004",
     "id_categoria": "sides_comp",
     "nombre": {
       "ES": "Puré de Patatas Cremoso",
@@ -235,10 +248,11 @@
       "ES": "300 gramos",
       "EN": "10.6 oz"
     },
+    "featured": false,
     "precio": 4.99
   },
   {
-    "id_producto": "red_wine_gravy",
+    "id_producto": "SC005",
     "id_categoria": "sides_comp",
     "nombre": {
       "ES": "Salsa Gravy de Vino Tinto",
@@ -252,10 +266,11 @@
       "ES": "200 ml",
       "EN": "6.8 fl oz"
     },
+    "featured": true,
     "precio": 3.50
   },
   {
-    "id_producto": "scrambled_eggs",
+    "id_producto": "BB001",
     "id_categoria": "breakfast_brunch",
     "nombre": {
       "ES": "Huevos Revueltos Precocinados",
@@ -269,10 +284,11 @@
       "ES": "Porción individual (150 gramos)",
       "EN": "Single serving (5.3 oz)"
     },
+    "featured": false,
     "precio": 5.50
   },
   {
-    "id_producto": "pancakes_mix",
+    "id_producto": "BB002",
     "id_categoria": "breakfast_brunch",
     "nombre": {
       "ES": "Mezcla para Pancakes (Semi-preparada)",
@@ -286,10 +302,11 @@
       "ES": "500 gramos",
       "EN": "17.6 oz"
     },
+    "featured": true,
     "precio": 4.25
   },
   {
-    "id_producto": "fruit_parfait",
+    "id_producto": "BB003",
     "id_categoria": "breakfast_brunch",
     "nombre": {
       "ES": "Parfait de Yogur y Frutas",
@@ -303,10 +320,11 @@
       "ES": "1 Vaso (200 gramos)",
       "EN": "1 Cup (7.0 oz)"
     },
+    "featured": false,
     "precio": 6.00
   },
   {
-    "id_producto": "breakfast_sausage",
+    "id_producto": "BB004",
     "id_categoria": "breakfast_brunch",
     "nombre": {
       "ES": "Salchichas de Desayuno Precocidas",
@@ -320,10 +338,11 @@
       "ES": "8 Unidades (250 gramos)",
       "EN": "8 Units (8.8 oz)"
     },
+    "featured": true,
     "precio": 7.99
   },
   {
-    "id_producto": "mini_muffins",
+    "id_producto": "BB005",
     "id_categoria": "breakfast_brunch",
     "nombre": {
       "ES": "Mini Muffins Variados",
@@ -337,6 +356,7 @@
       "ES": "Paquete de 12 Unidades",
       "EN": "Pack of 12 Units"
     },
+    "featured": false,
     "precio": 8.75
   }
 ]
