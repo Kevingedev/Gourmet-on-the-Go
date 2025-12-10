@@ -23,15 +23,38 @@ if (prevBtn && nextBtn && viewport && track) {
 }
 document.addEventListener('DOMContentLoaded', function () {
     const slides = document.querySelectorAll('.carousel__slide');
+    
+    // Only run carousel if slides exist
+    if (!slides || slides.length === 0) {
+        return;
+    }
+
     let current = 0;
 
     function showSlide(index) {
-        slides.forEach(slide => slide.classList.remove('active'));
-        slides[index].classList.add('active');
+        // Check if index is valid
+        if (index < 0 || index >= slides.length || !slides[index]) {
+            return;
+        }
+        
+        slides.forEach(slide => {
+            if (slide) {
+                slide.classList.remove('active');
+            }
+        });
+        
+        if (slides[index]) {
+            slides[index].classList.add('active');
+        }
     }
 
-    setInterval(function () {
-        current = (current + 1) % slides.length;
-        showSlide(current);
-    }, 5000); // 1000 ms = 1 segundo
+    // Only set interval if there are slides
+    if (slides.length > 0) {
+        setInterval(function () {
+            if (slides.length > 0) {
+                current = (current + 1) % slides.length;
+                showSlide(current);
+            }
+        }, 5000);
+    }
 });
