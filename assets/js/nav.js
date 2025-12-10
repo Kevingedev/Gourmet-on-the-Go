@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUserData = JSON.parse(currentUser);
     // console.log(currentUserData);
     let btnSesion;
+    let wellcome = {
+        ES: `Hola <strong>${currentUserData.username}</strong> te damos la Bienvenida a Gourmet on the Go!`,
+        EN: `Hello <strong>${currentUserData.username}</strong> we welcome you to Gourmet on the Go!`
+    };
 
     // console.log(currentUser);
 
@@ -84,6 +88,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // estoy insertando el navbar y el cartDrawer
     header.innerHTML = navbar;
+    if (!currentUser) {
+        document.getElementById('section-bienvenida').innerHTML = `
+        <br>
+        <h2>¡${wellcome[userLanguage]}!</h2>
+        <button class="btn"  title="Iniciar sesión" data-modal-open="#loginModal" id="btn-login">Iniciar Sesión</button>
+        <br>
+        `;
+    }else{
+        document.getElementById('section-bienvenida').innerHTML = `<br>
+        <h2>¡${wellcome[userLanguage]}!</h2>
+        <br>
+        `;
+    }
 
 
     const navToggle = document.querySelector('.nav__toggle');

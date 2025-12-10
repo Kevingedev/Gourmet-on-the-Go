@@ -24,7 +24,7 @@ if (featuredProductsLoader) {
             featuredProductsLoader.innerHTML += `
             <article class="section-productos-destacados__item cart-item" data-product-id="${producto.id_producto}">
             <a href="producto-detalle.html?pd=${producto.id_producto}">
-                <img src="../assets/img/product-images/img-test.jpg" alt="${producto.nombre[LANGUAGE]}">
+                <img src="../${producto.img_url}" alt="${producto.nombre[LANGUAGE]}">
             </a>
                 <h3 class="item_title">${producto.nombre[LANGUAGE]}</h3>
                 <p class="item_description">${producto.descripcion[LANGUAGE]}</p>

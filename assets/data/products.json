@@ -15,7 +15,8 @@
       "EN": "1 Unit (approx. 2.6 lb)"
     },
     "featured": true,
-    "precio": 14.99
+    "precio": 14.99,
+    "img_url": "assets/img/product-images/pollo-asado.jpg"
   },
   {
     "id_producto": "PM002",
@@ -33,7 +34,8 @@
       "EN": "1.1 lb"
     },
     "featured": false,
-    "precio": 12.50
+    "precio": 12.50,
+    "img_url": "assets/img/product-images/solomillo-cerdo.jpg"
   },
   {
     "id_producto": "PM003",
@@ -51,7 +53,8 @@
       "EN": "Single serving (12.3 oz)"
     },
     "featured": false,
-    "precio": 9.75
+    "precio": 9.75,
+    "img_url": "assets/img/product-images/guiso-vacuno.jpg"
   },
   {
     "id_producto": "PM004",
@@ -69,7 +72,8 @@
       "EN": "6 Units (10.6 oz)"
     },
     "featured": false,
-    "precio": 8.50
+    "precio": 8.50,
+    "img_url": "assets/img/product-images/albondigas.jpg"
   },
   {
     "id_producto": "PM005",
@@ -87,7 +91,8 @@
       "EN": "1.1 lb"
     },
     "featured": false,
-    "precio": 11.25
+    "precio": 11.25,
+    "img_url": "assets/img/product-images/tiras-pollo-fajitas.jpg"
   },
   {
     "id_producto": "FS001",
@@ -105,7 +110,8 @@
       "EN": "6.3 oz"
     },
     "featured": false,
-    "precio": 16.99
+    "precio": 16.99,
+    "img_url": "assets/img/product-images/salmon-horneado.jpg"
   },
   {
     "id_producto": "FS002",
@@ -123,7 +129,8 @@
       "EN": "8.8 oz"
     },
     "featured": true,
-    "precio": 15.50
+    "precio": 15.50,
+    "img_url": "assets/img/product-images/gammbas-ajillo.jpg"
   },
   {
     "id_producto": "FS003",
@@ -141,7 +148,8 @@
       "EN": "7.0 oz"
     },
     "featured": false,
-    "precio": 7.50
+    "precio": 7.50,
+    "img_url": "assets/img/product-images/ensalada-atun.jpg"
   },
   {
     "id_producto": "FS004",
@@ -159,7 +167,8 @@
       "EN": "14.1 oz"
     },
     "featured": true,
-    "precio": 10.99
+    "precio": 10.99,
+    "img_url": "assets/img/product-images/relleno-tacos.jpg"
   },
   {
     "id_producto": "FS005",
@@ -177,7 +186,8 @@
       "EN": "1.1 lb"
     },
     "featured": true,
-    "precio": 13.50
+    "precio": 13.50,
+    "img_url": "assets/img/product-images/mejillones.jpg"
   },
   {
     "id_producto": "SC001",
@@ -195,7 +205,8 @@
       "EN": "10.6 oz"
     },
     "featured": false,
-    "precio": 4.50
+    "precio": 4.50,
+    "img_url": "assets/img/product-images/arroz.jpg"
   },
   {
     "id_producto": "SC002",
@@ -213,7 +224,8 @@
       "EN": "15.8 oz"
     },
     "featured": false,
-    "precio": 6.99
+    "precio": 6.99,
+    "img_url": "assets/img/product-images/verduras-asadas.jpg"
   },
   {
     "id_producto": "SC003",
@@ -231,7 +243,8 @@
       "EN": "12.3 oz"
     },
     "featured": true,
-    "precio": 5.75
+    "precio": 5.75,
+    "img_url": "assets/img/product-images/pasta-pesto.jpg"
   },
   {
     "id_producto": "SC004",
@@ -249,7 +262,8 @@
       "EN": "10.6 oz"
     },
     "featured": false,
-    "precio": 4.99
+    "precio": 4.99,
+    "img_url": "assets/img/product-images/pure-patata.jpg"
   },
   {
     "id_producto": "SC005",
@@ -267,7 +281,8 @@
       "EN": "6.8 fl oz"
     },
     "featured": true,
-    "precio": 3.50
+    "precio": 3.50,
+    "img_url": "assets/img/product-images/salsa gravy.jpg"
   },
   {
     "id_producto": "BB001",
@@ -285,7 +300,8 @@
       "EN": "Single serving (5.3 oz)"
     },
     "featured": false,
-    "precio": 5.50
+    "precio": 5.50,
+    "img_url": "assets/img/product-images/huevo-revuelto.jpg"
   },
   {
     "id_producto": "BB002",
@@ -303,7 +319,8 @@
       "EN": "17.6 oz"
     },
     "featured": true,
-    "precio": 4.25
+    "precio": 4.25,
+    "img_url": "assets/img/product-images/mezcla-pancakes.jpg"
   },
   {
     "id_producto": "BB003",
@@ -321,7 +338,8 @@
       "EN": "1 Cup (7.0 oz)"
     },
     "featured": false,
-    "precio": 6.00
+    "precio": 6.00,
+    "img_url": "assets/img/product-images/yogurt-frutas.jpg"
   },
   {
     "id_producto": "BB004",
@@ -339,7 +357,8 @@
       "EN": "8 Units (8.8 oz)"
     },
     "featured": true,
-    "precio": 7.99
+    "precio": 7.99,
+    "img_url": "assets/img/product-images/salchichas.jpg"
   },
   {
     "id_producto": "BB005",
@@ -357,6 +376,7 @@
       "EN": "Pack of 12 Units"
     },
     "featured": false,
-    "precio": 8.75
+    "precio": 8.75,
+    "img_url": "assets/img/product-images/mini-muffins.jpg"
   }
 ]
