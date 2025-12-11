@@ -117,35 +117,36 @@ document.addEventListener('DOMContentLoaded', () => {
     if (productList) {
         productList.addEventListener('click', (event) => {
 
-        if (event.target.classList.contains('btn-add-to-cart')) {
-            const button = event.target;
-            const originalText = button.textContent;
+            if (event.target.classList.contains('btn-add-to-cart')) {
+                const button = event.target;
+                const originalText = button.textContent;
 
-            const products = cartStore.addToCart(event);
-            drawerEmpty.style.display = 'none';
+                const products = cartStore.addToCart(event);
+                drawerEmpty.style.display = 'none';
 
-            uploadItems(products, cartDrawerContainer); // Cargando los items al carrito si hace click en el boton de agregar al carrito
+                uploadItems(products, cartDrawerContainer); // Cargando los items al carrito si hace click en el boton de agregar al carrito
 
-            // Feedback visual en el botón
-            button.textContent = texts.added;
-            button.style.background = '#22c55e';
-            button.style.color = 'white';
+                // Feedback visual en el botón
+                button.textContent = texts.added;
+                button.style.background = '#22c55e';
+                button.style.color = 'white';
 
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.style.background = '';
-                button.style.color = '';
-            }, 2000);
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
 
-            // console.log(product);
-            if (slideCart <= 0) {
-                toggleCart(true);
-                slideCart++;
+                // console.log(product);
+                if (slideCart <= 0) {
+                    toggleCart(true);
+                    slideCart++;
+                }
+
             }
 
-        }
-
         });
+
     }
 
     // Event delegation for cart actions (remove, increase, decrease)

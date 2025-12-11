@@ -13,6 +13,7 @@ export const authService = {
     },
     logout(){
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('hasSeenFirstPurchasePopup');   
     },
     getAvatar(){
         const user = this.getUser();
