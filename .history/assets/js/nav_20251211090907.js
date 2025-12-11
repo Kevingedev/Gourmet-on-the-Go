@@ -8,14 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const PATH = urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' ? '../../../' : '../../';
     // console.log(userLanguage);
     const currentUser = localStorage.getItem('currentUser');
-    const currentUserData = JSON.parse(currentUser) || {};
+    const currentUserData = JSON.parse(currentUser);
 
     const WELCOME = document.getElementById('section-bienvenida'); // ESTO RETORNA UN NODO HTML SI EXISTE Y SI NO EXISTE RETORNA UN NODO NULL
     // console.log(currentUserData);
     let btnSesion;
     let wellcome = {
-        ES: `Hola <strong>${!currentUserData.username ? ' ' : currentUserData.username }  </strong> te damos la Bienvenida a Gourmet on the Go!`,
-        EN: `Hello <strong>${!currentUserData.username ? '' : currentUserData.username}</strong> we welcome you to Gourmet on the Go!`
+        ES: `Hola <strong>${currentUserData.username } </strong> te damos la Bienvenida a Gourmet on the Go!`,
+        EN: `Hello <strong>${currentUserData.username}</strong> we welcome you to Gourmet on the Go!`
     };
 
     // console.log(currentUser);

@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(currentUserData);
     let btnSesion;
     let wellcome = {
-        ES: `Hola <strong>${!currentUserData.username ? ' ' : currentUserData.username }  </strong> te damos la Bienvenida a Gourmet on the Go!`,
-        EN: `Hello <strong>${!currentUserData.username ? '' : currentUserData.username}</strong> we welcome you to Gourmet on the Go!`
+        ES: `Hola <strong>${!currentUserData.username ? null : currentUserData.username }  </strong> te damos la Bienvenida a Gourmet on the Go!`,
+        EN: `Hello <strong>${!currentUserData.username ? 'Guest User' : currentUserData.username}</strong> we welcome you to Gourmet on the Go!`
     };
 
     // console.log(currentUser);
