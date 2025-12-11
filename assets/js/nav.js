@@ -218,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // CODIGO DE ACCIONES PARA EL CAMBIO DE IDIOMA
 
+    
     document.querySelector('.lang-select').addEventListener('change', function () {
         const lang = this.value; // El VALOR DEL SELECT
         let currentUrl;
@@ -229,8 +230,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Obtener el nombre del archivo actual
-        const currentFileName = urlCategoria[urlCategoria.length - 1] || 'index.html';
+        // Obtener el nombre del archivo actual (sin query parameters)
+        let currentFileName = urlCategoria[urlCategoria.length - 1] || 'index.html';
+        
+        // Preservar query parameters (como ?pd=PM002)
+        const urlObj = new URL(url);
+        const queryParams = urlObj.search; // Esto incluye el "?" y los parámetros
+        
+        // Remover query params del filename si están incluidos
+        if (currentFileName.includes('?')) {
+            currentFileName = currentFileName.split('?')[0];
+        }
         
         // Determinar la ruta base según la ubicación
         let basePath = '';
@@ -247,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
             currentUrl = "/" + urlCategoria[4] + "/" + urlCategoria[5];
             changeUrl(currentLang, currentUrl).then((result) => {
                 const urlSlug = result;
-                newUrl = basePath + lang + urlSlug.url_slug[lang];
+                newUrl = basePath + lang + urlSlug.url_slug[lang] + queryParams;
                 localStorage.setItem('userLanguage', lang);
                 window.location.href = newUrl;
             }).catch((err) => {
@@ -255,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('userLanguage', lang);
             });
         } 
-        // Manejar páginas normales (contacto, etc.)
+        // Manejar páginas normales (contacto, producto-detalle, etc.)
         else if (currentFileName.includes('.html')) {
             // Verificar si existe un mapeo para esta página
             const mapping = pageMapping[currentLang];
@@ -263,16 +273,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const mappedFile = mapping[currentFileName];
                 // Si el archivo mapeado es index.html, usar URL limpia sin /index.html
                 if (mappedFile === 'index.html') {
-                    newUrl = basePath + lang + '/';
+                    newUrl = basePath + lang + '/' + queryParams;
                 } else {
-                    newUrl = basePath + lang + '/' + mappedFile;
+                    // Agregar query parameters al final
+                    newUrl = basePath + lang + '/' + mappedFile + queryParams;
                 }
             } else if (currentFileName === 'index.html') {
                 // Para index.html, usar URL limpia sin /index.html
-                newUrl = basePath + lang + '/';
+                newUrl = basePath + lang + '/' + queryParams;
             } else {
                 // Si no hay mapeo, intentar usar el mismo nombre de archivo
-                newUrl = basePath + lang + '/' + currentFileName;
+                newUrl = basePath + lang + '/' + currentFileName + queryParams;
             }
             localStorage.setItem('userLanguage', lang);
             window.location.href = newUrl;
