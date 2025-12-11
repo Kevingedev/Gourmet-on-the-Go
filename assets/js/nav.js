@@ -5,7 +5,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlCategoria = url.split('/');
     const userLanguage = localStorage.getItem('userLanguage');
     const header = document.getElementById('header');
-    const PATH = urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' ? '../../../' : '../../';
+    
+    // Calculate PATH based on current location
+    let PATH = '';
+    const pathname = window.location.pathname;
+    
+    // Count depth by counting slashes (excluding leading slash)
+    const pathParts = pathname.split('/').filter(p => p.length > 0);
+    const depth = pathParts.length;
+    
+    // More reliable path calculation
+    if (pathParts.includes('catalogo') || pathParts.includes('catalog')) {
+        // We're in a catalog subfolder (e.g., ES/catalogo/carnes/)
+        PATH = '../../../';
+    } else if (pathParts.includes('404')) {
+        // We're in 404 folder (e.g., ES/404/index.html)
+        PATH = '../../../';
+    } else if (pathParts.includes('ES') || pathParts.includes('EN')) {
+        // We're in ES/ or EN/ folder (e.g., ES/index.html)
+        // Need to go up one level to reach assets folder
+        PATH = '../';
+    } else if (depth === 0 || (depth === 1 && pathParts[0] === 'index.html')) {
+        // We're at root level
+        PATH = './';
+    } else {
+        // Fallback - go up one level
+        PATH = '../';
+    }
     // console.log(userLanguage);
     const currentUser = localStorage.getItem('currentUser');
     const currentUserData = JSON.parse(currentUser) || {};
@@ -41,6 +67,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const favoritesLink = userLanguage === 'EN' ? 'favorites.html' : 'favoritos.html';
     const favoritesLabel = userLanguage === 'EN' ? 'Go to Favorites' : 'Ir a Favoritos';
     const favoritesTitle = userLanguage === 'EN' ? 'Favorites' : 'Favoritos';
+    
+    // Checkout link (always visible, redirects to login if not logged in)
+    const checkoutPage = userLanguage === 'EN' ? 'checkout.html' : 'finalizar-compra.html';
+    const loginPage = userLanguage === 'EN' ? 'session.html' : 'sesion.html';
+    const redirectParam = userLanguage === 'EN' ? 'checkout' : 'finalizar-compra';
+    
+    // Calculate correct path to ES/ or EN/ folder based on current location
+    let baseLangPath = '';
+    if (pathParts.includes('404')) {
+        // From 404 folder, need to go up 2 levels to reach ES/ or EN/
+        baseLangPath = '../../';
+    } else if (pathParts.includes('catalogo') || pathParts.includes('catalog')) {
+        // From catalog folder, need to go up 2 levels to reach ES/ or EN/
+        baseLangPath = '../../';
+    } else if (pathParts.includes('ES') || pathParts.includes('EN')) {
+        // Already in ES/ or EN/ folder
+        baseLangPath = './';
+    } else {
+        // From root, need to go into ES/ or EN/
+        baseLangPath = `${userLanguage}/`;
+    }
+    
+    let checkoutHref, checkoutLabel, checkoutTitle;
+    if (currentUser) {
+        // User is logged in - go to checkout
+        checkoutHref = `${baseLangPath}${checkoutPage}`;
+        checkoutLabel = userLanguage === 'EN' ? 'Go to Checkout' : 'Ir a Finalizar Compra';
+        checkoutTitle = userLanguage === 'EN' ? 'Checkout' : 'Finalizar Compra';
+    } else {
+        // User not logged in - go to login with redirect
+        checkoutHref = `${baseLangPath}${loginPage}?redirect=${redirectParam}`;
+        checkoutLabel = userLanguage === 'EN' ? 'Sign in to Purchase' : 'Inicia sesión para Comprar';
+        checkoutTitle = userLanguage === 'EN' ? 'Purchase' : 'Comprar';
+    }
+    
+    const checkoutLink = `
+            <a href="${checkoutHref}" aria-label="${checkoutLabel}" title="${checkoutTitle}">
+                <button class="icon-btn" aria-label="${checkoutTitle}" title="${checkoutTitle}">
+                    <i class="fa-solid fa-shopping-bag"></i>
+                </button>
+            </a>
+    `;
 
     if (currentUser) {
         btnSesion = `<button class="btn-login" title="Cerrar sesión" data-modal-open="#logoutModal" id="btn-logout">${currentUserData.username}</button>`;
@@ -48,12 +116,21 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSesion = `<button class="btn-login" title="Iniciar sesión" data-modal-open="#loginModal" id="btn-login"><i class="fa-solid fa-user"></i></button>`;
     }
 
+    // Ensure PATH ends with / for consistent path construction
+    const assetsPath = PATH.endsWith('/') ? PATH : `${PATH}/`;
+    
+    // Debug: log the paths (remove in production)
+    // console.log('URL:', url);
+    // console.log('PATH:', PATH);
+    // console.log('assetsPath:', assetsPath);
+    // console.log('jsonPath will be:', `${assetsPath}assets/data/categories.json`);
+    
     const navbar = `
 <nav class="nav">
         <div class="nav__logo">
-            <img src="${PATH}assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="40" class="logo-icon">
+            <img src="${assetsPath}assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="40" class="logo-icon">
             <a href="/${userLanguage}">Gourmet on the Go</a>
-            <img src="${PATH}assets/img/gourmet-logo-text.png" alt="Logo Gourmet on the Go" width="35" class="logo-text">
+            <img src="${assetsPath}assets/img/gourmet-logo-text.png" alt="Logo Gourmet on the Go" width="35" class="logo-text">
         </div>
 
         <button class="nav__toggle" aria-label="Abrir menú" aria-expanded="false">
@@ -79,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="fa-solid fa-heart"></i>
                 </button>
                 </a>
+                ${checkoutLink}
                 <button class="icon-btn js-cart-toggle" aria-label="Carrito" aria-expanded="false" title="Carrito">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span class="badge" id="cart-count">0</span>
@@ -127,7 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // FUNCIÓN ASÍNCRONA PARA CARGAR LAS CATEGORÍAS 
     // Obtener el contenedor específico de los enlaces de categorías
     const categoryLinksContainer = document.getElementById('nav-links');
-    const jsonPath = `${PATH}/assets/data/categories.json`;
+    // Use assetsPath for consistent path construction
+    const jsonPath = `${assetsPath}assets/data/categories.json`;
 
     async function fetchCategories(container) {
         try {
@@ -221,6 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'producto-detalle.html': 'product-detail.html',
             'productos.html': 'products.html',
             'sesion.html': 'session.html',
+            'finalizar-compra.html': 'checkout.html',
             'index.html': 'index.html'
         },
         EN: {
@@ -239,6 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'product-detail.html': 'producto-detalle.html',
             'products.html': 'productos.html',
             'session.html': 'sesion.html',
+            'checkout.html': 'finalizar-compra.html',
             'index.html': 'index.html'
         }
     };

@@ -107,7 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
         newsletterText: 'Receive exclusive offers and news in your email.',
         emailPlaceholder: 'Your email address',
         subscribe: 'Subscribe',
-        copyright: 'All rights reserved.'
+        copyright: 'All rights reserved.',
+        acceptedPayments: 'Accepted Payment Methods',
+        subscribeSuccess: 'Thank you for subscribing!'
     } : {
         description: 'Tienda online de productos gourmet y alimentación al mejor precio.',
         phone: 'Teléfono',
@@ -118,7 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
         newsletterText: 'Recibe ofertas exclusivas y novedades en tu correo.',
         emailPlaceholder: 'Tu correo electrónico',
         subscribe: 'Suscribirme',
-        copyright: 'Todos los derechos reservados.'
+        copyright: 'Todos los derechos reservados.',
+        acceptedPayments: 'Métodos de Pago Aceptados',
+        subscribeSuccess: '¡Gracias por suscribirte!'
     };
 
     const footer = document.getElementById('footer');
@@ -187,13 +191,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="footer-text">
                     ${footerTexts.newsletterText}
                 </p>
-                <form class="footer-newsletter">
-                    <input type="email" class="footer-input" placeholder="${footerTexts.emailPlaceholder}"
-                        aria-label="${footerTexts.emailPlaceholder}">
+                <form class="footer-newsletter" id="footer-newsletter-form">
+                    <input type="email" class="footer-input" id="footer-newsletter-email" placeholder="${footerTexts.emailPlaceholder}"
+                        aria-label="${footerTexts.emailPlaceholder}" required>
                     <button type="submit" class="footer-btn">
                         ${footerTexts.subscribe}
                     </button>
+                    <div class="footer-newsletter-message" id="footer-newsletter-message"></div>
                 </form>
+                
+                <!-- Payment Methods -->
+                <div class="footer-payment-methods">
+                    <h5 class="footer-payment-title">${footerTexts.acceptedPayments}</h5>
+                    <div class="footer-payment-icons">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/visa.svg" alt="Visa" class="payment-icon" title="Visa" onerror="this.style.display='none'">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/mastercard.svg" alt="Mastercard" class="payment-icon" title="Mastercard" onerror="this.style.display='none'">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/paypal.svg" alt="PayPal" class="payment-icon" title="PayPal" onerror="this.style.display='none'">
+                        <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/americanexpress.svg" alt="American Express" class="payment-icon" title="American Express" onerror="this.style.display='none'">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -206,9 +222,50 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     footer.innerHTML = footerContent;
 
+    // Initialize newsletter subscription
+    inicializarNewsletter();
+
     // Verificar enlaces y redirigir a 404 si no existen
     inicializarVerificacionEnlaces();
 });
+
+function inicializarNewsletter() {
+    const newsletterForm = document.getElementById('footer-newsletter-form');
+    const emailInput = document.getElementById('footer-newsletter-email');
+    const messageDiv = document.getElementById('footer-newsletter-message');
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    
+    if (!newsletterForm || !emailInput || !messageDiv) return;
+    
+    const successMessage = userLanguage === 'EN' 
+        ? 'Thank you for subscribing!'
+        : '¡Gracias por suscribirte!';
+    
+    newsletterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        
+        if (!email || !email.includes('@')) {
+            return;
+        }
+        
+        // Show success message
+        messageDiv.textContent = successMessage;
+        messageDiv.classList.add('show');
+        
+        // Clear input
+        emailInput.value = '';
+        
+        // Hide message after 5 seconds
+        setTimeout(() => {
+            messageDiv.classList.remove('show');
+            setTimeout(() => {
+                messageDiv.textContent = '';
+            }, 300);
+        }, 5000);
+    });
+}
 
 async function verificarPaginaExiste(url) {
     // Extraer el nombre del archivo de la URL

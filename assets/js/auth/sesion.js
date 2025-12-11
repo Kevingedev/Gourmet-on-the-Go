@@ -7,11 +7,55 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUser = authService.getUser();
     const userLanguage = authService.getLanguage();
     const PATH = url.includes('catalogo') || url.includes('catalog') ? '../../' : '../'+userLanguage+'/';
+    
+    // Function to get redirect page after login
+    function getRedirectPage() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirect = urlParams.get('redirect');
+        if (!redirect) return null;
+        
+        // Map redirect names to actual page names
+        const redirectMap = {
+            'checkout': userLanguage === 'EN' ? 'checkout.html' : 'finalizar-compra.html',
+            'finalizar-compra': 'finalizar-compra.html'
+        };
+        
+        return redirectMap[redirect] || null;
+    }
+    
+    // Function to redirect after successful login
+    function redirectAfterLogin() {
+        const redirectPage = getRedirectPage();
+        if (redirectPage) {
+            const url = window.location.href;
+            const urlCategoria = url.split('/');
+            let basePath = '';
+            
+            if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+                basePath = '../../../';
+            } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN') {
+                basePath = '../';
+            } else {
+                basePath = './';
+            }
+            
+            window.location.href = `${basePath}${userLanguage}/${redirectPage}`;
+        } else {
+            window.location.reload();
+        }
+    }
 
     if (!currentUser) {
+        // Check if there's a redirect parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirect = urlParams.get('redirect');
+        const needsLoginForCheckout = redirect === 'checkout' || redirect === 'finalizar-compra';
+        
         const loginTexts = userLanguage === 'EN' ? {
             title: 'Sign in',
-            subtitle: 'Sign in with your Username and Password, Only administrators can sign in.',
+            subtitle: needsLoginForCheckout 
+                ? 'You need to sign in to complete your purchase. Please sign in with your Username and Password.'
+                : 'Sign in with your Username and Password, Only administrators can sign in.',
             username: 'Username',
             password: 'Password',
             enter: 'Enter',
@@ -22,7 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
             googleDescription: 'Sign in with Google'
         } : {
             title: 'Inicia sesión',
-            subtitle: 'Accede con tu Usuario y Contraseña.',
+            subtitle: needsLoginForCheckout 
+                ? 'Necesitas iniciar sesión para completar tu compra. Por favor, accede con tu Usuario y Contraseña.'
+                : 'Accede con tu Usuario y Contraseña.',
             username: 'Usuario',
             password: 'Contraseña',
             enter: 'Entrar',
@@ -78,21 +124,126 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         
         // Initialize Google Sign-In after modal is created
-        setTimeout(() => {
-            if (window.google && window.google.accounts) {
-                googleAuth.init();
-                googleAuth.renderButton('google-signin-button');
-            } else {
-                // Wait for Google script to load
-                const checkGoogle = setInterval(() => {
-                    if (window.google && window.google.accounts) {
+        let googleButtonInitialized = false;
+        function initGoogleSignIn() {
+            const buttonElement = document.getElementById('google-signin-button');
+            if (!buttonElement) {
+                console.log('Google sign-in button element not found');
+                return;
+            }
+            
+            // Check if button already has Google content
+            if (buttonElement.querySelector('iframe') || buttonElement.querySelector('[data-google-button]')) {
+                console.log('Google button already rendered');
+                return;
+            }
+            
+            if (window.google && window.google.accounts && window.google.accounts.id) {
+                try {
+                    if (!googleButtonInitialized) {
                         googleAuth.init();
-                        googleAuth.renderButton('google-signin-button');
+                        googleButtonInitialized = true;
+                    }
+                    googleAuth.renderButton('google-signin-button');
+                    console.log('Google Sign-In initialized successfully');
+                } catch (error) {
+                    console.error('Error initializing Google Sign-In:', error);
+                }
+            } else {
+                console.log('Google script not loaded yet, waiting...');
+                // Wait for Google script to load (check every 200ms, max 10 seconds)
+                let attempts = 0;
+                const maxAttempts = 50;
+                const checkGoogle = setInterval(() => {
+                    attempts++;
+                    if (window.google && window.google.accounts && window.google.accounts.id) {
+                        try {
+                            if (!googleButtonInitialized) {
+                                googleAuth.init();
+                                googleButtonInitialized = true;
+                            }
+                            googleAuth.renderButton('google-signin-button');
+                            console.log('Google Sign-In initialized after wait');
+                        } catch (error) {
+                            console.error('Error initializing Google Sign-In:', error);
+                        }
+                        clearInterval(checkGoogle);
+                    } else if (attempts >= maxAttempts) {
+                        console.error('Google Sign-In script failed to load after 10 seconds');
                         clearInterval(checkGoogle);
                     }
-                }, 100);
+                }, 200);
             }
-        }, 100);
+        }
+        
+        // Try to initialize after modal is created
+        setTimeout(initGoogleSignIn, 500);
+        setTimeout(initGoogleSignIn, 1500);
+        
+        // Show message on page if there's a redirect and auto-open modal
+        const loginMessageContainer = document.getElementById('login-message-container');
+        if (loginMessageContainer && needsLoginForCheckout) {
+            const pageMessage = userLanguage === 'EN' 
+                ? {
+                    title: 'Sign in to Continue',
+                    message: 'You need to sign in to complete your purchase. Please sign in below.',
+                    button: 'Open Login Form'
+                }
+                : {
+                    title: 'Inicia sesión para continuar',
+                    message: 'Necesitas iniciar sesión para completar tu compra. Por favor, inicia sesión a continuación.',
+                    button: 'Abrir formulario de inicio de sesión'
+                };
+            
+            loginMessageContainer.innerHTML = `
+                <div class="login-prompt">
+                    <div class="login-prompt-icon">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h1 class="login-prompt-title">${pageMessage.title}</h1>
+                    <p class="login-prompt-message">${pageMessage.message}</p>
+                    <button class="btn btn--primary" id="open-login-modal-btn">${pageMessage.button}</button>
+                </div>
+            `;
+            
+            // Add click handler to open modal
+            document.getElementById('open-login-modal-btn').addEventListener('click', () => {
+                const loginModal = document.getElementById('loginModal');
+                if (loginModal) {
+                    loginModal.classList.add('is-open');
+                    loginModal.setAttribute('aria-hidden', 'false');
+                    document.body.style.overflow = 'hidden';
+                    const usernameInput = document.getElementById('username');
+                    if (usernameInput) {
+                        setTimeout(() => usernameInput.focus(), 100);
+                    }
+                }
+            });
+        }
+        
+        // Auto-open modal if there's a redirect parameter
+        if (redirect) {
+            setTimeout(() => {
+                const loginModal = document.getElementById('loginModal');
+                if (loginModal) {
+                    loginModal.classList.add('is-open');
+                    loginModal.setAttribute('aria-hidden', 'false');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // Focus on username input
+                    const usernameInput = document.getElementById('username');
+                    if (usernameInput) {
+                        setTimeout(() => usernameInput.focus(), 200);
+                    }
+                    
+                    // Re-initialize Google Sign-In after modal opens
+                    setTimeout(() => {
+                        initGoogleSignIn();
+                    }, 500);
+                }
+            }, 300);
+        }
+        
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             let finderUser;
@@ -129,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     setTimeout(() => {
                         document.getElementById('loginForm').reset();
-                        window.location.reload();
+                        redirectAfterLogin();
                     }, 1000);
 
                 } else {
