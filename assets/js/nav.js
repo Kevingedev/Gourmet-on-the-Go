@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
 
             <div class="nav__actions">
-            <a href="${PATH}${userLanguage}/lista-deseos.html" aria-label="Ir a Favoritos" title="Ir a Favoritos">
+            <a href="${PATH}${userLanguage}/favoritos.html" aria-label="Ir a Favoritos" title="Ir a Favoritos">
                 <button class="icon-btn" aria-label="Favoritos" title="Favoritos">
                     <i class="fa-solid fa-heart"></i>
                 </button>
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'condiciones-uso.html': 'terms-of-use.html',
             'busqueda.html': 'search.html',
             'carrito.html': 'cart.html',
-            'lista-deseos.html': 'wishlist.html',
+            'favoritos.html': 'favorites.html',
             'perfil.html': 'profile.html',
             'producto-detalle.html': 'product-detail.html',
             'productos.html': 'products.html',
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'terms-of-use.html': 'condiciones-uso.html',
             'search.html': 'busqueda.html',
             'cart.html': 'carrito.html',
-            'wishlist.html': 'lista-deseos.html',
+            'favorites.html': 'favoritos.html',
             'profile.html': 'perfil.html',
             'product-detail.html': 'producto-detalle.html',
             'products.html': 'productos.html',

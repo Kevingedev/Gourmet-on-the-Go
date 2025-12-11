@@ -12,11 +12,12 @@ const paginasExistentes = {
         'index.html',
         'busqueda.html',
         'carrito.html',
-        'lista-deseos.html',
+        'favoritos.html',
         'perfil.html',
         'producto-detalle.html',
         'productos.html',
         'sesion.html',
+        
         '404/'
     ],
     EN: [
@@ -31,7 +32,7 @@ const paginasExistentes = {
         'index.html',
         'search.html',
         'cart.html',
-        'wishlist.html',
+        'favorites.html',
         'profile.html',
         'product-detail.html',
         'products.html',

@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <nav class="account-menu">  
                     <a href="${PATH}${userLanguage === 'EN' ? 'profile.html' : 'perfil.html'}" class="links-sesion account-item"><span> <i class="fa-regular fa-user icon-sesion"></i> ${userLanguage === 'EN' ? 'View my account' : 'Ver mi cuenta'}</span></a> 
                     
-                    <a href="${PATH}favoritos.html" class="links-sesion account-item"><span><i class="fa-regular fa-heart icon-sesion"></i> Mis favoritos</span></a>
+                    <a href="${PATH}${userLanguage === 'EN' ? 'favorites.html' : 'favoritos.html'}" class="links-sesion account-item"><span><i class="fa-regular fa-heart icon-sesion"></i> Mis favoritos</span></a>
 
                     <a role="button" class="links-sesion account-item account-item-danger" id="logout"><span><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</span></a>
                     
