@@ -12,16 +12,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const urlCategoria = url.split('/');
         let basePath = '';
         
-        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
             basePath = '../../../';
-        } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN') {
+        } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
             basePath = '../';
         } else {
             basePath = './';
         }
         
-        const loginPage = userLanguage === 'EN' ? 'session.html' : 'sesion.html';
-        const redirectPage = userLanguage === 'EN' ? 'checkout' : 'finalizar-compra';
+        const loginPages = {
+            ES: 'sesion.html',
+            EN: 'session.html',
+            FR: 'connexion.html',
+            EU: 'saioa.html'
+        };
+        const redirectPages = {
+            ES: 'finalizar-compra',
+            EN: 'checkout',
+            FR: 'commande',
+            EU: 'erosketa-bukatu'
+        };
+        const loginPage = loginPages[userLanguage] || 'sesion.html';
+        const redirectPage = redirectPages[userLanguage] || 'finalizar-compra';
         window.location.href = `${basePath}${userLanguage}/${loginPage}?redirect=${redirectPage}`;
         return;
     }
@@ -29,15 +41,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if cart is empty
     const cart = cartStore.cartLoadFromStorage();
     if (!cart || cart.length === 0) {
-        const emptyCartText = userLanguage === 'EN' 
-            ? 'Your cart is empty. Please add items to your cart before checkout.'
-            : 'Tu carrito está vacío. Por favor, añade productos antes de finalizar la compra.';
+        const emptyCartTexts = {
+            ES: 'Tu carrito está vacío. Por favor, añade productos antes de finalizar la compra.',
+            EN: 'Your cart is empty. Please add items to your cart before checkout.',
+            FR: 'Votre panier est vide. Veuillez ajouter des articles avant de commander.',
+            EU: 'Zure saskia hutsik dago. Mesedez, gehitu produktuak erosketa bukatu aurretik.'
+        };
+        const goToShopTexts = {
+            ES: 'Ir a la Tienda',
+            EN: 'Go to Shop',
+            FR: 'Aller à la Boutique',
+            EU: 'Dendara joan'
+        };
+        const emptyCartText = emptyCartTexts[userLanguage] || emptyCartTexts.ES;
+        const goToShopText = goToShopTexts[userLanguage] || goToShopTexts.ES;
         
         checkoutContainer.innerHTML = `
             <div class="checkout-empty">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <p>${emptyCartText}</p>
-                <a href="${getBasePath()}${userLanguage}/" class="btn">${userLanguage === 'EN' ? 'Go to Shop' : 'Ir a la Tienda'}</a>
+                <a href="${getBasePath()}${userLanguage}/" class="btn">${goToShopText}</a>
             </div>
         `;
         return;

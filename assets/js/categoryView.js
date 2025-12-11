@@ -17,6 +17,20 @@ const texts = {
         loading: 'Loading products...',
         noProducts: 'No products available in this category.',
         featured: 'Featured'
+    },
+    FR: {
+        addToCart: 'Ajouter',
+        added: '✓ Ajouté',
+        loading: 'Chargement des produits...',
+        noProducts: 'Aucun produit disponible dans cette catégorie.',
+        featured: 'En vedette'
+    },
+    EU: {
+        addToCart: 'Gehitu',
+        added: '✓ Gehituta',
+        loading: 'Produktuak kargatzen...',
+        noProducts: 'Ez dago produkturik kategoria honetan.',
+        featured: 'Nabarmendua'
     }
 };
 
@@ -64,8 +78,20 @@ function renderProducts(productos, basePath) {
         const productDesc = producto.descripcion[LANGUAGE];
 
         // Determine product detail page based on language
-        const detailPage = LANGUAGE === 'EN' ? 'product-detail.html' : 'producto-detalle.html';
-        const langPath = LANGUAGE === 'EN' ? 'EN' : 'ES';
+        const detailPages = {
+            ES: 'producto-detalle.html',
+            EN: 'product-detail.html',
+            FR: 'detail-produit.html',
+            EU: 'produktu-xehetasuna.html'
+        };
+        const langPaths = {
+            ES: 'ES',
+            EN: 'EN',
+            FR: 'FR',
+            EU: 'EU'
+        };
+        const detailPage = detailPages[LANGUAGE] || 'producto-detalle.html';
+        const langPath = langPaths[LANGUAGE] || 'ES';
         
         // Use proper structure with wrappers for styling
         article.innerHTML = `

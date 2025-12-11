@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil</title>
+    <link rel="icon" type="image/png" href="/assets/img/gourmet-logo-icon.png">
+    <link rel="stylesheet" href="../assets/css/nav.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/modal.css">
+    <link rel="stylesheet" href="../assets/css/select.css">
+    <link rel="stylesheet" href="../assets/icons/font-awesome.css">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
+            background: var(--color-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-info h1 {
+            margin: 0 0 0.5rem;
+            color: var(--color-dark);
+        }
+
+        .profile-info p {
+            margin: 0.25rem 0;
+            color: var(--muted);
+        }
+
+        .profile-details {
+            background: var(--color-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--color-dark);
+        }
+
+        .detail-value {
+            color: var(--muted);
+        }
+
+        .profile-actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-profile {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--color-primary);
+            background: transparent;
+            color: var(--color-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-profile:hover {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header id="header"></header>
+    <main id="main" class="main-container">
+        <div class="profile-container">
+            <div class="profile-header" id="profile-header">
+                <!-- Le contenu sera chargé par JavaScript -->
+            </div>
+
+            <div class="profile-details" id="profile-details">
+                <!-- Le contenu sera chargé par JavaScript -->
+            </div>
+
+            <div class="profile-actions">
+                <a href="../FR/index.html" class="btn-profile">
+                    <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer"></footer>
+    <div id="showModal"></div>
+    <div id="cart-drawer"></div>
+
+    <!-- Google Identity Services for Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <script src="../assets/js/nav.js"></script>
+    <script src="../assets/js/footer.js"></script>
+    <script src="../assets/js/auth/sesion.js" type="module"></script>
+    <script src="../assets/js/auth/authService.js" type="module"></script>
+    <script src="../assets/js/auth/userProfile.js" type="module"></script>
+    <script src="../assets/js/cart/cartView.js" type="module"></script>
+    <script src="../assets/js/cart/cartStore.js" type="module"></script>
+
+</body>
+
+</html>
+

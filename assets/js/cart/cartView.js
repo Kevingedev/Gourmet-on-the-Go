@@ -22,6 +22,22 @@ const cartTexts = {
         checkout: 'Checkout',
         close: 'Close cart',
         added: '✓ Added'
+    },
+    FR: {
+        cart: 'Panier',
+        empty: 'Votre panier est vide.',
+        total: 'Total',
+        checkout: 'Commander',
+        close: 'Fermer le panier',
+        added: '✓ Ajouté'
+    },
+    EU: {
+        cart: 'Saskia',
+        empty: 'Zure saskia hutsik dago.',
+        total: 'Guztira',
+        checkout: 'Erosketa bukatu',
+        close: 'Saskia itxi',
+        added: '✓ Gehituta'
     }
 };
 
@@ -198,12 +214,30 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (!currentUser) {
                 // Redirect to login page
-                const loginPage = userLanguage === 'EN' ? 'session.html' : 'sesion.html';
-                const redirectPage = userLanguage === 'EN' ? 'checkout' : 'finalizar-compra';
+                const loginPages = {
+                    ES: 'sesion.html',
+                    EN: 'session.html',
+                    FR: 'connexion.html',
+                    EU: 'saioa.html'
+                };
+                const redirectPages = {
+                    ES: 'finalizar-compra',
+                    EN: 'checkout',
+                    FR: 'commande',
+                    EU: 'erosketa-bukatu'
+                };
+                const loginPage = loginPages[userLanguage] || 'sesion.html';
+                const redirectPage = redirectPages[userLanguage] || 'finalizar-compra';
                 window.location.href = `${basePath}${userLanguage}/${loginPage}?redirect=${redirectPage}`;
             } else {
                 // Redirect to checkout page
-                const checkoutPage = userLanguage === 'EN' ? 'checkout.html' : 'finalizar-compra.html';
+                const checkoutPages = {
+                    ES: 'finalizar-compra.html',
+                    EN: 'checkout.html',
+                    FR: 'commande.html',
+                    EU: 'erosketa-bukatu.html'
+                };
+                const checkoutPage = checkoutPages[userLanguage] || 'finalizar-compra.html';
                 window.location.href = `${basePath}${userLanguage}/${checkoutPage}`;
             }
         });

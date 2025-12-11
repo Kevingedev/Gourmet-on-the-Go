@@ -19,6 +19,20 @@ const texts = {
         loading: 'Loading products...',
         noProducts: 'No products available in this category.',
         featured: 'Featured'
+    },
+    FR: {
+        addToCart: 'Ajouter',
+        added: '✓ Ajouté',
+        loading: 'Chargement des produits...',
+        noProducts: 'Aucun produit disponible dans cette catégorie.',
+        featured: 'En vedette'
+    },
+    EU: {
+        addToCart: 'Gehitu',
+        added: '✓ Gehituta',
+        loading: 'Produktuak kargatzen...',
+        noProducts: 'Ez dago produkturik kategoria honetan.',
+        featured: 'Nabarmendua'
     }
 };
 
@@ -26,7 +40,13 @@ const texts = {
 if (featuredProductsLoader) {
     gestorDeDatos.cargarProductosDestacados().then(productos => {
         // Determine product detail page name based on language
-        const detailPage = LANGUAGE === 'EN' ? 'product-detail.html' : 'producto-detalle.html';
+        const detailPages = {
+            ES: 'producto-detalle.html',
+            EN: 'product-detail.html',
+            FR: 'detail-produit.html',
+            EU: 'produktu-xehetasuna.html'
+        };
+        const detailPage = detailPages[LANGUAGE] || 'producto-detalle.html';
 
         productos.forEach(producto => {
             featuredProductsLoader.innerHTML += `

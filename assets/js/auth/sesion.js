@@ -1,12 +1,124 @@
 import { authService } from './authService.js';
 import { googleAuth } from './googleAuth.js';
 
+// Función para actualizar el modal de login cuando cambia el idioma
+function updateLoginModal() {
+    const showModal = document.getElementById('showModal');
+    const loginModal = document.getElementById('loginModal');
+    if (!showModal || !loginModal) return;
+    
+    const currentUser = authService.getUser();
+    if (currentUser) return; // No actualizar si el usuario ya está logueado
+    
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirect = urlParams.get('redirect');
+    const needsLoginForCheckout = redirect === 'checkout' || redirect === 'finalizar-compra' || redirect === 'commande' || redirect === 'erosketa-bukatu';
+    
+    const loginTextsMaps = {
+        ES: {
+            title: 'Inicia sesión',
+            subtitle: needsLoginForCheckout 
+                ? 'Necesitas iniciar sesión para completar tu compra. Por favor, accede con tu Usuario y Contraseña.'
+                : 'Accede con tu Usuario y Contraseña.',
+            username: 'Usuario',
+            password: 'Contraseña',
+            enter: 'Entrar',
+            cancel: 'Cancelar',
+            loginMessage: 'Inicia Sesión',
+            or: 'o',
+            continueWith: 'Continuar con',
+            googleDescription: 'Inicia sesión con Google',
+            close: 'Cerrar'
+        },
+        EN: {
+            title: 'Sign in',
+            subtitle: needsLoginForCheckout 
+                ? 'You need to sign in to complete your purchase. Please sign in with your Username and Password.'
+                : 'Sign in with your Username and Password, Only administrators can sign in.',
+            username: 'Username',
+            password: 'Password',
+            enter: 'Enter',
+            cancel: 'Cancel',
+            loginMessage: 'Sign in',
+            or: 'or',
+            continueWith: 'Continue with',
+            googleDescription: 'Sign in with Google',
+            close: 'Close'
+        },
+        FR: {
+            title: 'Se connecter',
+            subtitle: needsLoginForCheckout 
+                ? 'Vous devez vous connecter pour finaliser votre achat. Veuillez vous connecter avec votre nom d\'utilisateur et votre mot de passe.'
+                : 'Connectez-vous avec votre nom d\'utilisateur et votre mot de passe.',
+            username: 'Nom d\'utilisateur',
+            password: 'Mot de passe',
+            enter: 'Entrer',
+            cancel: 'Annuler',
+            loginMessage: 'Se connecter',
+            or: 'ou',
+            continueWith: 'Continuer avec',
+            googleDescription: 'Se connecter avec Google',
+            close: 'Fermer'
+        },
+        EU: {
+            title: 'Saioa hasi',
+            subtitle: needsLoginForCheckout 
+                ? 'Erosketa bukatzeko saioa hasi behar duzu. Mesedez, sartu zure erabiltzaile izena eta pasahitza.'
+                : 'Sartu zure erabiltzaile izena eta pasahitza.',
+            username: 'Erabiltzaile izena',
+            password: 'Pasahitza',
+            enter: 'Sartu',
+            cancel: 'Utzi',
+            loginMessage: 'Saioa hasi',
+            or: 'edo',
+            continueWith: 'Jarraitu',
+            googleDescription: 'Google-rekin saioa hasi',
+            close: 'Itxi'
+        }
+    };
+    const loginTexts = loginTextsMaps[userLanguage] || loginTextsMaps.ES;
+    
+    // Guardar el estado del modal (si está abierto)
+    const isOpen = loginModal.classList.contains('is-open');
+    const usernameValue = document.getElementById('username')?.value || '';
+    
+    // Actualizar el contenido del modal
+    const modalDialog = loginModal.querySelector('.modal__dialog');
+    if (modalDialog) {
+        modalDialog.querySelector('#login-title').textContent = loginTexts.title;
+        modalDialog.querySelector('#login-desc').textContent = loginTexts.subtitle;
+        modalDialog.querySelector('.field__label').textContent = loginTexts.username;
+        modalDialog.querySelectorAll('.field__label')[1].textContent = loginTexts.password;
+        modalDialog.querySelector('#btn-enter').textContent = loginTexts.enter;
+        modalDialog.querySelector('.btn--ghost').textContent = loginTexts.cancel;
+        modalDialog.querySelector('#loginMessage').textContent = loginTexts.loginMessage + ' ';
+        modalDialog.querySelector('.login-divider span').textContent = loginTexts.or;
+        modalDialog.querySelector('.google-signin-description').textContent = loginTexts.googleDescription;
+        modalDialog.querySelector('.modal__close').setAttribute('aria-label', loginTexts.close);
+        
+        // Restaurar el valor del username si había uno
+        const usernameInput = document.getElementById('username');
+        if (usernameInput && usernameValue) {
+            usernameInput.value = usernameValue;
+        }
+    }
+    
+    // Restaurar el estado del modal
+    if (isOpen) {
+        loginModal.classList.add('is-open');
+        loginModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const url = window.location.href;
     const showModal = document.getElementById('showModal');
     const currentUser = authService.getUser();
-    const userLanguage = authService.getLanguage();
-    const PATH = url.includes('catalogo') || url.includes('catalog') ? '../../' : '../'+userLanguage+'/';
+    // Leer el idioma directamente de localStorage para asegurar que sea el más reciente
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    const PATH = url.includes('catalogo') || url.includes('catalog') || url.includes('catalogue') || url.includes('katalogoa') ? '../../' : '../'+userLanguage+'/';
     
     // Function to get redirect page after login
     function getRedirectPage() {
@@ -15,10 +127,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!redirect) return null;
         
         // Map redirect names to actual page names
-        const redirectMap = {
-            'checkout': userLanguage === 'EN' ? 'checkout.html' : 'finalizar-compra.html',
-            'finalizar-compra': 'finalizar-compra.html'
+        const redirectMaps = {
+            ES: {
+                'checkout': 'finalizar-compra.html',
+                'finalizar-compra': 'finalizar-compra.html'
+            },
+            EN: {
+                'checkout': 'checkout.html',
+                'finalizar-compra': 'checkout.html'
+            },
+            FR: {
+                'checkout': 'commande.html',
+                'finalizar-compra': 'commande.html',
+                'commande': 'commande.html'
+            },
+            EU: {
+                'checkout': 'erosketa-bukatu.html',
+                'finalizar-compra': 'erosketa-bukatu.html',
+                'erosketa-bukatu': 'erosketa-bukatu.html'
+            }
         };
+        const currentLang = localStorage.getItem('userLanguage') || 'ES';
+        const redirectMap = redirectMaps[currentLang] || redirectMaps.ES;
         
         return redirectMap[redirect] || null;
     }
@@ -31,15 +161,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const urlCategoria = url.split('/');
             let basePath = '';
             
-            if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+            if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
                 basePath = '../../../';
-            } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN') {
+            } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
                 basePath = '../';
             } else {
                 basePath = './';
             }
             
-            window.location.href = `${basePath}${userLanguage}/${redirectPage}`;
+            const currentLang = localStorage.getItem('userLanguage') || 'ES';
+            window.location.href = `${basePath}${currentLang}/${redirectPage}`;
         } else {
             window.location.reload();
         }
@@ -49,35 +180,70 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check if there's a redirect parameter
         const urlParams = new URLSearchParams(window.location.search);
         const redirect = urlParams.get('redirect');
-        const needsLoginForCheckout = redirect === 'checkout' || redirect === 'finalizar-compra';
+        const needsLoginForCheckout = redirect === 'checkout' || redirect === 'finalizar-compra' || redirect === 'commande' || redirect === 'erosketa-bukatu';
         
-        const loginTexts = userLanguage === 'EN' ? {
-            title: 'Sign in',
-            subtitle: needsLoginForCheckout 
-                ? 'You need to sign in to complete your purchase. Please sign in with your Username and Password.'
-                : 'Sign in with your Username and Password, Only administrators can sign in.',
-            username: 'Username',
-            password: 'Password',
-            enter: 'Enter',
-            cancel: 'Cancel',
-            loginMessage: 'Sign in',
-            or: 'or',
-            continueWith: 'Continue with',
-            googleDescription: 'Sign in with Google'
-        } : {
-            title: 'Inicia sesión',
-            subtitle: needsLoginForCheckout 
-                ? 'Necesitas iniciar sesión para completar tu compra. Por favor, accede con tu Usuario y Contraseña.'
-                : 'Accede con tu Usuario y Contraseña.',
-            username: 'Usuario',
-            password: 'Contraseña',
-            enter: 'Entrar',
-            cancel: 'Cancelar',
-            loginMessage: 'Inicia Sesión',
-            or: 'o',
-            continueWith: 'Continuar con',
-            googleDescription: 'Inicia sesión con Google'
+        // Leer el idioma directamente de localStorage para asegurar que sea el más reciente
+        const currentLang = localStorage.getItem('userLanguage') || 'ES';
+        
+        const loginTextsMaps = {
+            ES: {
+                title: 'Inicia sesión',
+                subtitle: needsLoginForCheckout 
+                    ? 'Necesitas iniciar sesión para completar tu compra. Por favor, accede con tu Usuario y Contraseña.'
+                    : 'Accede con tu Usuario y Contraseña.',
+                username: 'Usuario',
+                password: 'Contraseña',
+                enter: 'Entrar',
+                cancel: 'Cancelar',
+                loginMessage: 'Inicia Sesión',
+                or: 'o',
+                continueWith: 'Continuar con',
+                googleDescription: 'Inicia sesión con Google'
+            },
+            EN: {
+                title: 'Sign in',
+                subtitle: needsLoginForCheckout 
+                    ? 'You need to sign in to complete your purchase. Please sign in with your Username and Password.'
+                    : 'Sign in with your Username and Password, Only administrators can sign in.',
+                username: 'Username',
+                password: 'Password',
+                enter: 'Enter',
+                cancel: 'Cancel',
+                loginMessage: 'Sign in',
+                or: 'or',
+                continueWith: 'Continue with',
+                googleDescription: 'Sign in with Google'
+            },
+            FR: {
+                title: 'Se connecter',
+                subtitle: needsLoginForCheckout 
+                    ? 'Vous devez vous connecter pour finaliser votre achat. Veuillez vous connecter avec votre nom d\'utilisateur et votre mot de passe.'
+                    : 'Connectez-vous avec votre nom d\'utilisateur et votre mot de passe.',
+                username: 'Nom d\'utilisateur',
+                password: 'Mot de passe',
+                enter: 'Entrer',
+                cancel: 'Annuler',
+                loginMessage: 'Se connecter',
+                or: 'ou',
+                continueWith: 'Continuer avec',
+                googleDescription: 'Se connecter avec Google'
+            },
+            EU: {
+                title: 'Saioa hasi',
+                subtitle: needsLoginForCheckout 
+                    ? 'Erosketa bukatzeko saioa hasi behar duzu. Mesedez, sartu zure erabiltzaile izena eta pasahitza.'
+                    : 'Sartu zure erabiltzaile izena eta pasahitza.',
+                username: 'Erabiltzaile izena',
+                password: 'Pasahitza',
+                enter: 'Sartu',
+                cancel: 'Utzi',
+                loginMessage: 'Saioa hasi',
+                or: 'edo',
+                continueWith: 'Jarraitu',
+                googleDescription: 'Google-rekin saioa hasi'
+            }
         };
+        const loginTexts = loginTextsMaps[currentLang] || loginTextsMaps.ES;
 
         showModal.innerHTML = `
             <div class="modal" id="loginModal" aria-hidden="true">
@@ -183,17 +349,30 @@ document.addEventListener('DOMContentLoaded', () => {
         // Show message on page if there's a redirect and auto-open modal
         const loginMessageContainer = document.getElementById('login-message-container');
         if (loginMessageContainer && needsLoginForCheckout) {
-            const pageMessage = userLanguage === 'EN' 
-                ? {
-                    title: 'Sign in to Continue',
-                    message: 'You need to sign in to complete your purchase. Please sign in below.',
-                    button: 'Open Login Form'
-                }
-                : {
+            const pageMessages = {
+                ES: {
                     title: 'Inicia sesión para continuar',
                     message: 'Necesitas iniciar sesión para completar tu compra. Por favor, inicia sesión a continuación.',
                     button: 'Abrir formulario de inicio de sesión'
-                };
+                },
+                EN: {
+                    title: 'Sign in to Continue',
+                    message: 'You need to sign in to complete your purchase. Please sign in below.',
+                    button: 'Open Login Form'
+                },
+                FR: {
+                    title: 'Connectez-vous pour continuer',
+                    message: 'Vous devez vous connecter pour finaliser votre achat. Veuillez vous connecter ci-dessous.',
+                    button: 'Ouvrir le formulaire de connexion'
+                },
+                EU: {
+                    title: 'Saioa hasi jarraitzeko',
+                    message: 'Erosketa bukatzeko saioa hasi behar duzu. Mesedez, saioa hasi behean.',
+                    button: 'Saioa hasteko formularioa ireki'
+                }
+            };
+            const currentLang = localStorage.getItem('userLanguage') || 'ES';
+            const pageMessage = pageMessages[currentLang] || pageMessages.ES;
             
             loginMessageContainer.innerHTML = `
                 <div class="login-prompt">
@@ -256,13 +435,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 const btnEnter = document.getElementById('btn-enter');
                 const spinner = document.getElementById('spinner');
 
-                const messages = userLanguage === 'EN' ? {
-                    signingIn: 'Signing in...',
-                    incorrect: 'Incorrect username or password'
-                } : {
-                    signingIn: 'Iniciando sesión...',
-                    incorrect: 'Usuario o contraseña incorrectos'
+                const currentLang = localStorage.getItem('userLanguage') || 'ES';
+                const messagesMap = {
+                    ES: {
+                        signingIn: 'Iniciando sesión...',
+                        incorrect: 'Usuario o contraseña incorrectos'
+                    },
+                    EN: {
+                        signingIn: 'Signing in...',
+                        incorrect: 'Incorrect username or password'
+                    },
+                    FR: {
+                        signingIn: 'Connexion en cours...',
+                        incorrect: 'Nom d\'utilisateur ou mot de passe incorrect'
+                    },
+                    EU: {
+                        signingIn: 'Saioa hasten...',
+                        incorrect: 'Erabiltzaile izena edo pasahitza okerra'
+                    }
                 };
+                const messages = messagesMap[currentLang] || messagesMap.ES;
 
                 finderUser = await authService.validateLogin(username, password);
 
