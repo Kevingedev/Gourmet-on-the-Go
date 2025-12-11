@@ -68,6 +68,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const favoritesLabel = userLanguage === 'EN' ? 'Go to Favorites' : 'Ir a Favoritos';
     const favoritesTitle = userLanguage === 'EN' ? 'Favorites' : 'Favoritos';
     
+    // Checkout link (always visible, redirects to login if not logged in)
+    const checkoutPage = userLanguage === 'EN' ? 'checkout.html' : 'finalizar-compra.html';
+    const loginPage = userLanguage === 'EN' ? 'session.html' : 'sesion.html';
+    const redirectParam = userLanguage === 'EN' ? 'checkout' : 'finalizar-compra';
+    
+    // Calculate correct path to ES/ or EN/ folder based on current location
+    let baseLangPath = '';
+    if (pathParts.includes('404')) {
+        // From 404 folder, need to go up 2 levels to reach ES/ or EN/
+        baseLangPath = '../../';
+    } else if (pathParts.includes('catalogo') || pathParts.includes('catalog')) {
+        // From catalog folder, need to go up 2 levels to reach ES/ or EN/
+        baseLangPath = '../../';
+    } else if (pathParts.includes('ES') || pathParts.includes('EN')) {
+        // Already in ES/ or EN/ folder
+        baseLangPath = './';
+    } else {
+        // From root, need to go into ES/ or EN/
+        baseLangPath = `${userLanguage}/`;
+    }
+    
+    let checkoutHref, checkoutLabel, checkoutTitle;
+    if (currentUser) {
+        // User is logged in - go to checkout
+        checkoutHref = `${baseLangPath}${checkoutPage}`;
+        checkoutLabel = userLanguage === 'EN' ? 'Go to Checkout' : 'Ir a Finalizar Compra';
+        checkoutTitle = userLanguage === 'EN' ? 'Checkout' : 'Finalizar Compra';
+    } else {
+        // User not logged in - go to login with redirect
+        checkoutHref = `${baseLangPath}${loginPage}?redirect=${redirectParam}`;
+        checkoutLabel = userLanguage === 'EN' ? 'Sign in to Purchase' : 'Inicia sesión para Comprar';
+        checkoutTitle = userLanguage === 'EN' ? 'Purchase' : 'Comprar';
+    }
+    
+    const checkoutLink = `
+            <a href="${checkoutHref}" aria-label="${checkoutLabel}" title="${checkoutTitle}">
+                <button class="icon-btn" aria-label="${checkoutTitle}" title="${checkoutTitle}">
+                    <i class="fa-solid fa-shopping-bag"></i>
+                </button>
+            </a>
+    `;
 
     if (currentUser) {
         btnSesion = `<button class="btn-login" title="Cerrar sesión" data-modal-open="#logoutModal" id="btn-logout">${currentUserData.username}</button>`;
@@ -115,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="fa-solid fa-heart"></i>
                 </button>
                 </a>
+                ${checkoutLink}
                 <button class="icon-btn js-cart-toggle" aria-label="Carrito" aria-expanded="false" title="Carrito">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span class="badge" id="cart-count">0</span>

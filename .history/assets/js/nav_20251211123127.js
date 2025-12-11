@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <i class="fa-solid fa-heart"></i>
                 </button>
                 </a>
+                ${checkoutLink}
                 <button class="icon-btn js-cart-toggle" aria-label="Carrito" aria-expanded="false" title="Carrito">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span class="badge" id="cart-count">0</span>
