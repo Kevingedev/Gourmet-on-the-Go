@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
+    <title>Checkout</title>
     <link rel="icon" type="image/png" href="/assets/img/gourmet-logo-icon.png">
     <link rel="stylesheet" href="../assets/css/nav.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../assets/css/modal.css">
     <link rel="stylesheet" href="../assets/css/select.css">
     <link rel="stylesheet" href="../assets/icons/font-awesome.css">
+    <link rel="stylesheet" href="../assets/css/checkout.css">
 </head>
 
 <body>
@@ -22,8 +23,10 @@
     <main id="main" class="main-container">
         <section class="content-page">
             <div class="content-wrapper">
-                <div id="login-message-container" class="login-message-container">
-                    <!-- El contenido se cargará dinámicamente -->
+                <h1 class="page-title">Checkout</h1>
+                
+                <div id="checkout-container" class="checkout-container">
+                    <!-- El contenido se cargará dinámicamente desde checkout.js -->
                 </div>
             </div>
         </section>
@@ -33,7 +36,6 @@
     <div id="showModal"></div>
     <div id="cart-drawer"></div>
 
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="../assets/js/nav.js"></script>
     <script src="../assets/js/footer.js"></script>
     <script src="../assets/js/cart/cartView.js" type="module"></script>
@@ -41,7 +43,9 @@
     <script src="../assets/js/auth/validation.js" type="module"></script>
     <script src="../assets/js/utils.js"></script>
     <script src="../assets/js/cart/cartStore.js" type="module"></script>
+    <script src="../assets/js/checkout.js" type="module"></script>
 
 </body>
 
 </html>
+

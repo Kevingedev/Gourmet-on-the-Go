@@ -176,6 +176,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Checkout button handler
+    const checkoutButton = document.querySelector('.cart-drawer__checkout');
+    if (checkoutButton) {
+        checkoutButton.addEventListener('click', () => {
+            // Check if user is logged in
+            const currentUser = localStorage.getItem('currentUser');
+            const url = window.location.href;
+            const urlCategoria = url.split('/');
+            let basePath = '';
+            
+            if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+                basePath = '../../../';
+            } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN') {
+                basePath = '../';
+            } else {
+                basePath = './';
+            }
+            
+            const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+            
+            if (!currentUser) {
+                // Redirect to login page
+                const loginPage = userLanguage === 'EN' ? 'session.html' : 'sesion.html';
+                const redirectPage = userLanguage === 'EN' ? 'checkout' : 'finalizar-compra';
+                window.location.href = `${basePath}${userLanguage}/${loginPage}?redirect=${redirectPage}`;
+            } else {
+                // Redirect to checkout page
+                const checkoutPage = userLanguage === 'EN' ? 'checkout.html' : 'finalizar-compra.html';
+                window.location.href = `${basePath}${userLanguage}/${checkoutPage}`;
+            }
+        });
+    }
 
 });
 

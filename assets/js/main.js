@@ -25,12 +25,14 @@ const texts = {
 // Only load featured products if container exists
 if (featuredProductsLoader) {
     gestorDeDatos.cargarProductosDestacados().then(productos => {
+        // Determine product detail page name based on language
+        const detailPage = LANGUAGE === 'EN' ? 'product-detail.html' : 'producto-detalle.html';
 
         productos.forEach(producto => {
             featuredProductsLoader.innerHTML += `
             <article class="section-productos-destacados__item cart-item" data-product-id="${producto.id_producto}">
             <div class="product-image-wrapper">
-                <a href="producto-detalle.html?pd=${producto.id_producto}">
+                <a href="${detailPage}?pd=${producto.id_producto}">
                     <img src="../${producto.img_url}" alt="${producto.nombre[LANGUAGE]}">
                 </a>
                 ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${texts[LANGUAGE].featured}</span>` : ''}

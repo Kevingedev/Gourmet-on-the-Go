@@ -60,8 +60,37 @@ export const googleAuth = {
                 spinner.classList.add('spinner-activo');
             }
 
-            // Reload page after short delay
+            // Redirect after login (check for redirect parameter)
             setTimeout(() => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirect = urlParams.get('redirect');
+                
+                if (redirect) {
+                    // Map redirect names to actual page names
+                    const redirectMap = {
+                        'checkout': userLanguage === 'EN' ? 'checkout.html' : 'finalizar-compra.html',
+                        'finalizar-compra': 'finalizar-compra.html'
+                    };
+                    
+                    const redirectPage = redirectMap[redirect];
+                    if (redirectPage) {
+                        const url = window.location.href;
+                        const urlCategoria = url.split('/');
+                        let basePath = '';
+                        
+                        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+                            basePath = '../../../';
+                        } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN') {
+                            basePath = '../';
+                        } else {
+                            basePath = './';
+                        }
+                        
+                        window.location.href = `${basePath}${userLanguage}/${redirectPage}`;
+                        return;
+                    }
+                }
+                
                 window.location.reload();
             }, 1000);
         }
