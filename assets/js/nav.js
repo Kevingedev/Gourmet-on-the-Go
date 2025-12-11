@@ -37,6 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
         </select>
     `;
     }
+    // Language-specific strings for favorites
+    const favoritesLink = userLanguage === 'EN' ? 'favorites.html' : 'favoritos.html';
+    const favoritesLabel = userLanguage === 'EN' ? 'Go to Favorites' : 'Ir a Favoritos';
+    const favoritesTitle = userLanguage === 'EN' ? 'Favorites' : 'Favoritos';
+
     if (currentUser) {
         btnSesion = `<button class="btn-login" title="Cerrar sesión" data-modal-open="#logoutModal" id="btn-logout">${currentUserData.username}</button>`;
     } else {
@@ -69,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
 
             <div class="nav__actions">
-            <a href="${PATH}${userLanguage}/favoritos.html" aria-label="Ir a Favoritos" title="Ir a Favoritos">
-                <button class="icon-btn" aria-label="Favoritos" title="Favoritos">
+            <a href="${PATH}${userLanguage}/${favoritesLink}" aria-label="${favoritesLabel}" title="${favoritesLabel}">
+                <button class="icon-btn" aria-label="${favoritesTitle}" title="${favoritesTitle}">
                     <i class="fa-solid fa-heart"></i>
                 </button>
                 </a>
