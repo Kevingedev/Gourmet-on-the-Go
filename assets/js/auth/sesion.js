@@ -112,6 +112,197 @@ function updateLoginModal() {
     }
 }
 
+// Account menu translations
+const accountMenuTexts = {
+    ES: {
+        title: 'Mi cuenta',
+        viewAccount: 'Ver mi cuenta',
+        favorites: 'Mis favoritos',
+        logout: 'Cerrar sesión',
+        closePanel: 'Cerrar panel',
+        confirmLogout: 'Cerrar sesión',
+        confirmLogoutText: '¿Seguro que quieres cerrar sesión?',
+        yesLogout: 'Sí, cerrar sesión',
+        cancel: 'Cancelar',
+        closeWindow: 'Cerrar ventana',
+        profilePage: 'perfil.html',
+        favoritesPage: 'favoritos.html'
+    },
+    EN: {
+        title: 'My Account',
+        viewAccount: 'View my account',
+        favorites: 'My Favorites',
+        logout: 'Log Out',
+        closePanel: 'Close panel',
+        confirmLogout: 'Log Out',
+        confirmLogoutText: 'Are you sure you want to log out?',
+        yesLogout: 'Yes, log out',
+        cancel: 'Cancel',
+        closeWindow: 'Close window',
+        profilePage: 'profile.html',
+        favoritesPage: 'favorites.html'
+    },
+    FR: {
+        title: 'Mon Compte',
+        viewAccount: 'Voir mon compte',
+        favorites: 'Mes Favoris',
+        logout: 'Déconnexion',
+        closePanel: 'Fermer le panneau',
+        confirmLogout: 'Déconnexion',
+        confirmLogoutText: 'Êtes-vous sûr de vouloir vous déconnecter?',
+        yesLogout: 'Oui, se déconnecter',
+        cancel: 'Annuler',
+        closeWindow: 'Fermer la fenêtre',
+        profilePage: 'profil.html',
+        favoritesPage: 'favoris.html'
+    },
+    EU: {
+        title: 'Nire Kontua',
+        viewAccount: 'Ikusi nire kontua',
+        favorites: 'Nire Gogokoak',
+        logout: 'Saioa Itxi',
+        closePanel: 'Panela itxi',
+        confirmLogout: 'Saioa Itxi',
+        confirmLogoutText: 'Ziur zaude saioa itxi nahi duzula?',
+        yesLogout: 'Bai, saioa itxi',
+        cancel: 'Ezeztatu',
+        closeWindow: 'Leihoa itxi',
+        profilePage: 'profila.html',
+        favoritesPage: 'gogokoak.html'
+    }
+};
+
+// Function to get account menu texts
+function getAccountMenuTexts(language) {
+    return accountMenuTexts[language] || accountMenuTexts.ES;
+}
+
+// Function to setup logout modal functionality
+function setupLogoutModal() {
+    const newModal = document.querySelector('#logout-modal');
+    if (newModal) {
+        newModal.classList.add('is-open');
+        newModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        
+        // Enfocar primer elemento focusable
+        const focusables = newModal.querySelectorAll('button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+        if (focusables.length) focusables[0].focus();
+    }
+    
+    // Listener for confirm logout button
+    const confirmLogoutBtn = document.getElementById('confirm-logout-final');
+    if (confirmLogoutBtn) {
+        confirmLogoutBtn.addEventListener('click', () => {
+            const spinner = document.getElementById('spinner');
+            if (spinner) {
+                spinner.classList.remove('oculto');
+                spinner.classList.add('spinner-activo');
+            }
+            confirmLogoutBtn.disabled = true;
+            
+            setTimeout(() => {
+                authService.logout();
+                window.location.reload();
+            }, 2000);
+        });
+    }
+}
+
+// Function to render account menu
+function renderAccountMenu() {
+    const showModal = document.getElementById('showModal');
+    if (!showModal) return;
+    
+    const currentUser = authService.getUser();
+    if (!currentUser) return;
+    
+    const url = window.location.href;
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    const PATH = url.includes('catalogo') || url.includes('catalog') || url.includes('catalogue') || url.includes('katalogoa') ? '../../' : '../'+userLanguage+'/';
+    const texts = getAccountMenuTexts(userLanguage);
+    
+    showModal.innerHTML = `
+        <div
+            id="logoutModal"
+            class="modal modal-logout modal-logout-drawer"
+            aria-hidden="true"
+            role="dialog"
+            aria-labelledby="account-modal-title"
+            >
+            <!-- Fondo oscuro (click para cerrar) -->
+            <div class="modal-logout-backdrop" data-modal-close></div>
+
+            <!-- Panel que entra desde la derecha -->
+            <aside class="modal-logout-panel">
+                <header class="modal-logout-header">
+                <h2 id="account-modal-logout-title">${texts.title}</h2>
+                <button
+                    class="modal-logout-close"
+                    type="button"
+                    aria-label="${texts.closePanel}"
+                    data-modal-close
+                >
+                    ✕
+                </button>
+                </header>
+
+                <div class="modal-logout-body">
+                <div class="user-summary">
+                    ${currentUser.picture 
+                        ? `<img src="${currentUser.picture}" alt="Avatar" class="user-avatar user-avatar-img" style="width: 40px; height: 40px; border-radius: 999px; object-fit: cover;">`
+                        : `<div class="user-avatar">${authService.getAvatar()}</div>`
+                    }
+                    <div class="user-info">
+                    <p class="user-name">${currentUser.nombre_completo}</p>
+                    <p class="user-email">${currentUser.email}</p>
+                    </div>
+                    
+                </div>
+
+                <nav class="account-menu">  
+                    <a href="${PATH}${texts.profilePage}" class="links-sesion account-item"><span> <i class="fa-regular fa-user icon-sesion"></i> ${texts.viewAccount}</span></a> 
+                    
+                    <a href="${PATH}${texts.favoritesPage}" class="links-sesion account-item"><span><i class="fa-regular fa-heart icon-sesion"></i> ${texts.favorites}</span></a>
+
+                    <a role="button" class="links-sesion account-item account-item-danger" id="logout"><span><i class="fa-solid fa-arrow-right-from-bracket"></i> ${texts.logout}</span></a>
+                    
+                </nav>
+                </div>
+            </aside>
+        </div>
+        `;
+
+    // Add logout click handler
+    const logoutButton = document.getElementById('logout');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            const texts = getAccountMenuTexts(localStorage.getItem('userLanguage') || 'ES');
+            showModal.innerHTML = `
+                <div id="logout-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="logout-modal-title">
+                    <div class="modal__backdrop" data-modal-close></div>
+                    <section class="modal__panel modal-panel-confirm-logout">
+                        <header class="modal__header modal-header-confirm-logout">
+                            <h2 id="logout-modal-title" class="modal__title">${texts.confirmLogout}</h2>
+                            <button class="modal__close" type="button" aria-label="${texts.closeWindow}" data-modal-close>✕</button>
+                        </header>
+                        <div class="modal__body modal-body-confirm-logout">
+                            <p class="confirm-logout-text">${texts.confirmLogoutText}</p>
+                            <div class="confirm-logout-actions">
+                                <button type="button" class="btn-confirm-logout-primary" id="confirm-logout-final">${texts.yesLogout} <span id="spinner" class="oculto"></span></button>
+                                <button type="button" class="btn-confirm-logout-secondary" data-modal-close>${texts.cancel}</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+            
+            // Setup modal functionality
+            setupLogoutModal();
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const url = window.location.href;
     const showModal = document.getElementById('showModal');
@@ -507,111 +698,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     } else {
-        showModal.innerHTML = `
-        <div
-            id="logoutModal"
-            class="modal modal-logout modal-logout-drawer"
-            aria-hidden="true"
-            role="dialog"
-            aria-labelledby="account-modal-title"
-            >
-            <!-- Fondo oscuro (click para cerrar) -->
-            <div class="modal-logout-backdrop" data-modal-close></div>
-
-            <!-- Panel que entra desde la derecha -->
-            <aside class="modal-logout-panel">
-                <header class="modal-logout-header">
-                <h2 id="account-modal-logout-title">Mi cuenta</h2>
-                <button
-                    class="modal-logout-close"
-                    type="button"
-                    aria-label="Cerrar panel"
-                    data-modal-close
-                >
-                    ✕
-                </button>
-                </header>
-
-                <div class="modal-logout-body">
-                <div class="user-summary">
-                    ${authService.getUser().picture 
-                        ? `<img src="${authService.getUser().picture}" alt="Avatar" class="user-avatar user-avatar-img" style="width: 40px; height: 40px; border-radius: 999px; object-fit: cover;">`
-                        : `<div class="user-avatar">${authService.getAvatar()}</div>`
-                    }
-                    <div class="user-info">
-                    <p class="user-name">${authService.getUser().nombre_completo}</p>
-                    <p class="user-email">${authService.getUser().email}</p>
-                    </div>
-                    
-                </div>
-
-                <nav class="account-menu">  
-                    <a href="${PATH}${userLanguage === 'EN' ? 'profile.html' : 'perfil.html'}" class="links-sesion account-item"><span> <i class="fa-regular fa-user icon-sesion"></i> ${userLanguage === 'EN' ? 'View my account' : 'Ver mi cuenta'}</span></a> 
-                    
-                    <a href="${PATH}${userLanguage === 'EN' ? 'favorites.html' : 'favoritos.html'}" class="links-sesion account-item"><span><i class="fa-regular fa-heart icon-sesion"></i> Mis favoritos</span></a>
-
-                    <a role="button" class="links-sesion account-item account-item-danger" id="logout"><span><i class="fa-solid fa-arrow-right-from-bracket"></i> Cerrar sesión</span></a>
-                    
-                </nav>
-                </div>
-            </aside>
-        </div>
-        `;
-
-        document.getElementById('logout').addEventListener('click', () => {
-    // Insertar el HTML del modal en el contenedor
-            showModal.innerHTML = `
-                <div id="logout-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="logout-modal-title">
-                    <div class="modal__backdrop" data-modal-close></div>
-                    <section class="modal__panel modal-panel-confirm-logout">
-                        <header class="modal__header modal-header-confirm-logout">
-                            <h2 id="logout-modal-title" class="modal__title">Cerrar sesión</h2>
-                            <button class="modal__close" type="button" aria-label="Cerrar ventana" data-modal-close>✕</button>
-                        </header>
-                        <div class="modal__body modal-body-confirm-logout">
-                            <p class="confirm-logout-text">¿Seguro que quieres cerrar sesión?</p>
-                            <div class="confirm-logout-actions">
-                                <button type="button" class="btn-confirm-logout-primary" id="confirm-logout-final">Sí, cerrar sesión <span id="spinner" class="oculto"></span></button>
-                                <button type="button" class="btn-confirm-logout-secondary" data-modal-close>Cancelar</button>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                `;
-            
-            // Abrir el modal recién insertado usando tu función existente
-            //Abrir manualmente usando las clases (tu sistema ya escucha data-modal-open)
-            const newModal = showModal.querySelector('#logout-modal');
-            newModal.classList.add('is-open');
-            newModal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-            
-            // Enfocar primer elemento focusable
-            const focusables = newModal.querySelectorAll('button:not([disabled]), [tabindex]:not([tabindex="-1"])');
-            if (focusables.length) focusables[0].focus();
-        });
-        // Listener dinámico para el botón de confirmación (se ejecuta después del insert)
-// Listener global que ya maneja tu sistema + confirmación
-        document.addEventListener('click', (e) => {
-            // Tu sistema existente maneja data-modal-close automáticamente
-            
-            // Confirmación de logout
-            if (e.target.id === 'confirm-logout-final') {
-                const spinner = document.getElementById('spinner');
-                spinner.classList.remove('oculto');
-                spinner.classList.add('spinner-activo');
-                // LÓGICA REAL DE LOGOUT
-                console.log('Logout ejecutado');
-                document.getElementById('confirm-logout-final').disabled = true;
-
-                setTimeout(() => {
-                    authService.logout();
-                    window.location.reload();
-                }, 2000);
-
-            }
-        });
+        // Render account menu using the function
+        renderAccountMenu();
     }
+    
+    // Listen for language changes to update account menu
+    window.addEventListener('languageChanged', () => {
+        const logoutModal = document.getElementById('logoutModal');
+        if (logoutModal && logoutModal.classList.contains('is-open')) {
+            renderAccountMenu();
+            // Re-open the modal after re-rendering
+            setTimeout(() => {
+                logoutModal.classList.add('is-open');
+                logoutModal.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }, 100);
+        }
+    });
 
 
 

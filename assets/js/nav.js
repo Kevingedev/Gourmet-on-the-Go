@@ -177,7 +177,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log('assetsPath:', assetsPath);
     // console.log('jsonPath will be:', `${assetsPath}assets/data/categories.json`);
     
+    // Announcement banner texts for all languages
+    const announcementTexts = {
+        ES: {
+            text: '🎉 ¡Oferta Especial! 15% de descuento en todos los productos',
+            close: 'Cerrar'
+        },
+        EN: {
+            text: '🎉 Special Offer! 15% off on all products',
+            close: 'Close'
+        },
+        FR: {
+            text: '🎉 Offre Spéciale! 15% de réduction sur tous les produits',
+            close: 'Fermer'
+        },
+        EU: {
+            text: '🎉 Oferta Berezia! %15eko deskontua produktu guztietan',
+            close: 'Itxi'
+        }
+    };
+    const announcement = announcementTexts[userLanguage] || announcementTexts.ES;
+    
     const navbar = `
+<div class="announcement-banner" id="announcement-banner">
+    <div class="announcement-banner__content">
+        <span class="announcement-banner__text">${announcement.text}</span>
+        <button class="announcement-banner__close" aria-label="${announcement.close}" title="${announcement.close}">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+</div>
 <nav class="nav">
         <div class="nav__logo">
             <img src="${assetsPath}assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="40" class="logo-icon">
@@ -224,6 +253,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // estoy insertando el navbar y el cartDrawer
     header.innerHTML = navbar;
+    
+    // Handle announcement banner close
+    const announcementBanner = document.getElementById('announcement-banner');
+    const announcementClose = document.querySelector('.announcement-banner__close');
+    const nav = document.querySelector('.nav');
+    
+    if (announcementBanner && nav) {
+        // Check if banner was previously closed
+        if (localStorage.getItem('announcementBannerClosed') === 'true') {
+            announcementBanner.style.display = 'none';
+            nav.classList.remove('nav--with-banner');
+        } else {
+            nav.classList.add('nav--with-banner');
+            
+            // Save state when closed and hide banner
+            if (announcementClose) {
+                announcementClose.addEventListener('click', () => {
+                    announcementBanner.style.display = 'none';
+                    nav.classList.remove('nav--with-banner');
+                    localStorage.setItem('announcementBannerClosed', 'true');
+                });
+            }
+        }
+    }
     // console.log(WELCOME);
     if (WELCOME != null) {
         if (!currentUser) {

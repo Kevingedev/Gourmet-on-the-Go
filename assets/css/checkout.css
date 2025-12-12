@@ -62,6 +62,39 @@
     gap: 0.5rem;
 }
 
+.account-section {
+    background: rgba(13, 130, 0, 0.05);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(13, 130, 0, 0.15);
+}
+
+.account-display {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.account-field {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: var(--radius-md);
+}
+
+.account-field strong {
+    font-weight: 600;
+    color: #333;
+    min-width: 120px;
+}
+
+.account-field span {
+    color: #666;
+    flex: 1;
+}
+
 .checkout-section h2 i {
     color: #d97706;
 }
