@@ -1,19 +1,20 @@
 [
+   
     {
         "id": 1,
-        "username": "admin",
-        "password": "password123",
-        "rol": "administrador",
-        "nombre_completo": "Super Administrador",
-        "email": "admin@empresa.com",
-        "edad": 45,
-        "fecha_registro": "2022-01-15"
+        "username": "achrafrzz",
+        "password": "clave123",
+        "rol": "administración",
+        "nombre_completo": "Achraf RZZ",
+        "email": "hi@achrafrzz.com",
+        "edad": 23,
+        "fecha_registro": "2025-12-10"
     },
     {
         "id": 2,
         "username": "kevin",
         "password": "clave123",
-        "rol": "desarrollador",
+        "rol": "administración",
         "nombre_completo": "Kevin Ruiz",
         "email": "kevin@portafolio.dev",
         "edad": 24,
@@ -23,7 +24,7 @@
         "id": 3,
         "username": "german",
         "password": "clave123",
-        "rol": "desarrollador",
+        "rol": "administración",
         "nombre_completo": "German Illan",
         "email": "german@portafolio.dev",
         "edad": 30,
@@ -33,30 +34,10 @@
         "id": 4,
         "username": "Anna",
         "password": "clave123",
-        "rol": "desarrollador",
+        "rol": "administración",
         "nombre_completo": "Anna Nikolenko",
         "email": "anna@portafolio.dev",
         "edad": 30,
-        "fecha_registro": "2024-03-01"
-    },
-    {
-        "id": 5,
-        "username": "Achraf",
-        "password": "clave123",
-        "rol": "desarrollador",
-        "nombre_completo": "Achraf",
-        "email": "achraf@portafolio.dev",
-        "edad": 23,
-        "fecha_registro": "2024-03-01"
-    },
-    {
-        "id": 6,
-        "username": "Invitado",
-        "password": "clave123",
-        "rol": "invitado",
-        "nombre_completo": "Invitado",
-        "email": "invitado@guest.com",
-        "edad": 23,
         "fecha_registro": "2024-03-01"
     }
 ]

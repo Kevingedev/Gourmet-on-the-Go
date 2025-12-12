@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="eu">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Produktuaren xehetasuna - Aurreikuspena</title>
+   <link rel="icon" type="image/png" href="/assets/img/gourmet-logo-icon.png">
+    <link rel="stylesheet" href="../assets/css/nav.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/modal.css">
+    <link rel="stylesheet" href="../assets/css/select.css">
+    <link rel="stylesheet" href="../assets/icons/font-awesome.css">
+  <style>
+    .preview-wrapper {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .preview-card {
+      background: #ffffff;
+      width: 70%;
+      max-width: 1000px;
+      padding: 2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      display: grid;
+      grid-template-columns: 1.2fr 1.3fr;
+      gap: 2rem;
+    }
+
+    .preview-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .preview-main h1 {
+      margin-top: 0;
+      font-size: 1.8rem;
+    }
+
+    .precio {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .btn-carrito {
+      padding: 0.6rem 1.5rem;
+      border: none;
+      background: #e0e0e0;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn-carrito:hover {
+      background: #cfcfcf;
+    }
+
+    .info-general {
+      grid-column: 1 / 3;
+      margin-top: 2rem;
+      font-size: 0.95rem;
+    }
+
+    .info-general h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .info-general p {
+      margin: 0.2rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .preview-card {
+        width: 90%;
+        grid-template-columns: 1fr;
+      }
+
+      .info-general {
+        grid-column: 1 / 2;
+      }
+    }
+  </style>
+</head>
+<body>
+     <header id="header"></header>
+    <div id="datetime-display" class="minimal-datetime"></div>
+  <div class="preview-wrapper" id="vista-producto">
+    
+  </div>
+  <footer id="footer"></footer>
+    <div id="showModal"></div>
+    <div id="cart-drawer"></div>
+
+    <script src="../assets/js/nav.js"></script>
+    <script src="../assets/js/footer.js"></script>
+    <script src="../assets/js/cart/cartView.js" type="module"></script>
+    <script src="../assets/js/auth/sesion.js" type="module"></script>
+    <script src="../assets/js/auth/validation.js" type="module"></script>
+    <script src="../assets/js/data-loader/productService.js" type="module"></script>
+    <script src="../assets/js/main.js" type="module"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/cart/cartStore.js" type="module"></script>
+    <script src="../assets/js/product-detail/producto-detalle.js" type="module"></script>
+</body>
+</html>
+

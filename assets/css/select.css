@@ -2,29 +2,40 @@
 
 /* Estilos Base para el Elemento Select */
 .select-custom {
-    background-color: rgba(5, 68, 21, 0.9);
+    background-color: rgba(12, 128, 56, 0.95);
     color: white;
-    border: 1px solid rgba(5, 68, 21, 0.9);
-    border-radius: 1rem;
-
-    /* Para asegurar que los estilos se apliquen correctamente */
+    border: 1.5px solid rgba(12, 128, 56, 0.3);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(8px);
+    box-shadow: var(--shadow-sm);
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     cursor: pointer;
+    transition: all var(--transition-base);
+    font-weight: 500;
 }
 
 /* Estilos para el estado de Enfoque */
 .select-custom:focus {
     outline: none;
-    border-color: transparent;
-    /* Indicador visual de foco */
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(12, 128, 56, 0.2), var(--shadow-md);
+    background-color: var(--color-primary);
 }
 
 /* Estilos para la lista desplegable (options) */
 .select-custom option {
-    background-color: rgba(5, 68, 21, 0.5);
+    background-color: rgba(12, 128, 56, 0.95);
     color: white;
-    border-radius: 1rem;
-    border: 1px solid rgba(240, 240, 240, 0.98);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+}
+
+.select-custom:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
 }

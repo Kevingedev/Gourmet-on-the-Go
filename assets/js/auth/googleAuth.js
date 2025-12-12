@@ -19,12 +19,19 @@ export const googleAuth = {
         const payload = this.decodeJWT(response.credential);
         
         if (payload) {
-            // Create user object similar to users.json structure
+            const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+            const messages = userLanguage === 'EN' ? {
+                signingIn: 'Signing in...'
+            } : {
+                signingIn: 'Iniciando sesión...'
+            };
+
+            // Create user object for normal users (Google login is for everyone)
             const googleUser = {
                 id: this.generateUserId(),
                 username: payload.email.split('@')[0], // Use email prefix as username
                 password: null, // No password for Google users
-                rol: 'usuario', // Default role
+                rol: 'usuario', // Normal user role
                 nombre_completo: payload.name || payload.email,
                 email: payload.email,
                 edad: null,
@@ -42,7 +49,7 @@ export const googleAuth = {
             const spinner = document.getElementById('spinner');
             
             if (loginMessage) {
-                loginMessage.textContent = 'Iniciando sesión...';
+                loginMessage.textContent = messages.signingIn;
                 loginMessageBox.style.color = 'green';
                 loginMessageBox.style.borderColor = 'green';
                 loginMessageBox.style.backgroundColor = 'rgba(63, 189, 0, 0.35)';
@@ -53,8 +60,55 @@ export const googleAuth = {
                 spinner.classList.add('spinner-activo');
             }
 
-            // Reload page after short delay
+            // Redirect after login (check for redirect parameter)
             setTimeout(() => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirect = urlParams.get('redirect');
+                
+                if (redirect) {
+                    // Map redirect names to actual page names
+                    const redirectMaps = {
+                        ES: {
+                            'checkout': 'finalizar-compra.html',
+                            'finalizar-compra': 'finalizar-compra.html'
+                        },
+                        EN: {
+                            'checkout': 'checkout.html',
+                            'finalizar-compra': 'checkout.html'
+                        },
+                        FR: {
+                            'checkout': 'commande.html',
+                            'finalizar-compra': 'commande.html',
+                            'commande': 'commande.html'
+                        },
+                        EU: {
+                            'checkout': 'erosketa-bukatu.html',
+                            'finalizar-compra': 'erosketa-bukatu.html',
+                            'erosketa-bukatu': 'erosketa-bukatu.html'
+                        }
+                    };
+                    
+                    const redirectMap = redirectMaps[userLanguage] || redirectMaps.ES;
+                    const redirectPage = redirectMap[redirect];
+                    
+                    if (redirectPage) {
+                        const url = window.location.href;
+                        const urlCategoria = url.split('/');
+                        let basePath = '';
+                        
+                        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
+                            basePath = '../../../';
+                        } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
+                            basePath = '../';
+                        } else {
+                            basePath = './';
+                        }
+                        
+                        window.location.href = `${basePath}${userLanguage}/${redirectPage}`;
+                        return;
+                    }
+                }
+                
                 window.location.reload();
             }, 1000);
         }

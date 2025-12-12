@@ -10,8 +10,14 @@ const tituloBusqueda = document.getElementById('search-title');
 const infoBusqueda = document.getElementById('search-query-info');
 
 // Actualizar título de búsqueda según idioma
+const searchTitles = {
+    ES: 'Resultados de búsqueda',
+    EN: 'Search Results',
+    FR: 'Résultats de recherche',
+    EU: 'Bilaketa emaitzak'
+};
 if (tituloBusqueda) {
-    tituloBusqueda.textContent = idioma === 'EN' ? 'Search Results' : 'Resultados de búsqueda';
+    tituloBusqueda.textContent = searchTitles[idioma] || searchTitles.ES;
 }
 
 // Esperar a que el DOM esté completamente cargado
@@ -20,76 +26,139 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function cargarResultados() {
-    const textos = idioma === 'EN' ? {
-        noQuery: 'Please enter a search term.',
-        searching: 'Searching',
-        results: 'result found',
-        noResults: 'No products found for',
-        loading: 'Searching products...',
-        category: 'Category',
-        addToCart: 'Add'
-    } : {
-        noQuery: 'Por favor, ingresa un término de búsqueda.',
-        searching: 'Buscando',
-        results: 'resultado encontrado',
-        noResults: 'No se encontraron productos para',
-        loading: 'Buscando productos...',
-        category: 'Categoría',
-        addToCart: 'Añadir'
+    const textos = {
+        ES: {
+            noQuery: 'Por favor, ingresa un término de búsqueda.',
+            searching: 'Buscando',
+            results: 'resultado encontrado',
+            resultsPlural: 'resultados encontrados',
+            noResults: 'No se encontraron productos para',
+            loading: 'Buscando productos...',
+            category: 'Categoría',
+            addToCart: 'Añadir',
+            featured: 'Destacado',
+            error: 'Ocurrió un error al buscar productos. Por favor, intenta nuevamente.'
+        },
+        EN: {
+            noQuery: 'Please enter a search term.',
+            searching: 'Searching',
+            results: 'result found',
+            resultsPlural: 'results found',
+            noResults: 'No products found for',
+            loading: 'Searching products...',
+            category: 'Category',
+            addToCart: 'Add',
+            featured: 'Featured',
+            error: 'An error occurred while searching for products. Please try again.'
+        },
+        FR: {
+            noQuery: 'Veuillez entrer un terme de recherche.',
+            searching: 'Recherche',
+            results: 'résultat trouvé',
+            resultsPlural: 'résultats trouvés',
+            noResults: 'Aucun produit trouvé pour',
+            loading: 'Recherche de produits...',
+            category: 'Catégorie',
+            addToCart: 'Ajouter',
+            featured: 'En vedette',
+            error: 'Une erreur s\'est produite lors de la recherche de produits. Veuillez réessayer.'
+        },
+        EU: {
+            noQuery: 'Mesedez, sartu bilaketa termino bat.',
+            searching: 'Bilatzen',
+            results: 'emaitza aurkitu',
+            resultsPlural: 'emaitza aurkitu',
+            noResults: 'Ez da produkturik aurkitu',
+            loading: 'Produktuak bilatzen...',
+            category: 'Kategoria',
+            addToCart: 'Gehitu',
+            featured: 'Nabarmendua',
+            error: 'Errore bat gertatu da produktuak bilatzean. Mesedez, saiatu berriro.'
+        }
     };
+    const currentTexts = textos[idioma] || textos.ES;
 
     if (!busqueda || busqueda.trim().length < 1) {
-        mostrarSinResultados(textos.noQuery);
+        mostrarSinResultados(currentTexts.noQuery);
         return;
     }
 
     try {
         mensajeCarga.style.display = 'block';
-        mensajeCarga.textContent = textos.loading;
+        mensajeCarga.textContent = currentTexts.loading;
         const productos = await gestorDeDatos.cargarProductosPorNombre(busqueda);
         mensajeCarga.style.display = 'none';
 
         const resultadoTexto = productos.length === 1 
-            ? textos.results 
-            : (idioma === 'EN' ? 'results found' : 'resultados encontrados');
-        infoBusqueda.textContent = `${textos.searching}: "${busqueda}" - ${productos.length} ${resultadoTexto}`;
+            ? currentTexts.results 
+            : currentTexts.resultsPlural;
+        infoBusqueda.textContent = `${currentTexts.searching}: "${busqueda}" - ${productos.length} ${resultadoTexto}`;
 
         if (productos.length === 0) {
-            mostrarSinResultados(`${textos.noResults} "${busqueda}"`);
+            mostrarSinResultados(`${currentTexts.noResults} "${busqueda}"`);
         } else {
             mostrarProductos(productos);
         }
     } catch (error) {
         console.error('Error al cargar resultados de búsqueda:', error);
         mensajeCarga.style.display = 'none';
-        const errorText = idioma === 'EN' 
-            ? 'An error occurred while searching for products. Please try again.' 
-            : 'Ocurrió un error al buscar productos. Por favor, intenta nuevamente.';
-        mostrarSinResultados(errorText);
+        mostrarSinResultados(currentTexts.error);
     }
 }
 
 function mostrarProductos(productos) {
     const rutaBase = '../';
-    const textos = idioma === 'EN' ? {
-        featured: 'Featured',
-        category: 'Category',
-        addToCart: 'Add',
-        added: '✓ Added'
-    } : {
-        featured: 'Destacado',
-        category: 'Categoría',
-        addToCart: 'Añadir',
-        added: '✓ Añadido'
+    const textos = {
+        ES: {
+            featured: 'Destacado',
+            category: 'Categoría',
+            addToCart: 'Añadir',
+            added: '✓ Añadido'
+        },
+        EN: {
+            featured: 'Featured',
+            category: 'Category',
+            addToCart: 'Add',
+            added: '✓ Added'
+        },
+        FR: {
+            featured: 'En vedette',
+            category: 'Catégorie',
+            addToCart: 'Ajouter',
+            added: '✓ Ajouté'
+        },
+        EU: {
+            featured: 'Nabarmendua',
+            category: 'Kategoria',
+            addToCart: 'Gehitu',
+            added: '✓ Gehituta'
+        }
     };
+    const currentTexts = textos[idioma] || textos.ES;
+    
+    // Determine product detail page based on language
+    const detailPages = {
+        ES: 'producto-detalle.html',
+        EN: 'product-detail.html',
+        FR: 'detail-produit.html',
+        EU: 'produktu-xehetasuna.html'
+    };
+    const langPaths = {
+        ES: 'ES',
+        EN: 'EN',
+        FR: 'FR',
+        EU: 'EU'
+    };
+    const detailPage = detailPages[idioma] || 'producto-detalle.html';
+    const langPath = langPaths[idioma] || 'ES';
     
     contenedorResultados.innerHTML = `
         <div class="products-grid container-products">
             ${productos.map(producto => `
                 <article class="section-productos-destacados__item cart-item search-product-card" data-product-id="${producto.id_producto}">
                     <div class="product-image-wrapper">
-                        <img src="${rutaBase}assets/img/product-images/img-test.jpg" alt="${producto.nombre[idioma]}">
-                        ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${textos.featured}</span>` : ''}
+                        <img src="${rutaBase}${producto.img_url}" alt="${producto.nombre[idioma]}">
+                        ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${currentTexts.featured}</span>` : ''}
                     </div>
                     <h3 class="item_title">${producto.nombre[idioma]}</h3>
                     <p class="item_description">${producto.descripcion[idioma]}</p>
@@ -100,7 +169,7 @@ function mostrarProductos(productos) {
                         <div class="product-details">
                             <div class="product-category">
                                 <i class="fa-solid fa-tag"></i>
-                                <span>${textos.category}: ${obtenerNombreCategoria(producto.id_categoria)}</span>
+                                <span>${currentTexts.category}: ${obtenerNombreCategoria(producto.id_categoria)}</span>
                             </div>
                             <div class="product-unit">
                                 <i class="fa-solid fa-weight"></i>
@@ -110,7 +179,7 @@ function mostrarProductos(productos) {
                         <p class="item_price">${producto.precio}€</p>
                     </div>
                     <div class="item_actions">
-                        <button class="btn-add-to-cart">${textos.addToCart}</button>
+                        <button class="btn-add-to-cart">${currentTexts.addToCart}</button>
                         <button class="btn-favorite"><i class="fa-solid fa-heart"></i></button>
                     </div>
                 </article>
@@ -118,123 +187,41 @@ function mostrarProductos(productos) {
         </div>
     `;
     
-    // Inicializar event listeners para los botones después de renderizar
-    inicializarBotonesCarrito();
+    // No need to initialize buttons here - cartView.js already handles it
+    // The container-products class will be picked up by cartView.js automatically
 }
 
-function inicializarBotonesCarrito() {
-    // Esperar a que cartView.js esté completamente cargado
-    setTimeout(() => {
-        const containerProducts = document.querySelector('.container-products');
-        if (!containerProducts) return;
-        
-        // Agregar event listener usando event delegation
-        containerProducts.addEventListener('click', async (event) => {
-            if (event.target.classList.contains('btn-add-to-cart')) {
-                event.preventDefault();
-                event.stopPropagation();
-                
-                try {
-                    const { cartStore } = await import('./cart/cartStore.js');
-                    const products = cartStore.addToCart(event);
-                    
-                    if (products && Array.isArray(products)) {
-                        // Actualizar el drawer del carrito
-                        const cartDrawerContainer = document.querySelector('.cart-drawer__products');
-                        const drawerEmpty = document.querySelector('.cart-drawer__empty');
-                        
-                        if (cartDrawerContainer) {
-                            if (drawerEmpty) drawerEmpty.style.display = 'none';
-                            await actualizarCarrito(products, cartDrawerContainer);
-                            
-                            // Abrir el carrito automáticamente
-                            const cartDrawer = document.querySelector('[data-cart-drawer]');
-                            const cartOverlay = document.querySelector('[data-cart-overlay]');
-                            if (cartDrawer && cartOverlay) {
-                                cartDrawer.classList.add('is-open');
-                                cartOverlay.classList.add('is-open');
-                                document.body.style.overflow = 'hidden';
-                            }
-                        }
-                        
-                        // Actualizar contador del carrito
-                        const cartCount = document.getElementById('cart-count');
-                        if (cartCount) {
-                            cartCount.textContent = cartStore.countCart();
-                        }
-                        
-                        // Feedback visual
-                        const boton = event.target;
-                        const textoOriginal = boton.textContent;
-                        const textos = idioma === 'EN' ? '✓ Added' : '✓ Añadido';
-                        boton.textContent = textos;
-                        boton.style.background = '#22c55e';
-                        boton.style.color = 'white';
-                        
-                        setTimeout(() => {
-                            boton.textContent = textoOriginal;
-                            boton.style.background = '';
-                            boton.style.color = '';
-                        }, 1500);
-                    }
-                } catch (error) {
-                    console.error('Error al añadir al carrito:', error);
-                }
-            }
-        });
-    }, 1000);
-}
-
-async function actualizarCarrito(products, container) {
-    container.innerHTML = '';
-    products.forEach(product => {
-        const cardItem = `
-            <div class="cart-item__image">
-                <img src="${product.image}" alt="Producto">
-            </div>
-            <div class="cart-item__content">
-                <h3 class="cart-item__name">${product.name}</h3>
-                <span class="cart-item__price">${product.price}</span>
-                <div class="cart-item__controls">
-                    <button class="btn-quantity" data-action="decrease"><i class="fa-solid fa-minus"></i></button>
-                    <input type="number" class="quantity-input" value="${product.quantity}" min="1">
-                    <button class="btn-quantity" data-action="increase"><i class="fa-solid fa-plus"></i></button>
-                    <button class="btn-remove" data-action="remove"><i class="fa-regular fa-trash-can"></i></button>
-                </div>
-            </div>
-        `;
-        const card = document.createElement('div');
-        card.classList.add('cart-item');
-        card.setAttribute('data-product-id', product.id);
-        card.innerHTML = cardItem;
-        container.appendChild(card);
-    });
-    
-    // Actualizar total
-    try {
-        const { cartStore } = await import('./cart/cartStore.js');
-        const totalElement = document.querySelector('.cart-drawer__total strong');
-        if (totalElement) {
-            totalElement.textContent = `${cartStore.amountCart()}€`;
-        }
-    } catch (error) {
-        console.error('Error al actualizar total:', error);
-    }
-}
+// Removed duplicate event listener - cartView.js already handles add to cart functionality
 
 function obtenerNombreCategoria(idCategoria) {
-    const categorias = idioma === 'EN' ? {
-        'protein_meat': 'Meat and Poultry',
-        'fish_seafood': 'Fish and Seafood',
-        'sides_comp': 'Sides',
-        'breakfast_brunch': 'Breakfast'
-    } : {
-        'protein_meat': 'Carnes y Aves',
-        'fish_seafood': 'Pescados y Mariscos',
-        'sides_comp': 'Complementos',
-        'breakfast_brunch': 'Desayunos'
+    const categorias = {
+        ES: {
+            'protein_meat': 'Carnes y Aves',
+            'fish_seafood': 'Pescados y Mariscos',
+            'sides_comp': 'Complementos',
+            'breakfast_brunch': 'Desayunos'
+        },
+        EN: {
+            'protein_meat': 'Meat and Poultry',
+            'fish_seafood': 'Fish and Seafood',
+            'sides_comp': 'Sides',
+            'breakfast_brunch': 'Breakfast'
+        },
+        FR: {
+            'protein_meat': 'Viandes et Volaille',
+            'fish_seafood': 'Poissons et Fruits de mer',
+            'sides_comp': 'Accompagnements',
+            'breakfast_brunch': 'Petit-déjeuner'
+        },
+        EU: {
+            'protein_meat': 'Haragiak eta Hegaztiak',
+            'fish_seafood': 'Arrainak eta Itsaskiak',
+            'sides_comp': 'Osagarriak',
+            'breakfast_brunch': 'Gosariak'
+        }
     };
-    return categorias[idCategoria] || idCategoria;
+    const catMap = categorias[idioma] || categorias.ES;
+    return catMap[idCategoria] || idCategoria;
 }
 
 function mostrarSinResultados(mensaje) {

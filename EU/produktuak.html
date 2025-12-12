@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="eu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produktu Guztiak</title>
+    <link rel="icon" type="image/png" href="/assets/img/gourmet-logo-icon.png">
+    <link rel="stylesheet" href="../assets/css/nav.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/modal.css">
+    <link rel="stylesheet" href="../assets/css/select.css">
+    <link rel="stylesheet" href="../assets/icons/font-awesome.css">
+</head>
+
+<body>
+
+    <header id="header"></header>
+    <div id="datetime-display" class="minimal-datetime"></div>
+    
+    <main id="main" class="main-container">
+        <section class="search-results-section">
+            <div class="search-header">
+                <h1 class="text-dark">Produktu Guztiak</h1>
+                <p class="search-query-info">Arakatu gure produktu gourmeten aukeraketa osoa</p>
+            </div>
+            <hr class="text-dark">
+            
+            <div class="search-results-container container-products" id="all-products-container">
+                <div class="loading-message">Produktuak kargatzen...</div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer"></footer>
+    <div id="showModal"></div>
+    <div id="cart-drawer"></div>
+
+    <script src="../assets/js/nav.js"></script>
+    <script src="../assets/js/footer.js"></script>
+    <script src="../assets/js/cart/cartView.js" type="module"></script>
+    <script src="../assets/js/auth/sesion.js" type="module"></script>
+    <script src="../assets/js/auth/validation.js" type="module"></script>
+    <script src="../assets/js/data-loader/productService.js" type="module"></script>
+    <script src="../assets/js/utils.js"></script>
+    <script src="../assets/js/cart/cartStore.js" type="module"></script>
+    <script type="module">
+        import { gestorDeDatos } from '../assets/js/data-loader/productService.js';
+        
+        const container = document.getElementById('all-products-container');
+        const LANGUAGE = gestorDeDatos.language || 'EU';
+        
+        gestorDeDatos.cargarProductos().then(productos => {
+            container.innerHTML = '';
+            
+            if (productos.length === 0) {
+                container.innerHTML = '<div class="no-results"><p>Ez dago produkturik eskuragarri.</p></div>';
+                return;
+            }
+            
+            const detailPages = {
+                ES: 'producto-detalle.html',
+                EN: 'product-detail.html',
+                FR: 'detail-produit.html',
+                EU: 'produktu-xehetasuna.html'
+            };
+            const detailPage = detailPages[LANGUAGE] || 'produktu-xehetasuna.html';
+            
+            const texts = {
+                FR: { addToCart: 'Ajouter', featured: 'En vedette' },
+                EU: { addToCart: 'Gehitu', featured: 'Nabarmendua' },
+                ES: { addToCart: 'Añadir', featured: 'Destacado' },
+                EN: { addToCart: 'Add', featured: 'Featured' }
+            };
+            const currentTexts = texts[LANGUAGE] || texts.EU;
+            
+            container.innerHTML = `
+                <div class="products-grid container-products">
+                    ${productos.map(producto => `
+                        <article class="section-productos-destacados__item cart-item" data-product-id="${producto.id_producto}">
+                            <div class="product-image-wrapper">
+                                <a href="${detailPage}?pd=${producto.id_producto}">
+                                    <img src="../${producto.img_url}" alt="${producto.nombre[LANGUAGE] || producto.nombre.ES}">
+                                </a>
+                                ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${currentTexts.featured}</span>` : ''}
+                            </div>
+                            <h3 class="item_title">${producto.nombre[LANGUAGE] || producto.nombre.ES}</h3>
+                            <p class="item_description">${producto.descripcion[LANGUAGE] || producto.descripcion.ES}</p>
+                            <p class="item_price">${producto.precio}€</p>
+                            <div class="item_actions">
+                                <button class="btn-add-to-cart">${currentTexts.addToCart}</button>
+                                <button class="btn-favorite"><i class="fa-solid fa-heart"></i></button>
+                            </div>
+                        </article>
+                    `).join('')}
+                </div>
+            `;
+        });
+    </script>
+
+</body>
+
+</html>
+

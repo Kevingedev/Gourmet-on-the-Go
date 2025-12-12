@@ -3,32 +3,58 @@ const track = document.querySelector('#featured-products-loader');
 const prevBtn = document.querySelector('.prev-btn');
 const nextBtn = document.querySelector('.next-btn');
 
-function getCardWidth() {
-    const card = track.querySelector('.section-productos-destacados__item');
-    if (!card) return viewport.clientWidth;
-    const style = window.getComputedStyle(card);
-    const gap = parseFloat(style.marginRight) || 24; // fallback
-    return card.offsetWidth + gap;
+// Only add event listeners if elements exist
+if (prevBtn && nextBtn && viewport && track) {
+    function getCardWidth() {
+        const card = track.querySelector('.section-productos-destacados__item');
+        if (!card) return viewport.clientWidth;
+        const style = window.getComputedStyle(card);
+        const gap = parseFloat(style.marginRight) || 24; // fallback
+        return card.offsetWidth + gap;
+    }
+
+    prevBtn.addEventListener('click', () => {
+        viewport.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+    });
+
+    nextBtn.addEventListener('click', () => {
+        viewport.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+    });
 }
-
-prevBtn.addEventListener('click', () => {
-    viewport.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
-});
-
-nextBtn.addEventListener('click', () => {
-    viewport.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
-});
 document.addEventListener('DOMContentLoaded', function () {
     const slides = document.querySelectorAll('.carousel__slide');
+    
+    // Only run carousel if slides exist
+    if (!slides || slides.length === 0) {
+        return;
+    }
+
     let current = 0;
 
     function showSlide(index) {
-        slides.forEach(slide => slide.classList.remove('active'));
-        slides[index].classList.add('active');
+        // Check if index is valid
+        if (index < 0 || index >= slides.length || !slides[index]) {
+            return;
+        }
+        
+        slides.forEach(slide => {
+            if (slide) {
+                slide.classList.remove('active');
+            }
+        });
+        
+        if (slides[index]) {
+            slides[index].classList.add('active');
+        }
     }
 
-    setInterval(function () {
-        current = (current + 1) % slides.length;
-        showSlide(current);
-    }, 5000); // 1000 ms = 1 segundo
+    // Only set interval if there are slides
+    if (slides.length > 0) {
+        setInterval(function () {
+            if (slides.length > 0) {
+                current = (current + 1) % slides.length;
+                showSlide(current);
+            }
+        }, 5000);
+    }
 });

@@ -13,6 +13,7 @@ export const authService = {
     },
     logout(){
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('hasSeenFirstPurchasePopup');   
     },
     getAvatar(){
         const user = this.getUser();
@@ -41,35 +42,48 @@ export const authService = {
     async validateLogin(username, password) {
         const url = window.location.href;
         const urlCategoria = url.split('/');
-        const PATH = urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' ? '../../../' : '../../';
-        // const btnLogin = document.getElementById('btn-login');
-        // Logica de Fetch al JSON y la comparación de credenciales para iniciar sesión
-        // console.log(`Validando credenciales para: ${username}`);
-
+        let PATH = '';
+        
+        // Better path calculation
+        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+            PATH = '../../../';
+        } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN') {
+            PATH = '../';
+        } else {
+            PATH = './';
+        }
+        
         const jsonPath = `${PATH}assets/data/users.json`;
-        // console.log(jsonPath);
+        console.log('Loading users from:', jsonPath);
 
         let finderUser;
 
         async function fetchUsers() {
             try {
                 const response = await fetch(jsonPath);
+                
+                if (!response.ok) {
+                    console.error('Failed to fetch users.json:', response.status, response.statusText);
+                    return false;
+                }
+                
                 const users = await response.json();
-                /* console.log(users); */
+                console.log('Users loaded:', users.length, 'users found');
 
-                const user = users.find(user => user.username === username && user.password === password);
+                const user = users.find(user => 
+                    user.username === username && 
+                    user.password === password
+                );
 
-                /* console.log("Encuentra a: " + user); */
-
-                if (user != undefined && user != null && user != '') {
-                    // console.log("Encontro al usuario:" + user.username);
-                    /* btnLogin.style.display = 'none';
-                    btnLogout.style.display = 'block'; */
+                if (user) {
+                    console.log('User found:', user.username, 'Role:', user.rol);
+                    console.log('Login successful:', user.username);
 
                     localStorage.setItem('currentUser', JSON.stringify({
                         id: user.id,
                         username: user.username,
-                        role: user.role,
+                        rol: user.rol, // Save as 'rol' to match users.json
+                        role: user.rol, // Also save as 'role' for compatibility
                         nombre_completo: user.nombre_completo,
                         email: user.email
                     }));
@@ -77,15 +91,15 @@ export const authService = {
                     return true;
                 }
 
-                /* console.log("No encontro al usuario"); */
+                console.log('User not found or password incorrect');
                 return false;
             } catch (error) {
-                console.log(error);
+                console.error('Error fetching users:', error);
                 return false;
             }
         }
+        
         finderUser = await fetchUsers();
-        /* console.log("resultado de la funcion fetchUsers: " + finderUser); */
         return finderUser;
     }
 

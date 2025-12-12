@@ -61,13 +61,21 @@ export const gestorDeDatos = {
         const productosPorNombre = dataProducts.filter(product => {
             const nombreES = product.nombre.ES ? product.nombre.ES.toLowerCase() : '';
             const nombreEN = product.nombre.EN ? product.nombre.EN.toLowerCase() : '';
+            const nombreFR = product.nombre.FR ? product.nombre.FR.toLowerCase() : '';
+            const nombreEU = product.nombre.EU ? product.nombre.EU.toLowerCase() : '';
             const descripcionES = product.descripcion.ES ? product.descripcion.ES.toLowerCase() : '';
             const descripcionEN = product.descripcion.EN ? product.descripcion.EN.toLowerCase() : '';
+            const descripcionFR = product.descripcion.FR ? product.descripcion.FR.toLowerCase() : '';
+            const descripcionEU = product.descripcion.EU ? product.descripcion.EU.toLowerCase() : '';
             
             return nombreES.includes(busqueda) || 
                    nombreEN.includes(busqueda) || 
+                   nombreFR.includes(busqueda) ||
+                   nombreEU.includes(busqueda) ||
                    descripcionES.includes(busqueda) || 
-                   descripcionEN.includes(busqueda);
+                   descripcionEN.includes(busqueda) ||
+                   descripcionFR.includes(busqueda) ||
+                   descripcionEU.includes(busqueda);
         });
         
         return productosPorNombre; // Devuelve un array de objetos con los productos que coinciden con el nombre o descripción
