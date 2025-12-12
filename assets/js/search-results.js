@@ -89,8 +89,8 @@ async function cargarResultados() {
         const productos = await gestorDeDatos.cargarProductosPorNombre(busqueda);
         mensajeCarga.style.display = 'none';
 
-        const resultadoTexto = productos.length === 1 
-            ? currentTexts.results 
+        const resultadoTexto = productos.length === 1
+            ? currentTexts.results
             : currentTexts.resultsPlural;
         infoBusqueda.textContent = `${currentTexts.searching}: "${busqueda}" - ${productos.length} ${resultadoTexto}`;
 
@@ -135,7 +135,7 @@ function mostrarProductos(productos) {
         }
     };
     const currentTexts = textos[idioma] || textos.ES;
-    
+
     // Determine product detail page based on language
     const detailPages = {
         ES: 'producto-detalle.html',
@@ -151,7 +151,7 @@ function mostrarProductos(productos) {
     };
     const detailPage = detailPages[idioma] || 'producto-detalle.html';
     const langPath = langPaths[idioma] || 'ES';
-    
+
     contenedorResultados.innerHTML = `
         <div class="products-grid container-products">
             ${productos.map(producto => `
@@ -184,7 +184,7 @@ function mostrarProductos(productos) {
                     </div>
                     <div class="item_actions">
                         <button class="btn-add-to-cart">${currentTexts.addToCart}</button>
-                        <button class="btn-favorite"><i class="fa-solid fa-heart"></i></button>
+                        <button class="btn-favorite btn-add-to-wishlist"><i class="fa-solid fa-heart"></i></button>
                     </div>
                 </article>
             `).join('')}
@@ -215,6 +215,16 @@ function mostrarProductos(productos) {
         // Add cursor pointer style
         card.style.cursor = 'pointer';
     });
+    
+    // Update favorite buttons state after products are loaded
+    if (typeof updateAllFavoriteButtons === 'function') {
+        updateAllFavoriteButtons();
+    } else {
+        // Fallback: dispatch event to update buttons
+        setTimeout(() => {
+            window.dispatchEvent(new Event('favoritesUpdated'));
+        }, 100);
+    }
     
     // No need to initialize buttons here - cartView.js already handles it
     // The container-products class will be picked up by cartView.js automatically

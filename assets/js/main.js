@@ -62,13 +62,23 @@ if (featuredProductsLoader) {
             <p class="item_price">${producto.precio}€</p>
             <div class="item_actions">
                 <button class="btn-add-to-cart">${texts[LANGUAGE].addToCart}</button>
-                <button class="btn-favorite"><i class="fa-solid fa-heart"></i></button>
+                <button class="btn-favorite btn-add-to-wishlist"><i class="fa-solid fa-heart"></i></button>
             </div>
             </article>
 
             
             `;
         });
+        
+        // Update favorite buttons state after products are loaded
+        if (typeof updateAllFavoriteButtons === 'function') {
+            updateAllFavoriteButtons();
+        } else {
+            // Fallback: dispatch event to update buttons
+            setTimeout(() => {
+                window.dispatchEvent(new Event('favoritesUpdated'));
+            }, 100);
+        }
 
     });
 }

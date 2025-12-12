@@ -824,12 +824,23 @@
 }
 
 .product-image-wrapper {
-  position: relative;
+  position: relative !important;
   width: 100%;
   height: 220px;
   overflow: hidden;
   background: #f3f4f6;
   flex-shrink: 0;
+}
+
+.product-image-wrapper > * {
+  position: relative;
+  z-index: 1;
+}
+
+.product-image-wrapper .btn-remove-favorite-icon,
+.product-image-wrapper .featured-badge {
+  position: absolute !important;
+  z-index: 15 !important;
 }
 
 .product-image-wrapper .product-link {
@@ -851,6 +862,42 @@
   transform: scale(1.05);
 }
 
+.btn-remove-favorite-icon {
+  position: absolute !important;
+  top: 10px !important;
+  left: 10px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  z-index: 15 !important;
+  transition: all 0.2s ease !important;
+  backdrop-filter: blur(4px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.btn-remove-favorite-icon:hover {
+  background: rgba(239, 68, 68, 0.15);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-remove-favorite-icon:active {
+  transform: scale(0.95);
+}
+
+.btn-remove-favorite-icon i {
+  color: #ef4444;
+  font-size: 1rem;
+}
+
 .featured-badge {
   position: absolute;
   top: 10px;
@@ -865,6 +912,7 @@
   align-items: center;
   gap: 0.3rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 12;
 }
 
 .featured-badge i {

@@ -237,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="${PATH}${userLanguage}/${favoritesLink}" aria-label="${favoritesLabel}" title="${favoritesLabel}">
                 <button class="icon-btn" aria-label="${favoritesTitle}" title="${favoritesTitle}">
                     <i class="fa-solid fa-heart"></i>
+                    <span class="badge" id="favorites-count">0</span>
                 </button>
                 </a>
                 <button class="icon-btn js-cart-toggle" aria-label="${sessionText.cartLabel}" aria-expanded="false" title="${sessionText.cartTitle}">
@@ -567,6 +568,49 @@ document.addEventListener('DOMContentLoaded', () => {
         inicializarBuscador();
     }, 200);
 
+    // Update favorites count
+    updateFavoritesCount();
+
+});
+
+// Function to update favorites count in nav
+function updateFavoritesCount() {
+    try {
+        const jsonWishlist = localStorage.getItem('wishlist');
+        const wishlist = jsonWishlist ? JSON.parse(jsonWishlist) : [];
+        const favoritesCountElement = document.getElementById('favorites-count');
+        if (favoritesCountElement) {
+            const count = wishlist.length || 0;
+            favoritesCountElement.textContent = count;
+            // Hide badge if count is 0
+            if (count === 0) {
+                favoritesCountElement.style.display = 'none';
+            } else {
+                favoritesCountElement.style.display = 'flex';
+            }
+        }
+    } catch (e) {
+        console.error('Error updating favorites count:', e);
+    }
+}
+
+// Listen for storage changes to update favorites count
+window.addEventListener('storage', (e) => {
+    if (e.key === 'wishlist') {
+        updateFavoritesCount();
+    }
+});
+
+// Custom event listener for favorites updates (for same-page updates)
+window.addEventListener('favoritesUpdated', () => {
+    updateFavoritesCount();
+});
+
+// Also update on page load and periodically
+document.addEventListener('DOMContentLoaded', () => {
+    updateFavoritesCount();
+    // Update periodically in case favorites change on same page
+    setInterval(updateFavoritesCount, 1000);
 });
 
 async function inicializarBuscador() {

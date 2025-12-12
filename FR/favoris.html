@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma Liste de Favoris</title>
+    <title>Mes Favoris</title>
     <link rel="icon" type="image/png" href="/assets/img/gourmet-logo-icon.png">
     <link rel="stylesheet" href="../assets/css/nav.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
@@ -20,17 +20,15 @@
     <div id="datetime-display" class="minimal-datetime"></div>
     
     <main id="main" class="main-container">
-        <section class="content-page" id="wishlist-container">
-            <div class="content-wrapper">
-               
-                <div class="about-content">
-                    <div class="about-section">
-                        <h2>Votre liste de souhaits est vide.</h2>
-                       <a href="/">Explorez nos produits!</a>
-                    </div>
+        <section class="search-results-section">
+            <div class="search-header">
+                <h1 class="text-dark" id="category-title">Favoris</h1>
+            </div>
+            <hr class="text-dark">
 
-                  
-                </div>
+            <!-- Products Grid -->
+            <div class="search-results-container container-products" id="wishlist-container">
+                <!-- Products will be loaded here by favoritesView.js -->
             </div>
         </section>
     </main>
@@ -47,10 +45,8 @@
     <script src="../assets/js/utils.js"></script>
     <script src="../assets/js/cart/cartStore.js" type="module"></script>
     <script src="../assets/js/favorites/favoriteStore.js" type="module"></script>
-
-
+    <script src="../assets/js/favorites/favoritesView.js" type="module"></script>
 
 </body>
 
 </html>
-
