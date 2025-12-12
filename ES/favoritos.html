@@ -20,17 +20,19 @@
     <div id="datetime-display" class="minimal-datetime"></div>
     
     <main id="main" class="main-container">
-        <section class="content-page" id="wishlist-container">
-            <div class="content-wrapper">
-               
-                <div class="about-content">
-                    <div class="about-section">
-                        <h2>Tu lista de deseos está vacía.</h2>
-                       <a href="/">¡Explora nuestros productos!</a>
-                    </div>
+        <!-- <section class="content-page container-products products-grid" >
+            
+        </section> -->
+        <section class="section-productos-destacados search-results-section" style="max-width: 90%; margin-top: 2rem;">
+            <div class="search-header">
+                <h1 class="text-dark" id="category-title">Favoritos</h1>
+            </div>
+            <hr class="text-dark">
 
-                  
-                </div>
+            <!-- Products Grid -->
+            <!-- data-base-path points to root relative to this file -->
+            <div class="products-grid container-products" id="wishlist-container">
+                <!-- Products will be loaded here by categoryView.js -->
             </div>
         </section>
     </main>
@@ -47,6 +49,7 @@
     <script src="../assets/js/utils.js"></script>
     <script src="../assets/js/cart/cartStore.js" type="module"></script>
     <script src="../assets/js/favorites/favoriteStore.js" type="module"></script>
+    <script src="../assets/js/favorites/favoritesView.js" type="module"></script>
 
 
 
