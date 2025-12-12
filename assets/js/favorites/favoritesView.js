@@ -4,10 +4,10 @@ import { favoriteStore } from "./favoriteStore.js";
 
 const pathname = window.location.pathname;
 // Verifica si la página actual es la de favoritos en varios idiomas
-const isWishlistPage = pathname.includes('favoritos.html') || 
-                       pathname.includes('favorites.html') || 
-                       pathname.includes('favoris.html') || 
-                       pathname.includes('gogokoak.html');
+const isWishlistPage = pathname.includes('favoritos.html') ||
+    pathname.includes('favorites.html') ||
+    pathname.includes('favoris.html') ||
+    pathname.includes('gogokoak.html');
 
 const LANGUAGE = gestorDeDatos.language || 'ES';
 
@@ -72,18 +72,18 @@ const currentTexts = texts[LANGUAGE] || texts.ES;
 // Function to redirect to login page with proper language and path
 function redirectToLogin() {
     const userLanguage = authService.getLanguage() || 'ES';
-    
+
     // Get texts in user's language
     const userTexts = texts[userLanguage] || texts.ES;
-    
+
     // Show alert in user's language
     alert(userTexts.loginRequired);
-    
+
     // Calculate base path based on current location
     const url = window.location.href;
     const urlCategoria = url.split('/');
     let basePath = '';
-    
+
     if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
         basePath = '../../../';
     } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
@@ -91,7 +91,7 @@ function redirectToLogin() {
     } else {
         basePath = './';
     }
-    
+
     // Login page names by language
     const loginPages = {
         ES: 'sesion.html',
@@ -99,7 +99,7 @@ function redirectToLogin() {
         FR: 'connexion.html',
         EU: 'saioa.html'
     };
-    
+
     // Favorites page names by language (for redirect)
     const favoritesPages = {
         ES: 'favoritos.html',
@@ -107,7 +107,7 @@ function redirectToLogin() {
         FR: 'favoris.html',
         EU: 'gogokoak.html'
     };
-    
+
     const loginPage = loginPages[userLanguage] || 'sesion.html';
     const redirectPage = favoritesPages[userLanguage] || 'favoritos.html';
     window.location.href = `${basePath}${userLanguage}/${loginPage}?redirect=${redirectPage}`;
@@ -141,16 +141,16 @@ document.addEventListener('click', (event) => {
     }
 
     // Handle add to favorites button
-    const favoriteButton = event.target.closest('.btn-favorite') || 
-                          (event.target.classList.contains('btn-add-to-wishlist') ? event.target : null) ||
-                          (event.target.closest('.btn-add-to-wishlist'));
-    
+    const favoriteButton = event.target.closest('.btn-favorite') ||
+        (event.target.classList.contains('btn-add-to-wishlist') ? event.target : null) ||
+        (event.target.closest('.btn-add-to-wishlist'));
+
     if (favoriteButton) {
         // Don't handle if it's a remove button
         if (favoriteButton.classList.contains('btn-remove-to-wishlist')) {
             return;
         }
-        
+
         if (!authService.isAuthenticated()) {
             redirectToLogin();
             return;
@@ -161,13 +161,13 @@ document.addEventListener('click', (event) => {
             target: favoriteButton,
             currentTarget: favoriteButton
         };
-        
+
         const wishlist = favoriteStore.addToWishlist(syntheticEvent);
         console.log('Productos en favoritos:', wishlist);
-        
+
         // Update button visual state (toggle heart color)
         updateFavoriteButtonState(favoriteButton, wishlist);
-        
+
         // Dispatch event to update nav count
         window.dispatchEvent(new Event('favoritesUpdated'));
     }
@@ -177,15 +177,15 @@ document.addEventListener('click', (event) => {
 function updateFavoriteButtonState(button, wishlist) {
     const heartIcon = button.querySelector('i');
     if (!heartIcon) return;
-    
-    const productCard = button.closest('.cart-item') || 
-                       button.closest('.search-product-card') ||
-                       button.closest('[data-product-id]');
+
+    const productCard = button.closest('.cart-item') ||
+        button.closest('.search-product-card') ||
+        button.closest('[data-product-id]');
     if (!productCard) return;
-    
+
     const productId = productCard.getAttribute('data-product-id');
     if (!productId) return;
-    
+
     const isInWishlist = wishlist && wishlist.some(p => p.id === productId);
     if (isInWishlist) {
         heartIcon.style.color = '#ef4444';
@@ -230,25 +230,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (wishlistContainer) {
             const userLanguage = authService.getLanguage() || LANGUAGE;
             const userTexts = texts[userLanguage] || texts.ES;
-            
+
             // Calculate base path
             const url = window.location.href;
             const urlCategoria = url.split('/');
             let basePath = '../';
-            
+
             if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
                 basePath = '../';
             } else {
                 basePath = './';
             }
-            
+
             const loginPages = {
                 ES: 'sesion.html',
                 EN: 'session.html',
                 FR: 'connexion.html',
                 EU: 'saioa.html'
             };
-            
+
             // Favorites page names by language (for redirect)
             const favoritesPages = {
                 ES: 'favoritos.html',
@@ -256,10 +256,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 FR: 'favoris.html',
                 EU: 'gogokoak.html'
             };
-            
+
             const loginPage = loginPages[userLanguage] || 'sesion.html';
             const redirectPage = favoritesPages[userLanguage] || 'favoritos.html';
-            
+
             wishlistContainer.innerHTML = `
                 <div class="no-results">
                     <i class="fa-solid fa-lock" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
@@ -338,108 +338,34 @@ function mostrarProductos(productos) {
         EU: 'EU'
     };
     const detailPage = detailPages[LANGUAGE] || 'producto-detalle.html';
-    const langPath = langPaths[LANGUAGE] || 'ES';
 
-    // Match search-results structure exactly
-    wishlistContainer.innerHTML = `
-        <div class="products-grid container-products">
-            ${productos.map(producto => `
-                <article class="section-productos-destacados__item cart-item search-product-card" data-product-id="${producto.id_producto}">
-                    <div class="product-image-wrapper">
-                        <a href="${rutaBase}${langPath}/${detailPage}?pd=${producto.id_producto}" class="product-link">
-                            <img src="${rutaBase}${producto.img_url}" alt="${producto.nombre[LANGUAGE]}">
-                        </a>
-                        <button class="btn-remove-favorite-icon" title="${currentTexts.removeFromFavorites}">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                        ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${currentTexts.featured}</span>` : ''}
-                    </div>
-                    <h3 class="item_title">
-                        <a href="${rutaBase}${langPath}/${detailPage}?pd=${producto.id_producto}" class="product-link">${producto.nombre[LANGUAGE]}</a>
-                    </h3>
-                    <p class="item_description">${producto.descripcion[LANGUAGE]}</p>
-                    <div class="product-info">
-                        <div class="product-header">
-                            <span class="product-id">ID: ${producto.id_producto}</span>
-                        </div>
-                        <div class="product-details">
-                            <div class="product-category">
-                                <i class="fa-solid fa-tag"></i>
-                                <span>${currentTexts.category}: ${obtenerNombreCategoria(producto.id_categoria)}</span>
-                            </div>
-                            <div class="product-unit">
-                                <i class="fa-solid fa-weight"></i>
-                                <span>${producto.unidad_medida[LANGUAGE]}</span>
-                            </div>
-                        </div>
-                        <p class="item_price">${producto.precio}€</p>
-                    </div>
-                    <div class="item_actions">
-                        <button class="btn-add-to-cart">${currentTexts.addToCart}</button>
-                        <button class="btn-favorite btn-remove-to-wishlist" title="${currentTexts.removeFromFavorites}">
-                            <i class="fa-solid fa-heart" style="color: #ef4444;"></i>
-                        </button>
-                    </div>
-                </article>
-            `).join('')}
-        </div>
-    `;
+    if (productos.length === 0) {
+        wishlistContainer.innerHTML = `
+            <div class="no-results">
+                <p style="font-size: 1.1rem; color: #6b7280; margin-bottom: 1rem;">${currentTexts.emptyMessage}</p>
+            </div>`;
+    } else {
+        productos.forEach(producto => {
+            wishlistContainer.innerHTML += `
+            <article class="section-productos-destacados__item cart-item search-product-card" data-product-id="${producto.id}">
+            <div class="product-image-wrapper">
+                <a href="${detailPage}?pd=${producto.id}">
+                    <img src="${producto.image}" alt="${producto.name}">
+                </a>
+                
+            </div>
+            <h3 class="item_title">${producto.name}</h3>
+            <p class="item_description">${producto.description}</p>
+            <p class="item_price">${producto.price}€</p>
+            <div class="item_actions">
+                <button class="btn-add-to-cart">${texts[LANGUAGE].addToCart}</button>
+                <button class="btn-remove btn-remove-to-wishlist"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
+            </article>
 
-    // Add click handler to entire product card (except buttons)
-    const productCards = wishlistContainer.querySelectorAll('.search-product-card');
-    productCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            // Don't navigate if clicking on buttons, links, or remove icon
-            if (e.target.closest('.item_actions') || 
-                e.target.closest('.btn-add-to-cart') || 
-                e.target.closest('.btn-favorite') ||
-                e.target.closest('.btn-remove-favorite-icon') ||
-                e.target.closest('.product-link')) {
-                return;
-            }
             
-            // Navigate to product detail
-            const productId = card.getAttribute('data-product-id');
-            if (productId) {
-                const productLink = card.querySelector('.product-link');
-                if (productLink) {
-                    window.location.href = productLink.href;
-                }
-            }
+            `;
         });
-        
-        // Add cursor pointer style
-        card.style.cursor = 'pointer';
-    });
-}
+    }
 
-function obtenerNombreCategoria(idCategoria) {
-    const categorias = {
-        ES: {
-            'protein_meat': 'Carnes y Aves',
-            'fish_seafood': 'Pescados y Mariscos',
-            'sides_comp': 'Complementos',
-            'breakfast_brunch': 'Desayunos'
-        },
-        EN: {
-            'protein_meat': 'Meat and Poultry',
-            'fish_seafood': 'Fish and Seafood',
-            'sides_comp': 'Sides',
-            'breakfast_brunch': 'Breakfast'
-        },
-        FR: {
-            'protein_meat': 'Viandes et Volaille',
-            'fish_seafood': 'Poissons et Fruits de mer',
-            'sides_comp': 'Accompagnements',
-            'breakfast_brunch': 'Petit-déjeuner'
-        },
-        EU: {
-            'protein_meat': 'Haragiak eta Hegaztiak',
-            'fish_seafood': 'Arrainak eta Itsaskiak',
-            'sides_comp': 'Osagarriak',
-            'breakfast_brunch': 'Gosariak'
-        }
-    };
-    const catMap = categorias[LANGUAGE] || categorias.ES;
-    return catMap[idCategoria] || idCategoria;
-}
+};
