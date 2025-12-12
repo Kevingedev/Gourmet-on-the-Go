@@ -35,21 +35,25 @@ export const favoriteStore = {
 
             const element = param.target.parentNode.parentNode;
 
-            if (wishlist.some(product => product.id === element.getAttribute('data-product-id'))) {
+            if (!wishlist.some(product => product.id === element.getAttribute('data-product-id'))) {
 
-                wishlist = wishlist.map(product => product.id === element.getAttribute('data-product-id') ? { ...product, quantity: product.quantity + 1 } : product);
+                // wishlist = wishlist.map(product => product.id === element.getAttribute('data-product-id') ? { ...product, quantity: product.quantity + 1 } : product);
 
-            } else {
+            /* } 
+            else { */
                 //Creo el objeto del producto
                 const product = {
                     id: element.getAttribute('data-product-id'),
                     name: element.querySelector('.item_title').textContent,
+                    description: element.querySelector('.item_description').textContent,
                     price: element.querySelector('.item_price').textContent,
-                    image: element.querySelector('img').src,
-                    quantity: 1
+                    image: element.querySelector('img').src
                 }
 
                 wishlist = [...wishlist, product];
+
+                // wishlist = [{},{},{}, product];
+
             }
 
             this.syncStorage(); //lo que tengo en array lo guardo en localStorage
