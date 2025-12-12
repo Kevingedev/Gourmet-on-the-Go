@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     productList.addEventListener('click', (event) => {
 
-        if (event.target.classList.contains('btn-add-to-wishlist')) {
+        const addBtn = event.target.closest('.btn-add-to-wishlist');
+        if (addBtn) {
 
             const wishlist = favoriteStore.addToWishlist(event); //llamada al metodo para añadir al wishlist
 
@@ -55,7 +56,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 // btn-remove-to-wishlist
 
+    productList.addEventListener('click', (event) => {
 
+        const removeBtn = event.target.closest('.btn-remove-to-wishlist');
+        if (removeBtn) {
+            const article = removeBtn.closest('[data-product-id]');
+            if (!article) return;
+            const productId = article.getAttribute('data-product-id');
+            const updatedWishlist = favoriteStore.removeItem(productId);
+            article.remove();
+
+            const wishlistContainerEl = document.getElementById('wishlist-container');
+            if (wishlistContainerEl && wishlistContainerEl.querySelectorAll('[data-product-id]').length === 0) {
+                wishlistContainerEl.innerHTML = `<div class="content-wrapper">
+               
+                <div class="about-content">
+                    <div class="about-section">
+                        <h2>Tu lista de deseos está vacía.</h2>
+                       <a href="/">¡Explora nuestros productos!</a>
+                    </div>
+
+                  
+                </div>
+            </div>`;
+            }
+
+            console.log('Eliminar de favoritos', productId, updatedWishlist);
+        }
+
+    });
 
 
 
@@ -139,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="item_price">${producto.price}€</p>
             <div class="item_actions">
                 <button class="btn-add-to-cart">${texts[LANGUAGE].addToCart}</button>
-                <button class="btn-remove btn-remove-to-wishlist"><i class="fa-regular fa-trash-can"></i></button>
+                <button class="btn-remove btn-remove-to-wishlist" title=" Eliminar de tu lista de favoritos"><i class="fa-regular fa-trash-can"></i></button>
             </div>
             </article>
 

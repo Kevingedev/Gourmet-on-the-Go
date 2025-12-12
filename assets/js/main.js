@@ -62,7 +62,7 @@ if (featuredProductsLoader) {
             <p class="item_price">${producto.precio}€</p>
             <div class="item_actions">
                 <button class="btn-add-to-cart">${texts[LANGUAGE].addToCart}</button>
-                <button class="btn-favorite btn-add-to-wishlist"><i class="fa-solid fa-heart"></i></button>
+                <button class="btn-favorite btn-add-to-wishlist" title= "Agregar a tu lista de favoritos"><i class="fa-solid fa-heart"></i></button>
             </div>
             </article>
 

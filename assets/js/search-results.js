@@ -180,7 +180,7 @@ function mostrarProductos(productos) {
                     </div>
                     <div class="item_actions">
                         <button class="btn-add-to-cart">${currentTexts.addToCart}</button>
-                        <button class="btn-favorite"><i class="fa-solid fa-heart"></i></button>
+                        <button class="btn-favorite btn-remove-to-wishlist"><i class="fa-solid fa-heart"></i></button>
                     </div>
                 </article>
             `).join('')}
