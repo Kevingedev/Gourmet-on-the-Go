@@ -89,8 +89,8 @@ async function cargarResultados() {
         const productos = await gestorDeDatos.cargarProductosPorNombre(busqueda);
         mensajeCarga.style.display = 'none';
 
-        const resultadoTexto = productos.length === 1 
-            ? currentTexts.results 
+        const resultadoTexto = productos.length === 1
+            ? currentTexts.results
             : currentTexts.resultsPlural;
         infoBusqueda.textContent = `${currentTexts.searching}: "${busqueda}" - ${productos.length} ${resultadoTexto}`;
 
@@ -135,7 +135,7 @@ function mostrarProductos(productos) {
         }
     };
     const currentTexts = textos[idioma] || textos.ES;
-    
+
     // Determine product detail page based on language
     const detailPages = {
         ES: 'producto-detalle.html',
@@ -151,13 +151,15 @@ function mostrarProductos(productos) {
     };
     const detailPage = detailPages[idioma] || 'producto-detalle.html';
     const langPath = langPaths[idioma] || 'ES';
-    
+
     contenedorResultados.innerHTML = `
         <div class="products-grid container-products">
             ${productos.map(producto => `
                 <article class="section-productos-destacados__item cart-item search-product-card" data-product-id="${producto.id_producto}">
                     <div class="product-image-wrapper">
-                        <img src="${rutaBase}${producto.img_url}" alt="${producto.nombre[idioma]}">
+                        <a href="${detailPage}?pd=${producto.id_producto}">
+                            <img src="${rutaBase}${producto.img_url}" alt="${producto.nombre[idioma]}">
+                        </a>
                         ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${currentTexts.featured}</span>` : ''}
                     </div>
                     <h3 class="item_title">${producto.nombre[idioma]}</h3>
@@ -186,7 +188,7 @@ function mostrarProductos(productos) {
             `).join('')}
         </div>
     `;
-    
+
     // No need to initialize buttons here - cartView.js already handles it
     // The container-products class will be picked up by cartView.js automatically
 }
