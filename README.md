@@ -152,6 +152,7 @@ El código JavaScript está organizado en módulos ES6:
 
 ### Kevin Ruiz
 - 🔗 [GitHub](https://github.com/Kevingedev/)
+
 ### German Illan
 - 🔗 [GitHub](https://github.com/German2024279/)
 
