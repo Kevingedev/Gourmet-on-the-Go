@@ -338,108 +338,32 @@ function mostrarProductos(productos) {
         EU: 'EU'
     };
     const detailPage = detailPages[LANGUAGE] || 'producto-detalle.html';
-    const langPath = langPaths[LANGUAGE] || 'ES';
+    
+    const wishlistContainer = document.getElementById('wishlist-container');
+    if (WISHLIST.length === 0) {
+        wishlistContainer.innerHTML = wishlistEmpty; //Mostrar mensaje si la lista de deseos está vacía
+    } else {
+        WISHLIST.forEach(producto => {
+            wishlistContainer.innerHTML += `
+            <article class="section-productos-destacados__item cart-item search-product-card" data-product-id="${producto.id}">
+            <div class="product-image-wrapper">
+                <a href="${detailPage}?pd=${producto.id}">
+                    <img src="${producto.image}" alt="${producto.name}">
+                </a>
+                
+            </div>
+            <h3 class="item_title">${producto.name}</h3>
+            <p class="item_description">${producto.description}</p>
+            <p class="item_price">${producto.price}€</p>
+            <div class="item_actions">
+                <button class="btn-add-to-cart">${texts[LANGUAGE].addToCart}</button>
+                <button class="btn-remove btn-remove-to-wishlist"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
+            </article>
 
-    // Match search-results structure exactly
-    wishlistContainer.innerHTML = `
-        <div class="products-grid container-products">
-            ${productos.map(producto => `
-                <article class="section-productos-destacados__item cart-item search-product-card" data-product-id="${producto.id_producto}">
-                    <div class="product-image-wrapper">
-                        <a href="${rutaBase}${langPath}/${detailPage}?pd=${producto.id_producto}" class="product-link">
-                            <img src="${rutaBase}${producto.img_url}" alt="${producto.nombre[LANGUAGE]}">
-                        </a>
-                        <button class="btn-remove-favorite-icon" title="${currentTexts.removeFromFavorites}">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                        ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${currentTexts.featured}</span>` : ''}
-                    </div>
-                    <h3 class="item_title">
-                        <a href="${rutaBase}${langPath}/${detailPage}?pd=${producto.id_producto}" class="product-link">${producto.nombre[LANGUAGE]}</a>
-                    </h3>
-                    <p class="item_description">${producto.descripcion[LANGUAGE]}</p>
-                    <div class="product-info">
-                        <div class="product-header">
-                            <span class="product-id">ID: ${producto.id_producto}</span>
-                        </div>
-                        <div class="product-details">
-                            <div class="product-category">
-                                <i class="fa-solid fa-tag"></i>
-                                <span>${currentTexts.category}: ${obtenerNombreCategoria(producto.id_categoria)}</span>
-                            </div>
-                            <div class="product-unit">
-                                <i class="fa-solid fa-weight"></i>
-                                <span>${producto.unidad_medida[LANGUAGE]}</span>
-                            </div>
-                        </div>
-                        <p class="item_price">${producto.precio}€</p>
-                    </div>
-                    <div class="item_actions">
-                        <button class="btn-add-to-cart">${currentTexts.addToCart}</button>
-                        <button class="btn-favorite btn-remove-to-wishlist" title="${currentTexts.removeFromFavorites}">
-                            <i class="fa-solid fa-heart" style="color: #ef4444;"></i>
-                        </button>
-                    </div>
-                </article>
-            `).join('')}
-        </div>
-    `;
-
-    // Add click handler to entire product card (except buttons)
-    const productCards = wishlistContainer.querySelectorAll('.search-product-card');
-    productCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            // Don't navigate if clicking on buttons, links, or remove icon
-            if (e.target.closest('.item_actions') || 
-                e.target.closest('.btn-add-to-cart') || 
-                e.target.closest('.btn-favorite') ||
-                e.target.closest('.btn-remove-favorite-icon') ||
-                e.target.closest('.product-link')) {
-                return;
-            }
             
-            // Navigate to product detail
-            const productId = card.getAttribute('data-product-id');
-            if (productId) {
-                const productLink = card.querySelector('.product-link');
-                if (productLink) {
-                    window.location.href = productLink.href;
-                }
-            }
+            `;
         });
-        
-        // Add cursor pointer style
-        card.style.cursor = 'pointer';
-    });
-}
+    }
 
-function obtenerNombreCategoria(idCategoria) {
-    const categorias = {
-        ES: {
-            'protein_meat': 'Carnes y Aves',
-            'fish_seafood': 'Pescados y Mariscos',
-            'sides_comp': 'Complementos',
-            'breakfast_brunch': 'Desayunos'
-        },
-        EN: {
-            'protein_meat': 'Meat and Poultry',
-            'fish_seafood': 'Fish and Seafood',
-            'sides_comp': 'Sides',
-            'breakfast_brunch': 'Breakfast'
-        },
-        FR: {
-            'protein_meat': 'Viandes et Volaille',
-            'fish_seafood': 'Poissons et Fruits de mer',
-            'sides_comp': 'Accompagnements',
-            'breakfast_brunch': 'Petit-déjeuner'
-        },
-        EU: {
-            'protein_meat': 'Haragiak eta Hegaztiak',
-            'fish_seafood': 'Arrainak eta Itsaskiak',
-            'sides_comp': 'Osagarriak',
-            'breakfast_brunch': 'Gosariak'
-        }
-    };
-    const catMap = categorias[LANGUAGE] || categorias.ES;
-    return catMap[idCategoria] || idCategoria;
-}
+});
