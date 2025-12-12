@@ -53,7 +53,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
     });
+// btn-remove-to-wishlist
+    
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Renderizado de la lista de deseos.
 
 // console.log(window.location.pathname)
     const wishlistEmpty = `<div class="content-wrapper">
