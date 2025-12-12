@@ -1,8 +1,17 @@
 import { authService } from './auth/authService.js';
 import { cartStore } from './cart/cartStore.js';
 
+// Get checkout container - will be available globally
+let checkoutContainer;
+
 document.addEventListener('DOMContentLoaded', () => {
-    const checkoutContainer = document.getElementById('checkout-container');
+    checkoutContainer = document.getElementById('checkout-container');
+    
+    if (!checkoutContainer) {
+        console.error('Checkout container not found!');
+        return;
+    }
+    
     const userLanguage = authService.getLanguage() || 'ES';
     
     // Check if user is authenticated
@@ -56,6 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const emptyCartText = emptyCartTexts[userLanguage] || emptyCartTexts.ES;
         const goToShopText = goToShopTexts[userLanguage] || goToShopTexts.ES;
         
+        if (!checkoutContainer) {
+            console.error('Checkout container not found when showing empty cart!');
+            return;
+        }
+        
         checkoutContainer.innerHTML = `
             <div class="checkout-empty">
                 <i class="fa-solid fa-cart-shopping"></i>
@@ -67,92 +81,201 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Load checkout form
-    renderCheckoutForm();
+    try {
+        renderCheckoutForm();
+    } catch (error) {
+        console.error('Error rendering checkout form:', error);
+        if (checkoutContainer) {
+            checkoutContainer.innerHTML = `
+                <div class="checkout-empty">
+                    <i class="fa-solid fa-exclamation-triangle"></i>
+                    <p>Error loading checkout form. Please refresh the page.</p>
+                    <a href="${getBasePath()}${userLanguage}/" class="btn">Go to Shop</a>
+                </div>
+            `;
+        }
+    }
 });
 
 function getBasePath() {
     const url = window.location.href;
     const urlCategoria = url.split('/');
     
-    if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+    if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
         return '../../../';
-    } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN') {
+    } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
         return '../';
     }
     return './';
 }
 
+const checkoutTextsMap = {
+        ES: {
+            orderSummary: 'Resumen del Pedido',
+            shippingInfo: 'Información de Envío',
+            paymentMethod: 'Método de Pago',
+            subtotal: 'Subtotal',
+            shipping: 'Envío',
+            freeShipping: 'Envío gratis en pedidos superiores a 49,90€',
+            total: 'Total',
+            placeOrder: 'Realizar Pedido',
+            fullName: 'Nombre Completo',
+            address: 'Dirección',
+            city: 'Ciudad',
+            country: 'País',
+            postalCode: 'Código Postal',
+            phone: 'Teléfono',
+            email: 'Email',
+            accountInfo: 'Información de Cuenta',
+            standardShipping: 'Envío Estándar',
+            expressShipping: 'Envío Express',
+            storePickup: 'Recogida en Tienda',
+            creditCard: 'Tarjeta de Crédito/Débito',
+            paypal: 'PayPal',
+            cashOnDelivery: 'Pago Contra Reembolso',
+            cardNumber: 'Número de Tarjeta',
+            expiryDate: 'Fecha de Vencimiento',
+            cvv: 'CVV',
+            cardholderName: 'Titular de la Tarjeta',
+            items: 'productos',
+            item: 'producto',
+            free: 'Gratis'
+        },
+        EN: {
+            orderSummary: 'Order Summary',
+            shippingInfo: 'Shipping Information',
+            paymentMethod: 'Payment Method',
+            subtotal: 'Subtotal',
+            shipping: 'Shipping',
+            freeShipping: 'Free shipping on orders over €49.90',
+            total: 'Total',
+            placeOrder: 'Place Order',
+            fullName: 'Full Name',
+            address: 'Address',
+            city: 'City',
+            country: 'Country',
+            postalCode: 'Postal Code',
+            phone: 'Phone',
+            email: 'Email',
+            accountInfo: 'Account Information',
+            standardShipping: 'Standard Shipping',
+            expressShipping: 'Express Shipping',
+            storePickup: 'Store Pickup',
+            creditCard: 'Credit/Debit Card',
+            paypal: 'PayPal',
+            cashOnDelivery: 'Cash on Delivery',
+            cardNumber: 'Card Number',
+            expiryDate: 'Expiry Date',
+            cvv: 'CVV',
+            cardholderName: 'Cardholder Name',
+            items: 'items',
+            item: 'item',
+            free: 'Free'
+        },
+        FR: {
+            orderSummary: 'Résumé de la Commande',
+            shippingInfo: 'Informations de Livraison',
+            paymentMethod: 'Méthode de Paiement',
+            subtotal: 'Sous-total',
+            shipping: 'Livraison',
+            freeShipping: 'Livraison gratuite pour les commandes supérieures à 49,90€',
+            total: 'Total',
+            placeOrder: 'Passer la Commande',
+            fullName: 'Nom Complet',
+            address: 'Adresse',
+            city: 'Ville',
+            country: 'Pays',
+            postalCode: 'Code Postal',
+            phone: 'Téléphone',
+            email: 'Email',
+            accountInfo: 'Informations du Compte',
+            standardShipping: 'Livraison Standard',
+            expressShipping: 'Livraison Express',
+            storePickup: 'Retrait en Magasin',
+            creditCard: 'Carte de Crédit/Débit',
+            paypal: 'PayPal',
+            cashOnDelivery: 'Paiement à la Livraison',
+            cardNumber: 'Numéro de Carte',
+            expiryDate: 'Date d\'Expiration',
+            cvv: 'CVV',
+            cardholderName: 'Titulaire de la Carte',
+            items: 'articles',
+            item: 'article',
+            free: 'Gratuit'
+        },
+        EU: {
+            orderSummary: 'Eskaeraren Laburpena',
+            shippingInfo: 'Bidalketaren Informazioa',
+            paymentMethod: 'Ordainketa Metodoa',
+            subtotal: 'Azpitotala',
+            shipping: 'Bidalketa',
+            freeShipping: 'Bidalketa doan 49,90€ baino gehiagoko eskaeretan',
+            total: 'Guztira',
+            placeOrder: 'Eskaera Egin',
+            fullName: 'Izen Osoa',
+            address: 'Helbidea',
+            city: 'Hiria',
+            country: 'Herrialdea',
+            postalCode: 'Posta Kodea',
+            phone: 'Telefonoa',
+            email: 'Email',
+            accountInfo: 'Kontuaren Informazioa',
+            standardShipping: 'Bidalketa Estándarra',
+            expressShipping: 'Bidalketa Express',
+            storePickup: 'Dendan Jasotzea',
+            creditCard: 'Kreditu/Debitu Txartela',
+            paypal: 'PayPal',
+            cashOnDelivery: 'Eskura Ordainketa',
+            cardNumber: 'Txartel Zenbakia',
+            expiryDate: 'Iraungitze Data',
+            cvv: 'CVV',
+            cardholderName: 'Txartelaren Titularra',
+            items: 'produktu',
+            item: 'produktu',
+            free: 'Dohain'
+        }
+};
+
 function renderCheckoutForm() {
+    // Ensure checkout container exists
+    if (!checkoutContainer) {
+        checkoutContainer = document.getElementById('checkout-container');
+    }
+    
+    if (!checkoutContainer) {
+        console.error('Checkout container not found in renderCheckoutForm!');
+        return;
+    }
+    
     const userLanguage = authService.getLanguage() || 'ES';
-    const currentUser = authService.getUser();
-    const cart = cartStore.cartLoadFromStorage();
-    const subtotal = parseFloat(cartStore.totalCart());
+    const currentUser = authService.getUser() || {};
+    const cart = cartStore.cartLoadFromStorage() || [];
+    const subtotal = parseFloat(cartStore.totalCart()) || 0;
     const shippingCost = subtotal >= 49.90 ? 0 : 4.95;
     const total = subtotal + shippingCost;
 
-    const texts = userLanguage === 'EN' ? {
-        orderSummary: 'Order Summary',
-        shippingInfo: 'Shipping Information',
-        paymentMethod: 'Payment Method',
-        subtotal: 'Subtotal',
-        shipping: 'Shipping',
-        freeShipping: 'Free shipping on orders over €49.90',
-        total: 'Total',
-        placeOrder: 'Place Order',
-        fullName: 'Full Name',
-        address: 'Address',
-        city: 'City',
-        postalCode: 'Postal Code',
-        phone: 'Phone',
-        email: 'Email',
-        standardShipping: 'Standard Shipping',
-        expressShipping: 'Express Shipping',
-        storePickup: 'Store Pickup',
-        creditCard: 'Credit/Debit Card',
-        paypal: 'PayPal',
-        cashOnDelivery: 'Cash on Delivery',
-        cardNumber: 'Card Number',
-        expiryDate: 'Expiry Date',
-        cvv: 'CVV',
-        cardholderName: 'Cardholder Name',
-        items: 'items',
-        item: 'item'
-    } : {
-        orderSummary: 'Resumen del Pedido',
-        shippingInfo: 'Información de Envío',
-        paymentMethod: 'Método de Pago',
-        subtotal: 'Subtotal',
-        shipping: 'Envío',
-        freeShipping: 'Envío gratis en pedidos superiores a 49,90€',
-        total: 'Total',
-        placeOrder: 'Realizar Pedido',
-        fullName: 'Nombre Completo',
-        address: 'Dirección',
-        city: 'Ciudad',
-        postalCode: 'Código Postal',
-        phone: 'Teléfono',
-        email: 'Email',
-        standardShipping: 'Envío Estándar',
-        expressShipping: 'Envío Express',
-        storePickup: 'Recogida en Tienda',
-        creditCard: 'Tarjeta de Crédito/Débito',
-        paypal: 'PayPal',
-        cashOnDelivery: 'Pago Contra Reembolso',
-        cardNumber: 'Número de Tarjeta',
-        expiryDate: 'Fecha de Vencimiento',
-        cvv: 'CVV',
-        cardholderName: 'Titular de la Tarjeta',
-        items: 'productos',
-        item: 'producto'
-    };
+    const texts = checkoutTextsMap[userLanguage] || checkoutTextsMap.ES;
 
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
     const itemsText = totalItems === 1 ? texts.item : texts.items;
 
     checkoutContainer.innerHTML = `
         <div class="checkout-wrapper">
             <div class="checkout-form-section">
                 <form id="checkout-form" class="checkout-form">
+                    <section class="checkout-section account-section">
+                        <h2><i class="fa-solid fa-user"></i> ${texts.accountInfo}</h2>
+                        <div class="account-display">
+                            <div class="account-field">
+                                <strong>${texts.fullName}:</strong>
+                                <span>${currentUser.nombre_completo || ''}</span>
+                            </div>
+                            <div class="account-field">
+                                <strong>${texts.email}:</strong>
+                                <span>${currentUser.email || ''}</span>
+                            </div>
+                        </div>
+                    </section>
                     <section class="checkout-section">
                         <h2><i class="fa-solid fa-truck"></i> ${texts.shippingInfo}</h2>
                         <div class="form-group">
@@ -182,6 +305,10 @@ function renderCheckoutForm() {
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="country">${texts.country} *</label>
+                            <input type="text" id="country" name="country" required>
+                        </div>
+                        <div class="form-group">
                             <label>${texts.shipping}</label>
                             <div class="shipping-options">
                                 <label class="radio-option">
@@ -202,7 +329,7 @@ function renderCheckoutForm() {
                                     <input type="radio" name="shipping" value="pickup">
                                     <div>
                                         <strong>${texts.storePickup}</strong>
-                                        <span>${userLanguage === 'EN' ? 'Free' : 'Gratis'}</span>
+                                        <span>${texts.free}</span>
                                     </div>
                                 </label>
                             </div>
@@ -280,7 +407,7 @@ function renderCheckoutForm() {
                         </div>
                         <div class="total-row">
                             <span>${texts.shipping}</span>
-                            <span id="shipping-cost">${shippingCost === 0 ? (userLanguage === 'EN' ? 'Free' : 'Gratis') : `${shippingCost.toFixed(2)}€`}</span>
+                            <span id="shipping-cost">${shippingCost === 0 ? texts.free : `${shippingCost.toFixed(2)}€`}</span>
                         </div>
                         <div class="total-row total-final">
                             <span>${texts.total}</span>
@@ -355,8 +482,9 @@ function updateShippingCost() {
     const shippingCostElement = document.getElementById('shipping-cost');
     const totalCostElement = document.getElementById('total-cost');
     
+    const texts = checkoutTextsMap[userLanguage] || checkoutTextsMap.ES;
     shippingCostElement.textContent = shippingCost === 0 
-        ? (userLanguage === 'EN' ? 'Free' : 'Gratis')
+        ? texts.free
         : `${shippingCost.toFixed(2)}€`;
     
     const total = subtotal + shippingCost;
@@ -410,6 +538,7 @@ function handleCheckoutSubmit(e) {
             phone: formData.get('phone'),
             address: formData.get('address'),
             city: formData.get('city'),
+            country: formData.get('country'),
             postalCode: formData.get('postalCode'),
             method: formData.get('shipping')
         },
@@ -426,9 +555,13 @@ function handleCheckoutSubmit(e) {
 
     // Here you would typically send this data to a server
     // For now, we'll just show a success message and clear the cart
-    const successMessage = userLanguage === 'EN' 
-        ? 'Order placed successfully! Thank you for your purchase.'
-        : '¡Pedido realizado con éxito! Gracias por tu compra.';
+    const successMessages = {
+        ES: '¡Pedido realizado con éxito! Gracias por tu compra.',
+        EN: 'Order placed successfully! Thank you for your purchase.',
+        FR: 'Commande passée avec succès ! Merci pour votre achat.',
+        EU: 'Eskaera ondo egin da! Eskerrik asko zure erosketa egiteagatik.'
+    };
+    const successMessage = successMessages[userLanguage] || successMessages.ES;
 
     alert(successMessage);
     

@@ -67,20 +67,38 @@ export const googleAuth = {
                 
                 if (redirect) {
                     // Map redirect names to actual page names
-                    const redirectMap = {
-                        'checkout': userLanguage === 'EN' ? 'checkout.html' : 'finalizar-compra.html',
-                        'finalizar-compra': 'finalizar-compra.html'
+                    const redirectMaps = {
+                        ES: {
+                            'checkout': 'finalizar-compra.html',
+                            'finalizar-compra': 'finalizar-compra.html'
+                        },
+                        EN: {
+                            'checkout': 'checkout.html',
+                            'finalizar-compra': 'checkout.html'
+                        },
+                        FR: {
+                            'checkout': 'commande.html',
+                            'finalizar-compra': 'commande.html',
+                            'commande': 'commande.html'
+                        },
+                        EU: {
+                            'checkout': 'erosketa-bukatu.html',
+                            'finalizar-compra': 'erosketa-bukatu.html',
+                            'erosketa-bukatu': 'erosketa-bukatu.html'
+                        }
                     };
                     
+                    const redirectMap = redirectMaps[userLanguage] || redirectMaps.ES;
                     const redirectPage = redirectMap[redirect];
+                    
                     if (redirectPage) {
                         const url = window.location.href;
                         const urlCategoria = url.split('/');
                         let basePath = '';
                         
-                        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+                        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
                             basePath = '../../../';
-                        } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN') {
+                        } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
                             basePath = '../';
                         } else {
                             basePath = './';
