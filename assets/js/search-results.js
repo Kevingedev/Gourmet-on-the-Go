@@ -157,10 +157,14 @@ function mostrarProductos(productos) {
             ${productos.map(producto => `
                 <article class="section-productos-destacados__item cart-item search-product-card" data-product-id="${producto.id_producto}">
                     <div class="product-image-wrapper">
-                        <img src="${rutaBase}${producto.img_url}" alt="${producto.nombre[idioma]}">
+                        <a href="${rutaBase}${langPath}/${detailPage}?pd=${producto.id_producto}" class="product-link">
+                            <img src="${rutaBase}${producto.img_url}" alt="${producto.nombre[idioma]}">
+                        </a>
                         ${producto.featured ? `<span class="featured-badge"><i class="fa-solid fa-star"></i> ${currentTexts.featured}</span>` : ''}
                     </div>
-                    <h3 class="item_title">${producto.nombre[idioma]}</h3>
+                    <h3 class="item_title">
+                        <a href="${rutaBase}${langPath}/${detailPage}?pd=${producto.id_producto}" class="product-link">${producto.nombre[idioma]}</a>
+                    </h3>
                     <p class="item_description">${producto.descripcion[idioma]}</p>
                     <div class="product-info">
                         <div class="product-header">
@@ -186,6 +190,31 @@ function mostrarProductos(productos) {
             `).join('')}
         </div>
     `;
+    
+    // Add click handler to entire product card (except buttons)
+    contenedorResultados.querySelectorAll('.search-product-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Don't navigate if clicking on buttons or links
+            if (e.target.closest('.item_actions') || 
+                e.target.closest('.btn-add-to-cart') || 
+                e.target.closest('.btn-favorite') ||
+                e.target.closest('.product-link')) {
+                return;
+            }
+            
+            // Navigate to product detail
+            const productId = card.getAttribute('data-product-id');
+            if (productId) {
+                const productLink = card.querySelector('.product-link');
+                if (productLink) {
+                    window.location.href = productLink.href;
+                }
+            }
+        });
+        
+        // Add cursor pointer style
+        card.style.cursor = 'pointer';
+    });
     
     // No need to initialize buttons here - cartView.js already handles it
     // The container-products class will be picked up by cartView.js automatically

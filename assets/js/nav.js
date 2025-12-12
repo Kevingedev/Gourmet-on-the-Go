@@ -163,7 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const sessionText = sessionTexts[userLanguage] || sessionTexts.ES;
     
     if (currentUser) {
-        btnSesion = `<button class="btn-login" title="${sessionText.logoutTitle}" data-modal-open="#logoutModal" id="btn-logout">${currentUserData.username}</button>`;
+        const username = currentUserData.username || '';
+        const logoutTitle = `${sessionText.logoutTitle}${username ? ` - ${username}` : ''}`;
+        btnSesion = `<button class="btn-login" title="${logoutTitle}" data-modal-open="#logoutModal" id="btn-logout">${username}</button>`;
     } else {
         btnSesion = `<button class="btn-login" title="${sessionText.loginTitle}" data-modal-open="#loginModal" id="btn-login"><i class="fa-solid fa-user"></i></button>`;
     }
@@ -778,14 +780,39 @@ async function inicializarBuscador() {
                     }
                     e.preventDefault();
                     e.stopPropagation();
-                    const consulta = inputBusqueda.value.trim();
-                    redirigirABusqueda(consulta);
+                    const productId = item.getAttribute('data-product-id');
+                    if (productId) {
+                        navegarAProductoDetalle(productId);
+                    } else {
+                        const consulta = inputBusqueda.value.trim();
+                        redirigirABusqueda(consulta);
+                    }
                 });
             });
 
             resultadosBusqueda.style.display = 'block';
             resultadosBusqueda.classList.add('is-visible');
         }
+    }
+
+    function navegarAProductoDetalle(productId) {
+        if (!productId) {
+            return;
+        }
+
+        const idioma = localStorage.getItem('userLanguage') || 'ES';
+        const rutaBase = obtenerRutaBase();
+        
+        // Mapeo de páginas de detalle según idioma
+        const detailPages = {
+            ES: 'producto-detalle.html',
+            EN: 'product-detail.html',
+            FR: 'detail-produit.html',
+            EU: 'produktu-xehetasuna.html'
+        };
+        
+        const detailPage = detailPages[idioma] || detailPages.ES;
+        window.location.href = `${rutaBase}${idioma}/${detailPage}?pd=${encodeURIComponent(productId)}`;
     }
 
     function redirigirABusqueda(consulta) {
@@ -795,18 +822,18 @@ async function inicializarBuscador() {
 
         const idioma = localStorage.getItem('userLanguage') || 'ES';
         const rutaBase = obtenerRutaBase();
-        const paginaBusqueda = idioma === 'EN' ? 'search.html' : 'busqueda.html';
+        const paginaBusqueda = idioma === 'EN' ? 'search.html' : idioma === 'FR' ? 'recherche.html' : idioma === 'EU' ? 'bilaketa.html' : 'busqueda.html';
         window.location.href = `${rutaBase}${idioma}/${paginaBusqueda}?q=${encodeURIComponent(consulta)}`;
     }
 
     function obtenerRutaBase() {
         const path = window.location.pathname;
-        if (path.includes('/catalogo/') || path.includes('/catalog/')) {
+        if (path.includes('/catalogo/') || path.includes('/catalog/') || path.includes('/catalogue/') || path.includes('/katalogoa/')) {
             return '../../../';
-        } else if (path.includes('/ES/') || path.includes('/EN/')) {
+        } else if (path.includes('/ES/') || path.includes('/EN/') || path.includes('/FR/') || path.includes('/EU/')) {
             return '../';
         }
-        return '/';
+        return './';
     }
 }
 

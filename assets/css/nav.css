@@ -197,6 +197,8 @@ body {
   display: flex;
   align-items: center;
   gap: 18px;
+  position: relative;
+  z-index: 1;
 }
 
 /* LINKS CATEGORÍAS */
@@ -212,6 +214,8 @@ body {
   border: 1.5px solid rgba(12, 128, 56, 0.2);
   backdrop-filter: blur(12px);
   box-shadow: inset 0 2px 4px rgba(12, 128, 56, 0.05);
+  position: relative;
+  z-index: 10;
 }
 
 .nav__links li a {
@@ -229,6 +233,7 @@ body {
   transition: all var(--transition-base);
   background: transparent;
   overflow: hidden;
+  pointer-events: auto;
 }
 
 .nav__links li a::before {
@@ -341,6 +346,10 @@ body {
   letter-spacing: 0.02em;
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  min-width: auto;
 }
 
 .btn-login::before {
@@ -498,6 +507,18 @@ body {
 
   .nav__actions {
     justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .btn-login {
+    max-width: 100%;
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.75rem 1.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -576,6 +597,7 @@ input:-webkit-autofill:active {
 .nav__search {
   position: relative !important;
   z-index: 100;
+  pointer-events: auto;
 }
 
 .nav__search-results {
@@ -597,6 +619,7 @@ input:-webkit-autofill:active {
   width: 100%;
   min-width: 300px;
   display: none;
+  pointer-events: none;
 }
 
 /* Header del dropdown de búsqueda */
@@ -648,6 +671,7 @@ input:-webkit-autofill:active {
   visibility: visible !important;
   transform: translateY(0) !important;
   display: block !important;
+  pointer-events: auto !important;
 }
 
 /* Scrollbar personalizado */
@@ -1105,6 +1129,25 @@ background: var(--background);
   .lang-select {
     width: 100%;
     min-width: 0;
+  }
+
+  .btn-login {
+    max-width: 100%;
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 0.7rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-login {
+    font-size: 0.75rem;
+    padding: 0.65rem 0.875rem;
+    max-width: 100%;
+  }
+
+  .nav__actions {
+    gap: 6px;
   }
 }
 
