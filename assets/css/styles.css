@@ -1667,4 +1667,27 @@ box-shadow: var(--shadow-cards);
 transform: translateY(-2px);
 }
 
+.btn-discount{
+  width: 50%; 
+  margin-top: 10px; 
+  margin-bottom: 10px; 
+  background-color: #d4a017; 
+  color: white; 
+  border: none; 
+  padding: 10px; 
+  align-items: end;
+  justify-content: end;
+  float: right;
+  border-radius: var(--border-radius); 
+  cursor: pointer; 
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-discount:hover{
+  background-color: #b38615;
+  box-shadow: var(--shadow-cards);
+  transform: translateY(-2px);
+}
+
+
 

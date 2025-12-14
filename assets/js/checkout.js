@@ -6,21 +6,21 @@ let checkoutContainer;
 
 document.addEventListener('DOMContentLoaded', () => {
     checkoutContainer = document.getElementById('checkout-container');
-    
+
     if (!checkoutContainer) {
         console.error('Checkout container not found!');
         return;
     }
-    
+
     const userLanguage = authService.getLanguage() || 'ES';
-    
+
     // Check if user is authenticated
     if (!authService.isAuthenticated()) {
         // Redirect to login page
         const url = window.location.href;
         const urlCategoria = url.split('/');
         let basePath = '';
-        
+
         if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
             basePath = '../../../';
         } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             basePath = './';
         }
-        
+
         const loginPages = {
             ES: 'sesion.html',
             EN: 'session.html',
@@ -64,12 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const emptyCartText = emptyCartTexts[userLanguage] || emptyCartTexts.ES;
         const goToShopText = goToShopTexts[userLanguage] || goToShopTexts.ES;
-        
+
         if (!checkoutContainer) {
             console.error('Checkout container not found when showing empty cart!');
             return;
         }
-        
+
         checkoutContainer.innerHTML = `
             <div class="checkout-empty">
                 <i class="fa-solid fa-cart-shopping"></i>
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function getBasePath() {
     const url = window.location.href;
     const urlCategoria = url.split('/');
-    
+
     if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
         return '../../../';
     } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
@@ -110,130 +110,134 @@ function getBasePath() {
 }
 
 const checkoutTextsMap = {
-        ES: {
-            orderSummary: 'Resumen del Pedido',
-            shippingInfo: 'Información de Envío',
-            paymentMethod: 'Método de Pago',
-            subtotal: 'Subtotal',
-            shipping: 'Envío',
-            freeShipping: 'Envío gratis en pedidos superiores a 49,90€',
-            total: 'Total',
-            placeOrder: 'Realizar Pedido',
-            fullName: 'Nombre Completo',
-            address: 'Dirección',
-            city: 'Ciudad',
-            country: 'País',
-            postalCode: 'Código Postal',
-            phone: 'Teléfono',
-            email: 'Email',
-            accountInfo: 'Información de Cuenta',
-            standardShipping: 'Envío Estándar',
-            expressShipping: 'Envío Express',
-            storePickup: 'Recogida en Tienda',
-            creditCard: 'Tarjeta de Crédito/Débito',
-            paypal: 'PayPal',
-            cashOnDelivery: 'Pago Contra Reembolso',
-            cardNumber: 'Número de Tarjeta',
-            expiryDate: 'Fecha de Vencimiento',
-            cvv: 'CVV',
-            cardholderName: 'Titular de la Tarjeta',
-            items: 'productos',
-            item: 'producto',
-            free: 'Gratis'
-        },
-        EN: {
-            orderSummary: 'Order Summary',
-            shippingInfo: 'Shipping Information',
-            paymentMethod: 'Payment Method',
-            subtotal: 'Subtotal',
-            shipping: 'Shipping',
-            freeShipping: 'Free shipping on orders over €49.90',
-            total: 'Total',
-            placeOrder: 'Place Order',
-            fullName: 'Full Name',
-            address: 'Address',
-            city: 'City',
-            country: 'Country',
-            postalCode: 'Postal Code',
-            phone: 'Phone',
-            email: 'Email',
-            accountInfo: 'Account Information',
-            standardShipping: 'Standard Shipping',
-            expressShipping: 'Express Shipping',
-            storePickup: 'Store Pickup',
-            creditCard: 'Credit/Debit Card',
-            paypal: 'PayPal',
-            cashOnDelivery: 'Cash on Delivery',
-            cardNumber: 'Card Number',
-            expiryDate: 'Expiry Date',
-            cvv: 'CVV',
-            cardholderName: 'Cardholder Name',
-            items: 'items',
-            item: 'item',
-            free: 'Free'
-        },
-        FR: {
-            orderSummary: 'Résumé de la Commande',
-            shippingInfo: 'Informations de Livraison',
-            paymentMethod: 'Méthode de Paiement',
-            subtotal: 'Sous-total',
-            shipping: 'Livraison',
-            freeShipping: 'Livraison gratuite pour les commandes supérieures à 49,90€',
-            total: 'Total',
-            placeOrder: 'Passer la Commande',
-            fullName: 'Nom Complet',
-            address: 'Adresse',
-            city: 'Ville',
-            country: 'Pays',
-            postalCode: 'Code Postal',
-            phone: 'Téléphone',
-            email: 'Email',
-            accountInfo: 'Informations du Compte',
-            standardShipping: 'Livraison Standard',
-            expressShipping: 'Livraison Express',
-            storePickup: 'Retrait en Magasin',
-            creditCard: 'Carte de Crédit/Débit',
-            paypal: 'PayPal',
-            cashOnDelivery: 'Paiement à la Livraison',
-            cardNumber: 'Numéro de Carte',
-            expiryDate: 'Date d\'Expiration',
-            cvv: 'CVV',
-            cardholderName: 'Titulaire de la Carte',
-            items: 'articles',
-            item: 'article',
-            free: 'Gratuit'
-        },
-        EU: {
-            orderSummary: 'Eskaeraren Laburpena',
-            shippingInfo: 'Bidalketaren Informazioa',
-            paymentMethod: 'Ordainketa Metodoa',
-            subtotal: 'Azpitotala',
-            shipping: 'Bidalketa',
-            freeShipping: 'Bidalketa doan 49,90€ baino gehiagoko eskaeretan',
-            total: 'Guztira',
-            placeOrder: 'Eskaera Egin',
-            fullName: 'Izen Osoa',
-            address: 'Helbidea',
-            city: 'Hiria',
-            country: 'Herrialdea',
-            postalCode: 'Posta Kodea',
-            phone: 'Telefonoa',
-            email: 'Email',
-            accountInfo: 'Kontuaren Informazioa',
-            standardShipping: 'Bidalketa Estándarra',
-            expressShipping: 'Bidalketa Express',
-            storePickup: 'Dendan Jasotzea',
-            creditCard: 'Kreditu/Debitu Txartela',
-            paypal: 'PayPal',
-            cashOnDelivery: 'Eskura Ordainketa',
-            cardNumber: 'Txartel Zenbakia',
-            expiryDate: 'Iraungitze Data',
-            cvv: 'CVV',
-            cardholderName: 'Txartelaren Titularra',
-            items: 'produktu',
-            item: 'produktu',
-            free: 'Dohain'
-        }
+    ES: {
+        orderSummary: 'Resumen del Pedido',
+        shippingInfo: 'Información de Envío',
+        paymentMethod: 'Método de Pago',
+        subtotal: 'Subtotal',
+        shipping: 'Envío',
+        freeShipping: 'Envío gratis en pedidos superiores a 49,90€',
+        total: 'Total',
+        placeOrder: 'Realizar Pedido',
+        fullName: 'Nombre Completo',
+        address: 'Dirección',
+        city: 'Ciudad',
+        country: 'País',
+        postalCode: 'Código Postal',
+        phone: 'Teléfono',
+        email: 'Email',
+        accountInfo: 'Información de Cuenta',
+        standardShipping: 'Envío Estándar',
+        expressShipping: 'Envío Express',
+        storePickup: 'Recogida en Tienda',
+        creditCard: 'Tarjeta de Crédito/Débito',
+        paypal: 'PayPal',
+        cashOnDelivery: 'Pago Contra Reembolso',
+        cardNumber: 'Número de Tarjeta',
+        expiryDate: 'Fecha de Vencimiento',
+        cvv: 'CVV',
+        cardholderName: 'Titular de la Tarjeta',
+        items: 'productos',
+        item: 'producto',
+        free: 'Gratis',
+        applyDiscount: 'Aplicar Descuento de Fidelidad'
+    },
+    EN: {
+        orderSummary: 'Order Summary',
+        shippingInfo: 'Shipping Information',
+        paymentMethod: 'Payment Method',
+        subtotal: 'Subtotal',
+        shipping: 'Shipping',
+        freeShipping: 'Free shipping on orders over €49.90',
+        total: 'Total',
+        placeOrder: 'Place Order',
+        fullName: 'Full Name',
+        address: 'Address',
+        city: 'City',
+        country: 'Country',
+        postalCode: 'Postal Code',
+        phone: 'Phone',
+        email: 'Email',
+        accountInfo: 'Account Information',
+        standardShipping: 'Standard Shipping',
+        expressShipping: 'Express Shipping',
+        storePickup: 'Store Pickup',
+        creditCard: 'Credit/Debit Card',
+        paypal: 'PayPal',
+        cashOnDelivery: 'Cash on Delivery',
+        cardNumber: 'Card Number',
+        expiryDate: 'Expiry Date',
+        cvv: 'CVV',
+        cardholderName: 'Cardholder Name',
+        items: 'items',
+        item: 'item',
+        free: 'Free',
+        applyDiscount: 'Apply Loyalty Discount'
+    },
+    FR: {
+        orderSummary: 'Résumé de la Commande',
+        shippingInfo: 'Informations de Livraison',
+        paymentMethod: 'Méthode de Paiement',
+        subtotal: 'Sous-total',
+        shipping: 'Livraison',
+        freeShipping: 'Livraison gratuite pour les commandes supérieures à 49,90€',
+        total: 'Total',
+        placeOrder: 'Passer la Commande',
+        fullName: 'Nom Complet',
+        address: 'Adresse',
+        city: 'Ville',
+        country: 'Pays',
+        postalCode: 'Code Postal',
+        phone: 'Téléphone',
+        email: 'Email',
+        accountInfo: 'Informations du Compte',
+        standardShipping: 'Livraison Standard',
+        expressShipping: 'Livraison Express',
+        storePickup: 'Retrait en Magasin',
+        creditCard: 'Carte de Crédit/Débit',
+        paypal: 'PayPal',
+        cashOnDelivery: 'Paiement à la Livraison',
+        cardNumber: 'Numéro de Carte',
+        expiryDate: 'Date d\'Expiration',
+        cvv: 'CVV',
+        cardholderName: 'Titulaire de la Carte',
+        items: 'articles',
+        item: 'article',
+        free: 'Gratuit',
+        applyDiscount: 'Appliquer Réduction Fidélité'
+    },
+    EU: {
+        orderSummary: 'Eskaeraren Laburpena',
+        shippingInfo: 'Bidalketaren Informazioa',
+        paymentMethod: 'Ordainketa Metodoa',
+        subtotal: 'Azpitotala',
+        shipping: 'Bidalketa',
+        freeShipping: 'Bidalketa doan 49,90€ baino gehiagoko eskaeretan',
+        total: 'Guztira',
+        placeOrder: 'Eskaera Egin',
+        fullName: 'Izen Osoa',
+        address: 'Helbidea',
+        city: 'Hiria',
+        country: 'Herrialdea',
+        postalCode: 'Posta Kodea',
+        phone: 'Telefonoa',
+        email: 'Email',
+        accountInfo: 'Kontuaren Informazioa',
+        standardShipping: 'Bidalketa Estándarra',
+        expressShipping: 'Bidalketa Express',
+        storePickup: 'Dendan Jasotzea',
+        creditCard: 'Kreditu/Debitu Txartela',
+        paypal: 'PayPal',
+        cashOnDelivery: 'Eskura Ordainketa',
+        cardNumber: 'Txartel Zenbakia',
+        expiryDate: 'Iraungitze Data',
+        cvv: 'CVV',
+        cardholderName: 'Txartelaren Titularra',
+        items: 'produktu',
+        item: 'produktu',
+        free: 'Dohain',
+        applyDiscount: 'Fidelitate Deskontua Aplikatu'
+    }
 };
 
 function renderCheckoutForm() {
@@ -241,12 +245,12 @@ function renderCheckoutForm() {
     if (!checkoutContainer) {
         checkoutContainer = document.getElementById('checkout-container');
     }
-    
+
     if (!checkoutContainer) {
         console.error('Checkout container not found in renderCheckoutForm!');
         return;
     }
-    
+
     const userLanguage = authService.getLanguage() || 'ES';
     const currentUser = authService.getUser() || {};
     const cart = cartStore.cartLoadFromStorage() || [];
@@ -403,7 +407,7 @@ function renderCheckoutForm() {
                     <div class="order-totals">
                         <div class="total-row">
                             <span>${texts.subtotal}</span>
-                            <span>${subtotal.toFixed(2)}€</span>
+                            <span id="subtotal-cost">${subtotal.toFixed(2)}€</span>
                         </div>
                         <div class="total-row">
                             <span>${texts.shipping}</span>
@@ -413,6 +417,7 @@ function renderCheckoutForm() {
                             <span>${texts.total}</span>
                             <strong id="total-cost">${total.toFixed(2)}€</strong>
                         </div>
+                        ${totalItems > 5 ? `<button type="button" id="btn-loyalty-discount" class="btn-discount">${texts.applyDiscount}</button>` : ''}
                     </div>
                     <button type="submit" form="checkout-form" class="btn-checkout">${texts.placeOrder}</button>
                     <p class="checkout-note">${totalItems} ${itemsText}</p>
@@ -461,6 +466,12 @@ function setupCheckoutForm() {
         });
     }
 
+    // Loyalty Discount Button
+    const discountBtn = document.getElementById('btn-loyalty-discount');
+    if (discountBtn) {
+        discountBtn.addEventListener('click', applyLoyaltyDiscount);
+    }
+
     // Form submission
     form.addEventListener('submit', handleCheckoutSubmit);
 }
@@ -469,7 +480,7 @@ function updateShippingCost() {
     const selectedShipping = document.querySelector('input[name="shipping"]:checked').value;
     const subtotal = parseFloat(cartStore.totalCart());
     const userLanguage = authService.getLanguage() || 'ES';
-    
+
     let shippingCost = 0;
     if (selectedShipping === 'standard') {
         shippingCost = subtotal >= 49.90 ? 0 : 4.95;
@@ -481,12 +492,12 @@ function updateShippingCost() {
 
     const shippingCostElement = document.getElementById('shipping-cost');
     const totalCostElement = document.getElementById('total-cost');
-    
+
     const texts = checkoutTextsMap[userLanguage] || checkoutTextsMap.ES;
-    shippingCostElement.textContent = shippingCost === 0 
+    shippingCostElement.textContent = shippingCost === 0
         ? texts.free
         : `${shippingCost.toFixed(2)}€`;
-    
+
     const total = subtotal + shippingCost;
     totalCostElement.textContent = `${total.toFixed(2)}€`;
 }
@@ -494,7 +505,7 @@ function updateShippingCost() {
 function toggleCardDetails() {
     const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
     const cardDetails = document.getElementById('card-details');
-    
+
     if (selectedPayment === 'card') {
         cardDetails.style.display = 'block';
         // Make card fields required
@@ -526,9 +537,58 @@ function formatExpiryDate(e) {
     e.target.value = value;
 }
 
+function applyLoyaltyDiscount() {
+    const newSubtotal = parseFloat(cartStore.loyaltyDiscount());
+    const userLanguage = authService.getLanguage() || 'ES';
+    const texts = checkoutTextsMap[userLanguage] || checkoutTextsMap.ES;
+
+    // Update Subtotal
+    const subtotalElement = document.getElementById('subtotal-cost');
+    if (subtotalElement) {
+        subtotalElement.textContent = `${newSubtotal.toFixed(2)}€`;
+    }
+
+    // Recalculate Shipping
+    const selectedShipping = document.querySelector('input[name="shipping"]:checked').value;
+    let shippingCost = 0;
+    if (selectedShipping === 'standard') {
+        shippingCost = newSubtotal >= 49.90 ? 0 : 4.95;
+    } else if (selectedShipping === 'express') {
+        shippingCost = 9.95;
+    } else if (selectedShipping === 'pickup') {
+        shippingCost = 0;
+    }
+
+    // Update Shipping Display
+    const shippingCostElement = document.getElementById('shipping-cost');
+    if (shippingCostElement) {
+        shippingCostElement.textContent = shippingCost === 0
+            ? texts.free
+            : `${shippingCost.toFixed(2)}€`;
+    }
+
+    // Update Total
+    const total = newSubtotal + shippingCost;
+    const totalCostElement = document.getElementById('total-cost');
+    if (totalCostElement) {
+        totalCostElement.textContent = `${total.toFixed(2)}€`;
+    }
+
+    // Hide button and show success feedback
+    const btn = document.getElementById('btn-loyalty-discount');
+    if (btn) {
+        btn.textContent = '✓ ' + (userLanguage === 'ES' ? 'Descuento Aplicado' :
+            userLanguage === 'EN' ? 'Discount Applied' :
+                userLanguage === 'FR' ? 'Remise Appliquée' : 'Deskontua Aplikatuta');
+        btn.style.backgroundColor = '#22c55e'; // Green
+        btn.style.cursor = 'default';
+        btn.disabled = true;
+    }
+}
+
 function handleCheckoutSubmit(e) {
     e.preventDefault();
-    
+
     const userLanguage = authService.getLanguage() || 'ES';
     const formData = new FormData(e.target);
     const checkoutData = {
@@ -563,11 +623,11 @@ function handleCheckoutSubmit(e) {
     };
     const successMessage = successMessages[userLanguage] || successMessages.ES;
 
-    alert(successMessage);
-    
+    alert(successMessage + checkoutData.total);
+
     // Clear cart
     cartStore.removeItem(cartStore.cartLoadFromStorage().map(item => item.id));
-    
+
     // Redirect to home
     const basePath = getBasePath();
     window.location.href = `${basePath}${userLanguage}/`;

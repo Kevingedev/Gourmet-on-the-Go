@@ -113,6 +113,36 @@ export const cartStore = {
             total += parseFloat(product.price.replace('€', '')) * product.quantity;
         });
         return total.toFixed(2);
+    },
+    loyaltyDiscount() {
+        cart = this.cartLoadFromStorage();
+        let allItems = [];
+
+        // Expand cart items into individual product instances with their prices
+        cart.forEach(product => {
+            const price = parseFloat(product.price.replace('€', '').trim());
+            for (let i = 0; i < product.quantity; i++) {
+                allItems.push(price); // Obtengo todos los precios de los productos por su cantidad
+            }
+        });
+
+        // Check if total items > 5 Si es mayor a 5 aplica el descuento
+        if (allItems.length > 5) {
+            // Sort by price ascending (cheapest first)
+            allItems.sort((a, b) => a - b); // Ordena los precios de menor a mayor
+
+            // Remove the 3 cheapest items (slice starting from index 3)
+            const itemsToCharge = allItems.slice(3); // Quita los 3 productos mas baratos
+
+            // Sum the remaining items
+            const total = itemsToCharge.reduce((sum, price) => sum + price, 0); // Suma los precios restantes
+
+            return total.toFixed(2); // Devuelve el total con dos decimales
+        } else {
+            // Return normal total if 5 or fewer items
+            const total = allItems.reduce((sum, price) => sum + price, 0); // Suma los precios restantes
+            return total.toFixed(2); // Devuelve el total con dos decimales
+        }
     }
 
 
