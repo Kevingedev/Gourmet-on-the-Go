@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cartCheckout) cartCheckout.textContent = texts.checkout;
     }
 
-    // Function to update product names in cart when language changes
+    // FUNCION PARA ACTUALIZAR EL NOMBRE DE LOS PRODUCTOS EN EL CARRITO CUANDO CAMBIA EL Idioma
     async function updateCartProductNames() {
         const currentLanguage = getCurrentLanguage();
         const cart = cartStore.cartLoadFromStorage();

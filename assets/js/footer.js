@@ -85,7 +85,7 @@ function obtenerRutaBase() {
     
     // Si estamos en /ES/404/, /EN/404/, /FR/404/, o /EU/404/
     if (pathname.includes('/404/')) {
-        return './';
+        return '../../';
     }
     
     // Si estamos en catálogos (ES, EN, FR, EU)
