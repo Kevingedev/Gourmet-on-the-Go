@@ -79,18 +79,18 @@ function redirectToLogin() {
     // Show alert in user's language
     alert(userTexts.loginRequired);
     
-    // Calculate base path based on current location
-    const url = window.location.href;
-    const urlCategoria = url.split('/');
-    let basePath = '';
+    // Calculate base path using pathname (more reliable)
+    const pathname = window.location.pathname;
+    const pathParts = pathname.split('/').filter(p => p.length > 0);
     
-    if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
-        basePath = '../../../';
-    } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
-        basePath = '../';
-    } else {
-        basePath = './';
-    }
+    // Check if we're in a catalog subfolder
+    const isInCatalog = pathParts.includes('catalogo') || pathParts.includes('catalog') || 
+                        pathParts.includes('catalogue') || pathParts.includes('katalogoa');
+    
+    // Check if we're already in the language folder
+    const isInLanguageFolder = pathParts.length > 0 && 
+                               (pathParts[0] === 'ES' || pathParts[0] === 'EN' || 
+                                pathParts[0] === 'FR' || pathParts[0] === 'EU');
     
     // Login page names by language
     const loginPages = {
@@ -110,7 +110,21 @@ function redirectToLogin() {
     
     const loginPage = loginPages[userLanguage] || 'sesion.html';
     const redirectPage = favoritesPages[userLanguage] || 'favoritos.html';
-    window.location.href = `${basePath}${userLanguage}/${loginPage}?redirect=${redirectPage}`;
+    
+    // Build the correct URL based on current location
+    let loginUrl;
+    if (isInCatalog) {
+        // We're in a catalog subfolder, need to go up to language folder
+        loginUrl = `../../../${userLanguage}/${loginPage}?redirect=${redirectPage}`;
+    } else if (isInLanguageFolder) {
+        // We're already in the language folder, use same folder
+        loginUrl = `${loginPage}?redirect=${redirectPage}`;
+    } else {
+        // We're at root, need to go to language folder
+        loginUrl = `${userLanguage}/${loginPage}?redirect=${redirectPage}`;
+    }
+    
+    window.location.href = loginUrl;
 }
 
 // Handle favorite button clicks with authentication check (using event delegation)
@@ -231,16 +245,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const userLanguage = authService.getLanguage() || LANGUAGE;
             const userTexts = texts[userLanguage] || texts.ES;
             
-            // Calculate base path
-            const url = window.location.href;
-            const urlCategoria = url.split('/');
-            let basePath = '../';
+            // Calculate base path using pathname (more reliable)
+            const pathname = window.location.pathname;
+            const pathParts = pathname.split('/').filter(p => p.length > 0);
             
-            if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
-                basePath = '../';
-            } else {
-                basePath = './';
-            }
+            // Check if we're already in the language folder
+            const isInLanguageFolder = pathParts.length > 0 && 
+                                      (pathParts[0] === 'ES' || pathParts[0] === 'EN' || 
+                                       pathParts[0] === 'FR' || pathParts[0] === 'EU');
             
             const loginPages = {
                 ES: 'sesion.html',
@@ -260,13 +272,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const loginPage = loginPages[userLanguage] || 'sesion.html';
             const redirectPage = favoritesPages[userLanguage] || 'favoritos.html';
             
+            // If we're already in the language folder, use same folder (no basePath needed)
+            // Otherwise, we need to navigate to the language folder
+            let loginUrl;
+            if (isInLanguageFolder) {
+                // We're in ES/favoritos.html, so sesion.html is in the same folder
+                loginUrl = `${loginPage}?redirect=${redirectPage}`;
+            } else {
+                // We're at root, need to go to language folder
+                loginUrl = `${userLanguage}/${loginPage}?redirect=${redirectPage}`;
+            }
+            
             wishlistContainer.innerHTML = `
-                <div class="no-results">
-                    <i class="fa-solid fa-lock" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem;"></i>
-                    <p style="font-size: 1.1rem; color: #6b7280; margin-bottom: 1rem;">${userTexts.loginRequired}</p>
-                    <a href="${basePath}${userLanguage}/${loginPage}?redirect=${redirectPage}" 
+                <div class="no-results" style="text-align: center; padding: 3rem 2rem;">
+                    <i class="fa-solid fa-lock" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem; display: block;"></i>
+                    <p style="font-size: 1.1rem; color: #6b7280; margin-bottom: 1.5rem;">${userTexts.loginRequired}</p>
+                    <a href="${loginUrl}" 
                        class="btn" 
-                       style="display: inline-block; padding: 0.75rem 1.5rem; background: var(--color-primary); color: white; text-decoration: none; border-radius: var(--radius-lg);">
+                       style="display: inline-block; padding: 0.75rem 1.5rem; background: var(--color-primary); color: white; text-decoration: none; border-radius: var(--radius-lg); font-weight: 600; transition: all 0.3s ease;">
                         ${userTexts.pleaseLogin}
                     </a>
                 </div>
