@@ -94,7 +94,7 @@ async function cargarProductoDetalle() {
           
           <div class="product-rating">
             <div class="stars">${starsHtml}</div>
-            <span class="review-count">${reviewCount} ${texts.reviews}</span>
+            <span class="review-count" ><a href="#reviews-users">${reviewCount} ${texts.reviews}</a></span>
             <span class="origin-tag feature-tag">🇪🇸 ${texts.origin}: ${texts.spain}</span>
           </div>
 
@@ -134,7 +134,7 @@ async function cargarProductoDetalle() {
         </div>
 
         <!-- FEATURES / REVIEWS EXTRA SECTION -->
-        <div style="grid-column: 1 / -1;" class="reviews-section">
+        <div style="grid-column: 1 / -1;" class="reviews-section" id="reviews-users">
           <h2 class="section-title">${texts.reviews} (${reviewCount})</h2>
           <div class="reviews-grid">
             ${mockReviews.map(r => `
@@ -160,7 +160,7 @@ async function cargarProductoDetalle() {
     // 1. Add to Cart
     const addToCartBtn = contenedor.querySelector('.btn-add-cart-large');
     const qtyInput = document.getElementById('qty-input');
-
+    let slideCart = 0;
     if (addToCartBtn) {
       addToCartBtn.addEventListener('click', async (e) => {
         e.preventDefault();
@@ -190,6 +190,12 @@ async function cargarProductoDetalle() {
             addToCartBtn.innerHTML = originalContent;
             addToCartBtn.style.background = '';
           }, 1500);
+
+          // console.log(product);
+          if (slideCart <= 0) {
+            abrirModalCarrito();
+            slideCart++;
+          }
 
         } catch (error) {
           console.error('Error adding to cart:', error);
@@ -227,6 +233,7 @@ async function cargarProductoDetalle() {
 // Ejecutar al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
   cargarProductoDetalle();
+
 });
 
 const amountCart = document.querySelector('.cart-drawer__total strong');
@@ -409,4 +416,16 @@ function getCartTexts() {
   const language = getCurrentLanguage();
   return cartTexts[language] || cartTexts.ES;
 }
+
+function abrirModalCarrito() {
+  const cartDrawer = document.querySelector('.cart-drawer');
+  const overlay = document.querySelector('.cart-drawer-overlay');
+
+  if (cartDrawer) cartDrawer.classList.add('is-open');
+  if (overlay) overlay.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+// Hacerla global
+window.abrirModalCarrito = abrirModalCarrito;
 
