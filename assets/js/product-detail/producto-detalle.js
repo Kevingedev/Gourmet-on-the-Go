@@ -85,16 +85,16 @@ async function cargarProductoDetalle() {
               }
             }
           };
-          
+
           cartStore.addToCart(event);
-          
+
           // Visual feedback
           const originalText = addToCartBtn.textContent;
           const addedText = idioma === 'EN' ? '✓ Added' : '✓ Añadido';
           addToCartBtn.textContent = addedText;
           addToCartBtn.style.background = '#22c55e';
           addToCartBtn.style.color = 'white';
-          
+
           setTimeout(() => {
             addToCartBtn.textContent = originalText;
             addToCartBtn.style.background = '';

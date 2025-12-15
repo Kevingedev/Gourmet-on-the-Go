@@ -27,19 +27,41 @@ export const cartStore = {
         return cartStorage;
     },
 
-    addToCart(param) {
+    addToCart(param, id) {
 
-        if (!param || !param.target) {
-            return;
+        if (!param || !param.target || id !== undefined) {
+
+            cart = this.cartLoadFromStorage(); //obtengo el carrito del localStorage para operar
+
+            const element = document.querySelector(`[data-product-id="${id}"]`);
+            const imgSrc = element.querySelector('.preview-image img').src;
+            const name = element.querySelector('.preview-main h1').textContent;
+            const price = element.querySelector('.preview-main .precio').textContent;
+
+            if (cart.some(product => product.id === id)) {
+
+                cart = cart.map(product => product.id === id ? { ...product, quantity: product.quantity + 1 } : product);
+
+            } else {
+                //Creo el objeto del producto
+                const product = {
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: imgSrc,
+                    quantity: 1
+                }
+
+                cart = [...cart, product];
+            }
+
+            this.syncStorage(); //lo que tengo en array lo guardo en localStorage
+            return cart;
+
+
         }
 
-        //const cartDrawerTotal = document.querySelector('.cart-drawer__total strong');//Mostrar el resultado total
-        // const productInCart = document.querySelector('.cart-item');
-        // const productList = document.querySelector('.container-products');
-
-        // productList.addEventListener('click', (event) => {
-
-        if (param.target.classList.contains('btn-add-to-cart')) {
+        if (param.target.classList.contains('btn-add-to-cart') && id === undefined) {
 
             cart = this.cartLoadFromStorage(); //obtengo el carrito del localStorage para operar
 
@@ -62,8 +84,6 @@ export const cartStore = {
                 cart = [...cart, product];
             }
 
-            // console.log(cart);
-            // this.countCart();
             this.syncStorage(); //lo que tengo en array lo guardo en localStorage
             return cart;
 

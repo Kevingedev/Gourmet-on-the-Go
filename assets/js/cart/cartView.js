@@ -54,11 +54,11 @@ function renderCartDrawer() {
     const texts = getCartTexts();
     const cartDrawer = document.getElementById('cart-drawer');
     if (!cartDrawer) return;
-    
+
     // Check if cart has products
     const cart = cartStore.cartLoadFromStorage();
     const hasProducts = cart && cart.length > 0;
-    
+
     const cartDrawerHTML = `
     <div class="cart-drawer-overlay" data-cart-overlay></div>
 
@@ -166,12 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (event.target.classList.contains('btn-add-to-cart')) {
                 const button = event.target;
                 const originalText = button.textContent;
-
-                const products = cartStore.addToCart(event);
+                const id = undefined;
+                const products = cartStore.addToCart(event, id);
                 drawerEmpty.style.display = 'none';
 
                 uploadItems(products, cartDrawerContainer); // Cargando los items al carrito si hace click en el boton de agregar al carrito
-                
+
                 // Show checkout button when product is added
                 const checkoutButton = document.querySelector('.cart-drawer__checkout');
                 if (checkoutButton) {
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cartEmpty = document.querySelector('.cart-drawer__empty');
         const cartTotal = document.querySelector('.cart-drawer__total span');
         const cartCheckout = document.querySelector('.cart-drawer__checkout');
-        
+
         if (cartHeader) cartHeader.textContent = texts.cart;
         if (cartClose) cartClose.setAttribute('aria-label', texts.close);
         if (cartEmpty) cartEmpty.textContent = texts.empty;
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentLanguage = getCurrentLanguage();
         const cart = cartStore.cartLoadFromStorage();
         if (cart.length === 0) return;
-        
+
         try {
             const allProducts = await gestorDeDatos.cargarProductos();
             const updatedCart = cart.map(cartItem => {
@@ -279,10 +279,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return cartItem;
             });
-            
+
             // Save updated cart to localStorage directly
             localStorage.setItem('cart', JSON.stringify(updatedCart));
-            
+
             // Re-render cart items
             const cartDrawerContainer = document.querySelector('.cart-drawer__products');
             if (cartDrawerContainer) {
@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Setup checkout button handler
     setupCheckoutButton();
-    
+
     // Initial check: hide checkout button if cart is empty
     const initialCart = cartStore.cartLoadFromStorage();
     if (!initialCart || initialCart.length === 0) {
@@ -325,7 +325,7 @@ function uploadItems(products, cartDrawerContainer) {
     cartDrawerContainer.innerHTML = '';
     const hasProducts = products && products.length > 0;
     const texts = getCartTexts();
-    
+
     products.forEach(product => {
         // console.log(product);
         const cardItem = `
@@ -352,22 +352,22 @@ function uploadItems(products, cartDrawerContainer) {
         cartDrawerContainer.appendChild(card);
 
     })
-    
+
     // Update cart count and total
     let totalItems = cartStore.countCart();
     const cartCountElement = document.getElementById('cart-count');
     if (cartCountElement) {
         cartCountElement.textContent = totalItems;
     }
-    
+
     if (amountCart) {
         amountCart.textContent = cartStore.totalCart() + '€';
     }
-    
+
     // Show/hide checkout button based on whether there are products
     const checkoutButton = document.querySelector('.cart-drawer__checkout');
     const cartFooter = document.querySelector('.cart-drawer__footer');
-    
+
     if (hasProducts) {
         // Show checkout button if it doesn't exist
         if (!checkoutButton && cartFooter) {
@@ -375,7 +375,7 @@ function uploadItems(products, cartDrawerContainer) {
             button.className = 'cart-drawer__checkout';
             button.textContent = texts.checkout;
             cartFooter.appendChild(button);
-            
+
             // Re-attach event listener
             setupCheckoutButton(button);
         } else if (checkoutButton) {
@@ -395,20 +395,20 @@ function setupCheckoutButton(button) {
     if (!button) {
         button = document.querySelector('.cart-drawer__checkout');
     }
-    
+
     if (!button) return;
-    
+
     // Remove existing listeners by cloning and replacing
     const newButton = button.cloneNode(true);
     button.parentNode.replaceChild(newButton, button);
-    
+
     newButton.addEventListener('click', () => {
         // Check if user is logged in
         const currentUser = localStorage.getItem('currentUser');
         const url = window.location.href;
         const urlCategoria = url.split('/');
         let basePath = '';
-        
+
         if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
             basePath = '../../../';
         } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN' || urlCategoria[3] == 'FR' || urlCategoria[3] == 'EU') {
@@ -416,9 +416,9 @@ function setupCheckoutButton(button) {
         } else {
             basePath = './';
         }
-        
+
         const userLanguage = localStorage.getItem('userLanguage') || 'ES';
-        
+
         if (!currentUser) {
             // Redirect to login page
             const loginPages = {
