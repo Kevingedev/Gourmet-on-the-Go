@@ -231,7 +231,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const amountCart = document.querySelector('.cart-drawer__total strong');
 
-function uploadItems(products, cartDrawerContainer) {
+async function uploadItems(products, cartDrawerContainer) {
+
+  const { cartStore } = await import('../cart/cartStore.js');
   //Tendrá el contenedor de items.
   cartDrawerContainer.innerHTML = '';
   const hasProducts = products && products.length > 0;
