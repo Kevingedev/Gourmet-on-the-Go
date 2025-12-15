@@ -31,6 +31,8 @@ export const cartStore = {
 
         if (!param || !param.target || id !== undefined) {
 
+            console.log('id', id);
+
             cart = this.cartLoadFromStorage(); //obtengo el carrito del localStorage para operar
 
             const element = document.querySelector(`[data-product-id="${id}"]`);
