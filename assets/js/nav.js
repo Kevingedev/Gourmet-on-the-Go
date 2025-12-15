@@ -571,7 +571,138 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update favorites count
     updateFavoritesCount();
 
+    // Initialize monitoring for Google Translate (from footer)
+    setTimeout(monitorGoogleTranslateState, 1000);
+
 });
+
+// Monitor Google Translate state and toggle 4-language selector visibility
+// This works with Google Translate from footer
+function monitorGoogleTranslateState() {
+    const langSelectWrapper = document.querySelector('.lang-select-wrapper');
+    if (!langSelectWrapper) return;
+    
+    // Store original display style
+    const originalDisplay = langSelectWrapper.style.display || 'inline-flex';
+    
+    // Check if translation is active
+    function checkTranslationState() {
+        // Check if Google Translate has translated the page
+        const body = document.body;
+        const html = document.documentElement;
+        
+        // Google Translate adds these classes when active
+        const isTranslated = body.classList.contains('translated-ltr') || 
+                            body.classList.contains('translated-rtl') ||
+                            html.classList.contains('translated-ltr') ||
+                            html.classList.contains('translated-rtl') ||
+                            body.getAttribute('dir') === 'rtl' ||
+                            body.getAttribute('dir') === 'ltr';
+        
+        // Check if Google Translate frame exists (indicates translation is active)
+        const translateFrame = document.querySelector('.goog-te-banner-frame');
+        const isFrameVisible = translateFrame && translateFrame.style.display !== 'none';
+        
+        // Hide 4-language selector if translation is active
+        if (isTranslated) {
+            langSelectWrapper.style.display = 'none';
+        } else {
+            langSelectWrapper.style.display = originalDisplay;
+        }
+    }
+    
+    // Monitor for translation changes on body and html
+    const observer = new MutationObserver(() => {
+        checkTranslationState();
+    });
+    
+    // Observe body and html for class changes (only if they exist)
+    if (document.body) {
+        observer.observe(document.body, {
+            attributes: true,
+            attributeFilter: ['class', 'dir'],
+            subtree: false
+        });
+    }
+    
+    if (document.documentElement) {
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class', 'dir'],
+            subtree: false
+        });
+    }
+    
+    // Check when Google Translate select is interacted with (from footer)
+    setTimeout(() => {
+        const translateSelect = document.querySelector('#footer-google-translate-element select');
+        if (translateSelect) {
+            // Hide when user clicks on translate dropdown
+            translateSelect.addEventListener('mousedown', () => {
+                langSelectWrapper.style.display = 'none';
+            });
+            
+            translateSelect.addEventListener('focus', () => {
+                langSelectWrapper.style.display = 'none';
+            });
+            
+            translateSelect.addEventListener('change', (e) => {
+                const selectedValue = e.target.value;
+                
+                // Check if user selected "Original" or empty value (restores original)
+                if (!selectedValue || selectedValue === '' || selectedValue === 'auto') {
+                    // Show 4-language selector when original is selected
+                    setTimeout(() => {
+                        langSelectWrapper.style.display = originalDisplay;
+                        checkTranslationState();
+                    }, 500);
+                } else {
+                    // Hide when a translation language is selected
+                    langSelectWrapper.style.display = 'none';
+                    // Check state after translation happens
+                    setTimeout(checkTranslationState, 1000);
+                }
+            });
+        }
+    }, 300);
+    
+    // Check periodically for translation state
+    const stateCheckInterval = setInterval(() => {
+        checkTranslationState();
+    }, 500);
+    
+    // Listen for clicks on "Show original" or similar buttons
+    document.addEventListener('click', (e) => {
+        const target = e.target;
+        // Check if clicked element is a link that might restore original
+        if (target.tagName === 'A' || target.closest('a')) {
+            const link = target.tagName === 'A' ? target : target.closest('a');
+            const linkText = link.textContent.toLowerCase();
+            
+            // Check for "Show original" in multiple languages
+            if (linkText.includes('show original') ||
+                linkText.includes('mostrar original') ||
+                linkText.includes('afficher l\'original') ||
+                linkText.includes('afficher original') ||
+                linkText.includes('jatorrizkoa erakutsi') ||
+                linkText.includes('original') && linkText.includes('show')) {
+                
+                // Show 4-language selector when original is restored
+                setTimeout(() => {
+                    langSelectWrapper.style.display = originalDisplay;
+                    checkTranslationState();
+                }, 500);
+            }
+        }
+    }, true);
+    
+    // Also check when page visibility changes (user might have closed translate)
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            setTimeout(checkTranslationState, 300);
+        }
+    });
+}
 
 // Function to update favorites count in nav
 function updateFavoritesCount() {
@@ -885,9 +1016,55 @@ function updateDateTime() {
     // Obtener el elemento HTML
     const displayElement = document.getElementById('datetime-display');
     if (!displayElement) return;
+    
+    // Add notranslate class to prevent Google Translate from translating the date
+    displayElement.classList.add('notranslate');
+
+    // Check if Google Translate is active and get the target language
+    let targetLanguage = localStorage.getItem('userLanguage') || 'ES';
+    
+    // Check if page is translated by Google Translate
+    const body = document.body;
+    const isTranslated = body.classList.contains('translated-ltr') || 
+                        body.classList.contains('translated-rtl');
+    
+    if (isTranslated) {
+        // Try to detect Google Translate target language from the select element (from footer)
+        const translateSelect = document.querySelector('#footer-google-translate-element select');
+        if (translateSelect && translateSelect.value) {
+            const gtLang = translateSelect.value;
+            // Map Google Translate language codes to our language codes
+            const langMap = {
+                'es': 'ES',
+                'en': 'EN',
+                'fr': 'FR',
+                'eu': 'EU',
+                'ca': 'ES', // Catalan -> Spanish
+                'pt': 'ES', // Portuguese -> Spanish
+                'it': 'ES', // Italian -> Spanish
+                'de': 'EN', // German -> English
+                'nl': 'EN', // Dutch -> English
+                'ru': 'EN', // Russian -> English
+                'zh': 'EN', // Chinese -> English
+                'ja': 'EN', // Japanese -> English
+                'ko': 'EN', // Korean -> English
+                'ar': 'EN', // Arabic -> English
+                'hi': 'EN', // Hindi -> English
+            };
+            
+            // Get first 2 characters of Google Translate language code
+            const langCode = gtLang.substring(0, 2).toLowerCase();
+            if (langMap[langCode]) {
+                targetLanguage = langMap[langCode];
+            } else if (['es', 'en', 'fr', 'eu'].includes(langCode)) {
+                // Direct match for our 4 languages
+                targetLanguage = langCode.toUpperCase();
+            }
+        }
+    }
 
     // Obtener el idioma del usuario desde localStorage
-    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    const userLanguage = targetLanguage;
     
     // Traducciones manuales para Euskera
     const euTranslations = {
@@ -976,3 +1153,95 @@ updateDateTime();
 
 // Actualizar la hora cada segundo (1000 milisegundos)
 setInterval(updateDateTime, 1000);
+
+// Also update date when Google Translate changes language (from footer)
+function monitorGoogleTranslateForDate() {
+    const translateSelect = document.querySelector('#footer-google-translate-element select');
+    if (translateSelect) {
+        translateSelect.addEventListener('change', () => {
+            // Update date display when translation language changes
+            setTimeout(updateDateTime, 500);
+        });
+    }
+}
+
+// Monitor for Google Translate language changes to update date (from footer)
+function setupDateTranslationMonitor() {
+    // Check periodically for Google Translate select element
+    const checkInterval = setInterval(() => {
+        const translateSelect = document.querySelector('#footer-google-translate-element select');
+        if (translateSelect) {
+            // Add event listener if not already added
+            if (!translateSelect.hasAttribute('data-date-listener')) {
+                translateSelect.setAttribute('data-date-listener', 'true');
+                translateSelect.addEventListener('change', () => {
+                    // Update date display when translation language changes
+                    setTimeout(updateDateTime, 500);
+                });
+            }
+            clearInterval(checkInterval); // Stop checking once we found it
+        }
+    }, 500);
+    
+    // Stop checking after 10 seconds
+    setTimeout(() => clearInterval(checkInterval), 10000);
+}
+
+// Start monitoring when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(setupDateTranslationMonitor, 1000);
+    });
+} else {
+    setTimeout(setupDateTranslationMonitor, 1000);
+}
+
+// Also monitor for translation state changes
+let dateStateObserver = null;
+
+// Initialize date state observer when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.body) {
+            dateStateObserver = new MutationObserver(() => {
+                const body = document.body;
+                if (body) {
+                    const isTranslated = body.classList.contains('translated-ltr') || 
+                                      body.classList.contains('translated-rtl');
+                    
+                    if (isTranslated) {
+                        // Update date when translation is detected
+                        setTimeout(updateDateTime, 300);
+                    }
+                }
+            });
+            
+            // Observe body for translation class changes
+            dateStateObserver.observe(document.body, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        }
+    });
+} else {
+    if (document.body) {
+        dateStateObserver = new MutationObserver(() => {
+            const body = document.body;
+            if (body) {
+                const isTranslated = body.classList.contains('translated-ltr') || 
+                                  body.classList.contains('translated-rtl');
+                
+                if (isTranslated) {
+                    // Update date when translation is detected
+                    setTimeout(updateDateTime, 300);
+                }
+            }
+        });
+        
+        // Observe body for translation class changes
+        dateStateObserver.observe(document.body, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+}

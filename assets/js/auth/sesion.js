@@ -94,7 +94,8 @@ function updateLoginModal() {
         modalDialog.querySelector('.btn--ghost').textContent = loginTexts.cancel;
         modalDialog.querySelector('#loginMessage').textContent = loginTexts.loginMessage + ' ';
         modalDialog.querySelector('.login-divider span').textContent = loginTexts.or;
-        modalDialog.querySelector('.google-signin-description').textContent = loginTexts.googleDescription;
+        const googleDesc = modalDialog.querySelector('.google-signin-description');
+        if (googleDesc) googleDesc.textContent = loginTexts.googleDescription;
         modalDialog.querySelector('.modal__close').setAttribute('aria-label', loginTexts.close);
         
         // Restaurar el valor del username si había uno
@@ -397,7 +398,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 loginMessage: 'Inicia Sesión',
                 or: 'o',
                 continueWith: 'Continuar con',
-                googleDescription: 'Inicia sesión con Google'
+                googleDescription: 'Inicia sesión con Google',
+                close: 'Cerrar'
             },
             EN: {
                 title: 'Sign in',
@@ -411,7 +413,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 loginMessage: 'Sign in',
                 or: 'or',
                 continueWith: 'Continue with',
-                googleDescription: 'Sign in with Google'
+                googleDescription: 'Sign in with Google',
+                close: 'Close'
             },
             FR: {
                 title: 'Se connecter',
@@ -425,7 +428,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 loginMessage: 'Se connecter',
                 or: 'ou',
                 continueWith: 'Continuer avec',
-                googleDescription: 'Se connecter avec Google'
+                googleDescription: 'Se connecter avec Google',
+                close: 'Fermer'
             },
             EU: {
                 title: 'Saioa hasi',
@@ -439,7 +443,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 loginMessage: 'Saioa hasi',
                 or: 'edo',
                 continueWith: 'Jarraitu',
-                googleDescription: 'Google-rekin saioa hasi'
+                googleDescription: 'Google-rekin saioa hasi',
+                close: 'Itxi'
             }
         };
         const loginTexts = loginTextsMaps[currentLang] || loginTextsMaps.ES;
@@ -484,6 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="google-signin-description">${loginTexts.googleDescription}</p>
                         <div id="google-signin-button"></div>
                     </div>
+                    
                 </div>
             </div>    
         `;
