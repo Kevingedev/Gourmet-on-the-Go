@@ -185,7 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
             subscribe: 'Suscribirme',
             copyright: 'Todos los derechos reservados.',
             acceptedPayments: 'Métodos de Pago Aceptados',
-            subscribeSuccess: '¡Gracias por suscribirte!'
+            subscribeSuccess: '¡Gracias por suscribirte!',
+            translateTitle: 'Traducir página',
+            translateDescription: '¿Eres de otro país o no encuentras tu idioma? Puedes usar Google Translate para traducir esta página a cualquier idioma del mundo.'
         },
         EN: {
             description: 'Online store for gourmet products and food at the best price.',
@@ -199,7 +201,9 @@ document.addEventListener('DOMContentLoaded', () => {
             subscribe: 'Subscribe',
             copyright: 'All rights reserved.',
             acceptedPayments: 'Accepted Payment Methods',
-            subscribeSuccess: 'Thank you for subscribing!'
+            subscribeSuccess: 'Thank you for subscribing!',
+            translateTitle: 'Translate Page',
+            translateDescription: 'Are you from another country or can\'t find your language? You can use Google Translate to translate this page to any language in the world.'
         },
         FR: {
             description: 'Boutique en ligne de produits gastronomiques et alimentaires au meilleur prix.',
@@ -213,7 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
             subscribe: 'S\'abonner',
             copyright: 'Tous droits réservés.',
             acceptedPayments: 'Moyens de Paiement Acceptés',
-            subscribeSuccess: 'Merci de vous être abonné!'
+            subscribeSuccess: 'Merci de vous être abonné!',
+            translateTitle: 'Traduire la page',
+            translateDescription: 'Êtes-vous d\'un autre pays ou ne trouvez-vous pas votre langue? Vous pouvez utiliser Google Translate pour traduire cette page dans n\'importe quelle langue du monde.'
         },
         EU: {
             description: 'Produktu gourmet eta elikagaiak prezio onenean saltzen dituen online denda.',
@@ -227,6 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
             subscribe: 'Harpidetu',
             copyright: 'Eskubide guztiak erreserbatuak.',
             acceptedPayments: 'Onartutako Ordainketa Metodoak',
+            translateTitle: 'Orria itzuli',
+            translateDescription: 'Beste herrialde batetik zatoz edo ez duzu zure hizkuntza aurkitzen? Google Translate erabil dezakezu orri hau munduko edozein hizkuntzara itzultzeko.',
             subscribeSuccess: 'Eskerrik asko harpidetzeagatik!'
         }
     };
@@ -343,6 +351,13 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </div>
 
+        <!-- Google Translate Section -->
+        <div class="footer-translate-section">
+            <h4 class="footer-translate-title">${currentFooterTexts.translateTitle}</h4>
+            <p class="footer-translate-description">${currentFooterTexts.translateDescription}</p>
+            <div id="footer-google-translate-element" class="footer-google-translate-wrapper"></div>
+        </div>
+
         <div class="footer-bottom">
             <p class="footer-copy">
                 &copy; 2025 Gourmet on the Go. ${currentFooterTexts.copyright}
@@ -357,7 +372,92 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Verificar enlaces y redirigir a 404 si no existen
     inicializarVerificacionEnlaces();
+    
+    // Initialize Google Translate in footer
+    initializeFooterGoogleTranslate();
 });
+
+// Initialize Google Translate in Footer
+function initializeFooterGoogleTranslate() {
+    // Wait a bit for nav Google Translate to initialize first
+    setTimeout(() => {
+        // Check if Google Translate script is already loaded
+        if (window.google && window.google.translate) {
+            createFooterGoogleTranslateWidget();
+        } else {
+            // If script exists but not loaded yet, wait for it
+            const existingScript = document.querySelector('script[src*="translate.google.com"]');
+            if (existingScript) {
+                // Wait for existing script to load
+                const checkInterval = setInterval(() => {
+                    if (window.google && window.google.translate) {
+                        createFooterGoogleTranslateWidget();
+                        clearInterval(checkInterval);
+                    }
+                }, 200);
+                
+                // Stop checking after 5 seconds
+                setTimeout(() => clearInterval(checkInterval), 5000);
+            } else {
+                // Load Google Translate script if not already loaded
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInitFooter';
+                script.async = true;
+                document.head.appendChild(script);
+                
+                // Create global callback function for footer
+                window.googleTranslateElementInitFooter = function() {
+                    createFooterGoogleTranslateWidget();
+                };
+            }
+        }
+    }, 1000);
+}
+
+// Create Google Translate Widget in Footer
+function createFooterGoogleTranslateWidget() {
+    if (!window.google || !window.google.translate) {
+        return;
+    }
+    
+    const translateElement = document.getElementById('footer-google-translate-element');
+    if (!translateElement) {
+        return;
+    }
+    
+    // Clear any existing content
+    translateElement.innerHTML = '';
+    
+    // Get current language from localStorage
+    const currentLang = localStorage.getItem('userLanguage') || 'es';
+    
+    // Initialize Google Translate
+    new window.google.translate.TranslateElement({
+        pageLanguage: currentLang.toLowerCase(),
+        includedLanguages: '', // Empty string means all languages
+        layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false,
+        multilanguagePage: true
+    }, 'footer-google-translate-element');
+    
+    // Style the Google Translate widget in footer
+    setTimeout(() => {
+        const googTeBanner = document.querySelector('#footer-google-translate-element + .goog-te-banner-frame');
+        if (googTeBanner) {
+            googTeBanner.style.display = 'none';
+        }
+        
+        const select = document.querySelector('#footer-google-translate-element select');
+        if (select) {
+            select.style.width = '100%';
+            select.style.maxWidth = '300px';
+            select.style.padding = '0.5rem';
+            select.style.borderRadius = '6px';
+            select.style.border = '1px solid rgba(148, 163, 184, 0.25)';
+        }
+    }, 200);
+}
 
 function inicializarNewsletter() {
     const newsletterForm = document.getElementById('footer-newsletter-form');

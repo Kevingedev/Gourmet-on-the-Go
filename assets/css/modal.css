@@ -640,3 +640,9 @@
   display: flex;
   justify-content: center;
 }
+
+#google-signin-button iframe {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+

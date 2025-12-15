@@ -1132,10 +1132,110 @@ background: var(--background);
   display: none;
 }
 
+/* Google Translate Widget Styling */
+.google-translate-container {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+  position: relative;
+}
+
+.google-translate-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.google-translate-wrapper select {
+  background: linear-gradient(135deg, rgba(12, 128, 56, 0.9) 0%, rgba(12, 128, 56, 0.85) 100%) !important;
+  border: 2px solid rgba(12, 128, 56, 0.4) !important;
+  color: var(--color-white) !important;
+  font-size: 0.95rem;
+  font-weight: 600;
+  height: 2.6rem;
+  padding: 0.5rem 2rem 0.5rem 2.5rem !important;
+  border-radius: 1.5rem !important;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-shadow: 0 2px 8px rgba(12, 128, 56, 0.2);
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.google-translate-wrapper select:hover {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #0ea854 100%) !important;
+  border-color: rgba(12, 128, 56, 0.6) !important;
+  box-shadow: 0 4px 16px rgba(12, 128, 56, 0.35), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.google-translate-wrapper select:focus {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #0ea854 100%) !important;
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(12, 128, 56, 0.25), 0 4px 12px rgba(12, 128, 56, 0.2);
+  outline: none;
+}
+
+/* Hide Google Translate banner */
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+/* Hide Google Translate branding */
+.goog-te-gadget {
+  color: transparent !important;
+  font-size: 0 !important;
+}
+
+.goog-te-gadget .goog-te-combo {
+  margin: 0 !important;
+}
+
+/* Style the Google Translate dropdown */
+#google_translate_element {
+  display: inline-block;
+}
+
+#google_translate_element .goog-te-combo {
+  background: linear-gradient(135deg, rgba(12, 128, 56, 0.9) 0%, rgba(12, 128, 56, 0.85) 100%) !important;
+  border: 2px solid rgba(12, 128, 56, 0.4) !important;
+  color: var(--color-white) !important;
+  font-size: 0.95rem !important;
+  font-weight: 600 !important;
+  height: 2.6rem !important;
+  padding: 0.5rem 2rem 0.5rem 2.5rem !important;
+  border-radius: 1.5rem !important;
+  outline: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(12, 128, 56, 0.2) !important;
+  min-width: 140px !important;
+}
+
 @media (max-width: 720px) {
   .lang-select-wrapper {
     margin: 4px 0 0 0;
     width: 100%;
+  }
+  
+  .google-translate-container {
+    margin: 4px 0 0 0;
+    width: 100%;
+  }
+  
+  .google-translate-wrapper {
+    width: 100%;
+  }
+  
+  .google-translate-wrapper select,
+  #google_translate_element .goog-te-combo {
+    width: 100% !important;
+    min-width: 0 !important;
   }
 
   .lang-select {
@@ -1184,6 +1284,12 @@ background: var(--background);
 .minimal-datetime span {
     color: var(--color-primary); /* Color de contraste sutil para los guiones */
     margin: 0 8px; /* Espacio alrededor de los guiones */
+}
+
+/* Prevent Google Translate from translating the date */
+.minimal-datetime.notranslate,
+.notranslate {
+    /* Google Translate respects this class to exclude from translation */
 }
 
 /* Responsividad: Ajuste para pantallas más pequeñas (móviles) */
