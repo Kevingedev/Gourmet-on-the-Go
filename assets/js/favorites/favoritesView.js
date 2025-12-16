@@ -9,7 +9,33 @@ const isWishlistPage = pathname.includes('favoritos.html') ||
                        pathname.includes('favoris.html') || 
                        pathname.includes('gogokoak.html');
 
-const LANGUAGE = gestorDeDatos.language || 'ES';
+// Function to detect language from URL path
+function detectLanguageFromUrl() {
+    const pathParts = pathname.split('/').filter(p => p.length > 0);
+    
+    // Check if we're in a language folder (ES, EN, FR, EU)
+    for (const part of pathParts) {
+        if (part === 'ES' || part === 'EN' || part === 'FR' || part === 'EU') {
+            // Update localStorage if different
+            if (part !== localStorage.getItem("userLanguage")) {
+                localStorage.setItem("userLanguage", part);
+            }
+            return part;
+        }
+    }
+    
+    // Fallback to localStorage or default
+    return localStorage.getItem("userLanguage") || 'ES';
+}
+
+// Get language dynamically - detect from URL first, then fallback to localStorage
+let LANGUAGE = detectLanguageFromUrl();
+
+// Function to get current language (re-detect if needed)
+function getCurrentLanguage() {
+    LANGUAGE = detectLanguageFromUrl();
+    return LANGUAGE;
+}
 
 // Textos según idioma
 const texts = {
@@ -67,7 +93,13 @@ const texts = {
     }
 };
 
-const currentTexts = texts[LANGUAGE] || texts.ES;
+// Function to get current texts based on current language
+function getCurrentTexts() {
+    const currentLang = getCurrentLanguage();
+    return texts[currentLang] || texts.ES;
+}
+
+let currentTexts = getCurrentTexts();
 
 // Function to redirect to login page with proper language and path
 function redirectToLogin() {
@@ -305,6 +337,10 @@ async function loadWishlist() {
     const wishlistContainer = document.getElementById('wishlist-container');
     if (!wishlistContainer) return;
 
+    // Update language and texts to ensure they're current
+    LANGUAGE = getCurrentLanguage();
+    currentTexts = getCurrentTexts();
+
     const WISHLIST = favoriteStore.wishlistLoadFromStorage();
 
     if (WISHLIST.length === 0) {
@@ -343,6 +379,10 @@ async function loadWishlist() {
 }
 
 function mostrarProductos(productos) {
+    // Ensure language and texts are current
+    LANGUAGE = getCurrentLanguage();
+    currentTexts = getCurrentTexts();
+    
     const rutaBase = '../';
     const wishlistContainer = document.getElementById('wishlist-container');
     if (!wishlistContainer) return;
