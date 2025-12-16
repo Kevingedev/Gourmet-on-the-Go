@@ -88,7 +88,7 @@ function updateLoginModal() {
     if (modalDialog) {
         modalDialog.querySelector('#login-title').textContent = loginTexts.title;
         modalDialog.querySelector('#login-desc').textContent = loginTexts.subtitle;
-        modalDialog.querySelector('.field__label').textContent = loginTexts.username;
+
         modalDialog.querySelectorAll('.field__label')[1].textContent = loginTexts.password;
         modalDialog.querySelector('#btn-enter').textContent = loginTexts.enter;
         modalDialog.querySelector('.btn--ghost').textContent = loginTexts.cancel;
@@ -305,12 +305,17 @@ function renderAccountMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const url = window.location.href;
-    const showModal = document.getElementById('showModal');
-    const currentUser = authService.getUser();
-    // Leer el idioma directamente de localStorage para asegurar que sea el más reciente
-    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
-    const PATH = url.includes('catalogo') || url.includes('catalog') || url.includes('catalogue') || url.includes('katalogoa') ? '../../' : '../'+userLanguage+'/';
+    try {
+        const url = window.location.href;
+        const showModal = document.getElementById('showModal');
+        if (!showModal) {
+            console.error('showModal element not found');
+            return;
+        }
+        const currentUser = authService.getUser();
+        // Leer el idioma directamente de localStorage para asegurar que sea el más reciente
+        const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+        const PATH = url.includes('catalogo') || url.includes('catalog') || url.includes('catalogue') || url.includes('katalogoa') ? '../../' : '../'+userLanguage+'/';
     
     // Function to get redirect page after login
     function getRedirectPage() {
@@ -551,28 +556,44 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(initGoogleSignIn, 500);
         setTimeout(initGoogleSignIn, 1500);
         
-        // Show message on page if there's a redirect and auto-open modal
+        // Show message on page if there's a redirect (for both checkout and favorites)
         const loginMessageContainer = document.getElementById('login-message-container');
-        if (loginMessageContainer && needsLoginForCheckout) {
+        if (loginMessageContainer && redirect) {
             const pageMessages = {
                 ES: {
-                    title: 'Inicia sesión para continuar',
-                    message: 'Necesitas iniciar sesión para completar tu compra. Por favor, inicia sesión a continuación.',
+                    title: needsLoginForCheckout 
+                        ? 'Inicia sesión para continuar' 
+                        : 'Inicia sesión para acceder a tus favoritos',
+                    message: needsLoginForCheckout
+                        ? 'Necesitas iniciar sesión para completar tu compra. Por favor, inicia sesión a continuación.'
+                        : 'Necesitas iniciar sesión para ver y gestionar tus productos favoritos. Por favor, inicia sesión a continuación.',
                     button: 'Abrir formulario de inicio de sesión'
                 },
                 EN: {
-                    title: 'Sign in to Continue',
-                    message: 'You need to sign in to complete your purchase. Please sign in below.',
+                    title: needsLoginForCheckout 
+                        ? 'Sign in to Continue' 
+                        : 'Sign in to Access Your Favorites',
+                    message: needsLoginForCheckout
+                        ? 'You need to sign in to complete your purchase. Please sign in below.'
+                        : 'You need to sign in to view and manage your favorite products. Please sign in below.',
                     button: 'Open Login Form'
                 },
                 FR: {
-                    title: 'Connectez-vous pour continuer',
-                    message: 'Vous devez vous connecter pour finaliser votre achat. Veuillez vous connecter ci-dessous.',
+                    title: needsLoginForCheckout 
+                        ? 'Connectez-vous pour continuer' 
+                        : 'Connectez-vous pour accéder à vos favoris',
+                    message: needsLoginForCheckout
+                        ? 'Vous devez vous connecter pour finaliser votre achat. Veuillez vous connecter ci-dessous.'
+                        : 'Vous devez vous connecter pour voir et gérer vos produits favoris. Veuillez vous connecter ci-dessous.',
                     button: 'Ouvrir le formulaire de connexion'
                 },
                 EU: {
-                    title: 'Saioa hasi jarraitzeko',
-                    message: 'Erosketa bukatzeko saioa hasi behar duzu. Mesedez, saioa hasi behean.',
+                    title: needsLoginForCheckout 
+                        ? 'Saioa hasi jarraitzeko' 
+                        : 'Saioa hasi zure gogokoetara sartzeko',
+                    message: needsLoginForCheckout
+                        ? 'Erosketa bukatzeko saioa hasi behar duzu. Mesedez, saioa hasi behean.'
+                        : 'Zure gogoko produktuak ikusi eta kudeatzeko saioa hasi behar duzu. Mesedez, saioa hasi behean.',
                     button: 'Saioa hasteko formularioa ireki'
                 }
             };
@@ -591,22 +612,80 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             
             // Add click handler to open modal
-            document.getElementById('open-login-modal-btn').addEventListener('click', () => {
-                const loginModal = document.getElementById('loginModal');
-                if (loginModal) {
-                    loginModal.classList.add('is-open');
-                    loginModal.setAttribute('aria-hidden', 'false');
-                    document.body.style.overflow = 'hidden';
-                    const usernameInput = document.getElementById('username');
-                    if (usernameInput) {
-                        setTimeout(() => usernameInput.focus(), 100);
+            const openBtn = document.getElementById('open-login-modal-btn');
+            if (openBtn) {
+                openBtn.addEventListener('click', () => {
+                    const loginModal = document.getElementById('loginModal');
+                    if (loginModal) {
+                        loginModal.classList.add('is-open');
+                        loginModal.setAttribute('aria-hidden', 'false');
+                        document.body.style.overflow = 'hidden';
+                        const usernameInput = document.getElementById('username');
+                        if (usernameInput) {
+                            setTimeout(() => usernameInput.focus(), 100);
+                        }
                     }
+                });
+            }
+        } else if (loginMessageContainer && !redirect) {
+            // Show default login message when no redirect
+            const currentLang = localStorage.getItem('userLanguage') || 'ES';
+            const defaultMessages = {
+                ES: {
+                    title: 'Inicia sesión',
+                    message: 'Por favor, inicia sesión con tu cuenta para continuar.',
+                    button: 'Abrir formulario de inicio de sesión'
+                },
+                EN: {
+                    title: 'Sign In',
+                    message: 'Please sign in with your account to continue.',
+                    button: 'Open Login Form'
+                },
+                FR: {
+                    title: 'Se connecter',
+                    message: 'Veuillez vous connecter avec votre compte pour continuer.',
+                    button: 'Ouvrir le formulaire de connexion'
+                },
+                EU: {
+                    title: 'Saioa hasi',
+                    message: 'Mesedez, saioa hasi zure kontuarekin jarraitzeko.',
+                    button: 'Saioa hasteko formularioa ireki'
                 }
-            });
+            };
+            const defaultMessage = defaultMessages[currentLang] || defaultMessages.ES;
+            
+            loginMessageContainer.innerHTML = `
+                <div class="login-prompt">
+                    <div class="login-prompt-icon">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h1 class="login-prompt-title">${defaultMessage.title}</h1>
+                    <p class="login-prompt-message">${defaultMessage.message}</p>
+                    <button class="btn btn--primary" id="open-login-modal-btn">${defaultMessage.button}</button>
+                </div>
+            `;
+            
+            // Add click handler to open modal
+            const openBtn = document.getElementById('open-login-modal-btn');
+            if (openBtn) {
+                openBtn.addEventListener('click', () => {
+                    const loginModal = document.getElementById('loginModal');
+                    if (loginModal) {
+                        loginModal.classList.add('is-open');
+                        loginModal.setAttribute('aria-hidden', 'false');
+                        document.body.style.overflow = 'hidden';
+                        const usernameInput = document.getElementById('username');
+                        if (usernameInput) {
+                            setTimeout(() => usernameInput.focus(), 100);
+                        }
+                    }
+                });
+            }
         }
         
         // Auto-open modal if there's a redirect parameter
         if (redirect) {
+            // Wait a bit longer to ensure modal is fully in DOM
             setTimeout(() => {
                 const loginModal = document.getElementById('loginModal');
                 if (loginModal) {
@@ -624,11 +703,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => {
                         initGoogleSignIn();
                     }, 500);
+                } else {
+                    console.error('Login modal not found when trying to auto-open');
                 }
-            }, 300);
+            }, 500);
         }
         
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
+        // Make sure loginForm exists before adding event listener
+        const loginForm = document.getElementById('loginForm');
+        if (!loginForm) {
+            console.error('Login form not found');
+            return;
+        }
+        
+        loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             let finderUser;
 
@@ -698,6 +786,8 @@ document.addEventListener('DOMContentLoaded', () => {
         function showPassword() {
             const password = document.getElementById('password');
             const btnShowPassword = document.getElementById('btn-show-password');
+            if (!password || !btnShowPassword) return;
+            
             if (password.type === 'password') {
                 password.type = 'text';
                 btnShowPassword.classList.add('fa-eye-slash');
@@ -708,7 +798,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnShowPassword.classList.remove('fa-eye-slash');
             }
         }
-        document.getElementById('btn-show-password').addEventListener('click', showPassword);
+        const btnShowPassword = document.getElementById('btn-show-password');
+        if (btnShowPassword) {
+            btnShowPassword.addEventListener('click', showPassword);
+        }
 
 
     } else {
@@ -729,6 +822,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100);
         }
     });
+    
+    } catch (error) {
+        console.error('Error initializing login page:', error);
+        // Show error message to user
+        const loginMessageContainer = document.getElementById('login-message-container');
+        if (loginMessageContainer) {
+            loginMessageContainer.innerHTML = `
+                <div class="login-prompt">
+                    <div class="login-prompt-icon">
+                        <i class="fa-solid fa-exclamation-triangle"></i>
+                    </div>
+                    <h1 class="login-prompt-title">Error</h1>
+                    <p class="login-prompt-message">Hubo un error al cargar la página de inicio de sesión. Por favor, recarga la página.</p>
+                    <button class="btn btn--primary" onclick="window.location.reload()">Recargar página</button>
+                </div>
+            `;
+        }
+    }
 
 
 

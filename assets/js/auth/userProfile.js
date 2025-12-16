@@ -3,7 +3,7 @@ import { authService } from './authService.js';
 // User Profile Display Functions
 document.addEventListener('DOMContentLoaded', () => {
     const userLanguage = localStorage.getItem('userLanguage') || 'ES';
-    const currentUser = authService.getCurrentUser();
+    const currentUser = authService.getUser();
     
     if (!currentUser) {
         return;
@@ -47,15 +47,65 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const currentTexts = texts[userLanguage] || texts.ES;
     
+    // Get role directly from user (from users.json)
+    const userRole = currentUser.rol || currentUser.role || 'usuario';
+    
+    // Role translations
+    const roleTranslations = {
+        ES: {
+            'usuario': 'Usuario',
+            'admin': 'Administrador',
+            'administrador': 'Administrador'
+        },
+        EN: {
+            'usuario': 'User',
+            'admin': 'Administrator',
+            'administrador': 'Administrator'
+        },
+        FR: {
+            'usuario': 'Utilisateur',
+            'admin': 'Administrateur',
+            'administrador': 'Administrateur'
+        },
+        EU: {
+            'usuario': 'Erabiltzailea',
+            'admin': 'Administratzailea',
+            'administrador': 'Administratzailea'
+        }
+    };
+    const roleText = roleTranslations[userLanguage]?.[userRole.toLowerCase()] || userRole;
+    
+    // Get user's full name
+    const fullName = currentUser.nombre_completo || currentUser.fullName || currentUser.username || 'Usuario';
+    
+    // Get avatar (initials or picture)
+    const avatar = authService.getAvatar();
+    const hasPicture = currentUser.picture;
+    
+    // Update profile header with name, picture, and role
+    const profileHeader = document.getElementById('profile-header');
+    if (profileHeader) {
+        profileHeader.innerHTML = `
+            <div class="profile-avatar" id="profile-avatar">
+                ${hasPicture 
+                    ? `<img src="${currentUser.picture}" alt="${fullName}" id="profile-picture">`
+                    : `<span>${avatar}</span>`
+                }
+            </div>
+            <div class="profile-info">
+                <h1>${fullName}</h1>
+                <p style="color: var(--color-primary); font-weight: 600; margin-top: 0.5rem;">${roleText}</p>
+                <p style="color: var(--muted); margin-top: 0.25rem;">${currentUser.email || ''}</p>
+            </div>
+        `;
+    }
+    
     // Update profile display
     const profileDetails = document.getElementById('profile-details');
     if (profileDetails) {
-        // Get role directly from user (from users.json)
-        const userRole = currentUser.rol || currentUser.role || 'usuario';
-        
         const providerText = currentUser.provider === 'google'
-            ? (userLanguage === 'EN' ? 'Google Sign-In' : 'Inicio con Google')
-            : (userLanguage === 'EN' ? 'Username/Password' : 'Usuario/Contraseña');
+            ? (userLanguage === 'EN' ? 'Google Sign-In' : userLanguage === 'FR' ? 'Connexion Google' : userLanguage === 'EU' ? 'Google-rekin saioa' : 'Inicio con Google')
+            : (userLanguage === 'EN' ? 'Username/Password' : userLanguage === 'FR' ? 'Nom d\'utilisateur/Mot de passe' : userLanguage === 'EU' ? 'Erabiltzaile izena/Pasahitza' : 'Usuario/Contraseña');
 
         profileDetails.innerHTML = `
             <div class="detail-item">
@@ -68,11 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="detail-item">
                 <span class="detail-label">${currentTexts.fullName}:</span>
-                <span class="detail-value">${currentUser.nombre_completo || currentUser.fullName || 'N/A'}</span>
+                <span class="detail-value">${fullName}</span>
             </div>
             <div class="detail-item">
                 <span class="detail-label">${currentTexts.role}:</span>
-                <span class="detail-value">${userRole}</span>
+                <span class="detail-value">${roleText}</span>
             </div>
             <div class="detail-item">
                 <span class="detail-label">${currentTexts.registrationDate}:</span>
@@ -83,18 +133,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="detail-value">${providerText}</span>
             </div>
         `;
-    }
-    
-    // Update profile picture if available
-    const profilePicture = document.getElementById('profile-picture');
-    if (profilePicture && currentUser.picture) {
-        profilePicture.src = currentUser.picture;
-        profilePicture.style.display = 'block';
-    }
-    
-    // Update username display in nav
-    const usernameDisplay = document.getElementById('username-display');
-    if (usernameDisplay) {
-        usernameDisplay.textContent = currentUser.username || currentUser.nombre_completo || currentUser.fullName || 'Usuario';
     }
 });
