@@ -2,7 +2,31 @@ import { gestorDeDatos } from "./data-loader/productService.js";
 
 const featuredProductsLoader = document.getElementById('featured-products-loader');
 const categoriesLoader = document.getElementById('categorias-loader');
-const LANGUAGE = gestorDeDatos.language;
+
+// Function to detect language from URL path
+function detectLanguageFromUrl() {
+    const pathname = window.location.pathname;
+    const pathParts = pathname.split('/').filter(p => p.length > 0);
+    
+    // Check if we're in a language folder (ES, EN, FR, EU)
+    for (const part of pathParts) {
+        if (part === 'ES' || part === 'EN' || part === 'FR' || part === 'EU') {
+            // Update localStorage if different
+            if (part !== localStorage.getItem("userLanguage")) {
+                localStorage.setItem("userLanguage", part);
+            }
+            return part;
+        }
+    }
+    
+    // Fallback to localStorage or default
+    return localStorage.getItem("userLanguage") || 'ES';
+}
+
+// Get current language dynamically
+function getCurrentLanguage() {
+    return detectLanguageFromUrl();
+}
 
 // Textos según idioma
 const texts = {
@@ -39,6 +63,9 @@ const texts = {
 // Only load featured products if container exists
 if (featuredProductsLoader) {
     gestorDeDatos.cargarProductosDestacados().then(productos => {
+        // Get current language dynamically
+        const LANGUAGE = getCurrentLanguage();
+        
         // Determine product detail page name based on language
         const detailPages = {
             ES: 'producto-detalle.html',
@@ -50,7 +77,7 @@ if (featuredProductsLoader) {
 
         productos.forEach(producto => {
             featuredProductsLoader.innerHTML += `
-            <article class="section-productos-destacados__item cart-item" data-product-id="${producto.id_producto}">
+            <article class="section-productos-destacados__item cart-item search-product-card" data-product-id="${producto.id_producto}">
             <div class="product-image-wrapper">
                 <a href="${detailPage}?pd=${producto.id_producto}">
                     <img src="../${producto.img_url}" alt="${producto.nombre[LANGUAGE]}">
@@ -86,6 +113,8 @@ if (featuredProductsLoader) {
 // Only load categories if container exists
 if (categoriesLoader) {
     gestorDeDatos.cargarCategorias().then(categorias => {
+        // Get current language dynamically
+        const LANGUAGE = getCurrentLanguage();
 
         categorias.forEach(categoria => {
 

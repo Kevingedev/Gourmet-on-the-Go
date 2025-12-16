@@ -1,18 +1,52 @@
 
 const pathProducts = "/assets/data/products.json";
 const pathCategories = "/assets/data/categories.json";
-let language;
-if (localStorage.getItem("userLanguage") !== null) {
-    language = localStorage.getItem("userLanguage");
-} else {
-    language = "ES"; // Por defecto es español el sitio.
-    localStorage.setItem("userLanguage", language);
+
+// Function to detect language from URL path
+function detectLanguageFromUrl() {
+    const pathname = window.location.pathname;
+    const pathParts = pathname.split('/').filter(p => p.length > 0);
+    
+    // Check if we're in a language folder (ES, EN, FR, EU)
+    for (const part of pathParts) {
+        if (part === 'ES' || part === 'EN' || part === 'FR' || part === 'EU') {
+            return part;
+        }
+    }
+    
+    // Fallback to localStorage or default
+    return localStorage.getItem("userLanguage") || "ES";
 }
+
+// Initialize language from URL or localStorage
+function getInitialLanguage() {
+    const detectedLang = detectLanguageFromUrl();
+    if (detectedLang && detectedLang !== localStorage.getItem("userLanguage")) {
+        localStorage.setItem("userLanguage", detectedLang);
+    }
+    return detectedLang || localStorage.getItem("userLanguage") || "ES";
+}
+
+// Set initial language
+const initialLanguage = getInitialLanguage();
+if (!localStorage.getItem("userLanguage")) {
+    localStorage.setItem("userLanguage", initialLanguage);
+}
+
 // Objeto Gestor de datos
 
 export const gestorDeDatos = {
 
-    language: language,
+    // Use getter to dynamically get language from localStorage
+    get language() {
+        // First try to detect from URL (in case user navigated directly)
+        const urlLang = detectLanguageFromUrl();
+        if (urlLang && urlLang !== localStorage.getItem("userLanguage")) {
+            localStorage.setItem("userLanguage", urlLang);
+            return urlLang;
+        }
+        return localStorage.getItem("userLanguage") || "ES";
+    },
 
     async cargarProductos() {
         const responseProducts = await fetch(pathProducts);
