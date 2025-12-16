@@ -349,7 +349,7 @@ function uploadItems(products, cartDrawerContainer) {
         card.classList.add('cart-item');
         card.setAttribute('data-product-id', product.id);
         card.innerHTML = cardItem;
-        cartDrawerContainer.appendChild(card);
+        cartDrawerContainer.appendChild(card); // Agrega cada producto al carrito.
 
     })
 

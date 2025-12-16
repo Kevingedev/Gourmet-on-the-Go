@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    fetchCategories(categoryLinksContainer);
+    fetchCategories(categoryLinksContainer); // LLAMANDO LA FUNCION PARA CARGAR CATEGORIAS.
 
     // FUNCION DE ACCIONES PARA EL CAMBIO DE IDIOMA
     async function changeUrl(lang, url) {

@@ -444,9 +444,10 @@ function mostrarProductos(productos) {
                         </button>
                     </div>
                 </article>
-            `).join('')}
+            `).join('')} 
         </div>
     `;
+            //Join para unir todos los productos en una sola cadena de texto y no imprima las comas por cada producto (pasa por ser un array)
 
     // Add click handler to entire product card (except buttons)
     const productCards = wishlistContainer.querySelectorAll('.search-product-card');

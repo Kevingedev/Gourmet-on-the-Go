@@ -1,6 +1,8 @@
 import { authService } from './authService.js';
 import { googleAuth } from './googleAuth.js';
 
+// validateUser() FUNCION PARA VALIDAR USUARIO.
+
 // Función para actualizar el modal de login cuando cambia el idioma
 function updateLoginModal() {
     const showModal = document.getElementById('showModal');
@@ -749,7 +751,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 const messages = messagesMap[currentLang] || messagesMap.ES;
 
-                finderUser = await authService.validateLogin(username, password);
+                finderUser = await authService.validateLogin(username, password);  // Validar usuario y contraseña del JSON y devolver el usuario encontrado.
 
                 console.log("FinderUser: " + finderUser);
 
