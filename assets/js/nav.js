@@ -163,7 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const sessionText = sessionTexts[userLanguage] || sessionTexts.ES;
     
     if (currentUser) {
-        btnSesion = `<button class="btn-login" title="${sessionText.logoutTitle}" data-modal-open="#logoutModal" id="btn-logout">${currentUserData.username}</button>`;
+        const username = currentUserData.username || '';
+        const logoutTitle = `${sessionText.logoutTitle}${username ? ` - ${username}` : ''}`;
+        btnSesion = `<button class="btn-login" title="${logoutTitle}" data-modal-open="#logoutModal" id="btn-logout">${username}</button>`;
     } else {
         btnSesion = `<button class="btn-login" title="${sessionText.loginTitle}" data-modal-open="#loginModal" id="btn-login"><i class="fa-solid fa-user"></i></button>`;
     }
@@ -235,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="${PATH}${userLanguage}/${favoritesLink}" aria-label="${favoritesLabel}" title="${favoritesLabel}">
                 <button class="icon-btn" aria-label="${favoritesTitle}" title="${favoritesTitle}">
                     <i class="fa-solid fa-heart"></i>
+                    <span class="badge" id="favorites-count">0</span>
                 </button>
                 </a>
                 <button class="icon-btn js-cart-toggle" aria-label="${sessionText.cartLabel}" aria-expanded="false" title="${sessionText.cartTitle}">
@@ -565,6 +568,180 @@ document.addEventListener('DOMContentLoaded', () => {
         inicializarBuscador();
     }, 200);
 
+    // Update favorites count
+    updateFavoritesCount();
+
+    // Initialize monitoring for Google Translate (from footer)
+    setTimeout(monitorGoogleTranslateState, 1000);
+
+});
+
+// Monitor Google Translate state and toggle 4-language selector visibility
+// This works with Google Translate from footer
+function monitorGoogleTranslateState() {
+    const langSelectWrapper = document.querySelector('.lang-select-wrapper');
+    if (!langSelectWrapper) return;
+    
+    // Store original display style
+    const originalDisplay = langSelectWrapper.style.display || 'inline-flex';
+    
+    // Check if translation is active
+    function checkTranslationState() {
+        // Check if Google Translate has translated the page
+        const body = document.body;
+        const html = document.documentElement;
+        
+        // Google Translate adds these classes when active
+        const isTranslated = body.classList.contains('translated-ltr') || 
+                            body.classList.contains('translated-rtl') ||
+                            html.classList.contains('translated-ltr') ||
+                            html.classList.contains('translated-rtl') ||
+                            body.getAttribute('dir') === 'rtl' ||
+                            body.getAttribute('dir') === 'ltr';
+        
+        // Check if Google Translate frame exists (indicates translation is active)
+        const translateFrame = document.querySelector('.goog-te-banner-frame');
+        const isFrameVisible = translateFrame && translateFrame.style.display !== 'none';
+        
+        // Hide 4-language selector if translation is active
+        if (isTranslated) {
+            langSelectWrapper.style.display = 'none';
+        } else {
+            langSelectWrapper.style.display = originalDisplay;
+        }
+    }
+    
+    // Monitor for translation changes on body and html
+    const observer = new MutationObserver(() => {
+        checkTranslationState();
+    });
+    
+    // Observe body and html for class changes (only if they exist)
+    if (document.body) {
+        observer.observe(document.body, {
+            attributes: true,
+            attributeFilter: ['class', 'dir'],
+            subtree: false
+        });
+    }
+    
+    if (document.documentElement) {
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class', 'dir'],
+            subtree: false
+        });
+    }
+    
+    // Check when Google Translate select is interacted with (from footer)
+    setTimeout(() => {
+        const translateSelect = document.querySelector('#footer-google-translate-element select');
+        if (translateSelect) {
+            // Hide when user clicks on translate dropdown
+            translateSelect.addEventListener('mousedown', () => {
+                langSelectWrapper.style.display = 'none';
+            });
+            
+            translateSelect.addEventListener('focus', () => {
+                langSelectWrapper.style.display = 'none';
+            });
+            
+            translateSelect.addEventListener('change', (e) => {
+                const selectedValue = e.target.value;
+                
+                // Check if user selected "Original" or empty value (restores original)
+                if (!selectedValue || selectedValue === '' || selectedValue === 'auto') {
+                    // Show 4-language selector when original is selected
+                    setTimeout(() => {
+                        langSelectWrapper.style.display = originalDisplay;
+                        checkTranslationState();
+                    }, 500);
+                } else {
+                    // Hide when a translation language is selected
+                    langSelectWrapper.style.display = 'none';
+                    // Check state after translation happens
+                    setTimeout(checkTranslationState, 1000);
+                }
+            });
+        }
+    }, 300);
+    
+    // Check periodically for translation state
+    const stateCheckInterval = setInterval(() => {
+        checkTranslationState();
+    }, 500);
+    
+    // Listen for clicks on "Show original" or similar buttons
+    document.addEventListener('click', (e) => {
+        const target = e.target;
+        // Check if clicked element is a link that might restore original
+        if (target.tagName === 'A' || target.closest('a')) {
+            const link = target.tagName === 'A' ? target : target.closest('a');
+            const linkText = link.textContent.toLowerCase();
+            
+            // Check for "Show original" in multiple languages
+            if (linkText.includes('show original') ||
+                linkText.includes('mostrar original') ||
+                linkText.includes('afficher l\'original') ||
+                linkText.includes('afficher original') ||
+                linkText.includes('jatorrizkoa erakutsi') ||
+                linkText.includes('original') && linkText.includes('show')) {
+                
+                // Show 4-language selector when original is restored
+                setTimeout(() => {
+                    langSelectWrapper.style.display = originalDisplay;
+                    checkTranslationState();
+                }, 500);
+            }
+        }
+    }, true);
+    
+    // Also check when page visibility changes (user might have closed translate)
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            setTimeout(checkTranslationState, 300);
+        }
+    });
+}
+
+// Function to update favorites count in nav
+function updateFavoritesCount() {
+    try {
+        const jsonWishlist = localStorage.getItem('wishlist');
+        const wishlist = jsonWishlist ? JSON.parse(jsonWishlist) : [];
+        const favoritesCountElement = document.getElementById('favorites-count');
+        if (favoritesCountElement) {
+            const count = wishlist.length || 0;
+            favoritesCountElement.textContent = count;
+            // Hide badge if count is 0
+            if (count === 0) {
+                favoritesCountElement.style.display = 'none';
+            } else {
+                favoritesCountElement.style.display = 'flex';
+            }
+        }
+    } catch (e) {
+        console.error('Error updating favorites count:', e);
+    }
+}
+
+// Listen for storage changes to update favorites count
+window.addEventListener('storage', (e) => {
+    if (e.key === 'wishlist') {
+        updateFavoritesCount();
+    }
+});
+
+// Custom event listener for favorites updates (for same-page updates)
+window.addEventListener('favoritesUpdated', () => {
+    updateFavoritesCount();
+});
+
+// Also update on page load and periodically
+document.addEventListener('DOMContentLoaded', () => {
+    updateFavoritesCount();
+    // Update periodically in case favorites change on same page
+    setInterval(updateFavoritesCount, 1000);
 });
 
 async function inicializarBuscador() {
@@ -778,14 +955,39 @@ async function inicializarBuscador() {
                     }
                     e.preventDefault();
                     e.stopPropagation();
-                    const consulta = inputBusqueda.value.trim();
-                    redirigirABusqueda(consulta);
+                    const productId = item.getAttribute('data-product-id');
+                    if (productId) {
+                        navegarAProductoDetalle(productId);
+                    } else {
+                        const consulta = inputBusqueda.value.trim();
+                        redirigirABusqueda(consulta);
+                    }
                 });
             });
 
             resultadosBusqueda.style.display = 'block';
             resultadosBusqueda.classList.add('is-visible');
         }
+    }
+
+    function navegarAProductoDetalle(productId) {
+        if (!productId) {
+            return;
+        }
+
+        const idioma = localStorage.getItem('userLanguage') || 'ES';
+        const rutaBase = obtenerRutaBase();
+        
+        // Mapeo de páginas de detalle según idioma
+        const detailPages = {
+            ES: 'producto-detalle.html',
+            EN: 'product-detail.html',
+            FR: 'detail-produit.html',
+            EU: 'produktu-xehetasuna.html'
+        };
+        
+        const detailPage = detailPages[idioma] || detailPages.ES;
+        window.location.href = `${rutaBase}${idioma}/${detailPage}?pd=${encodeURIComponent(productId)}`;
     }
 
     function redirigirABusqueda(consulta) {
@@ -795,18 +997,18 @@ async function inicializarBuscador() {
 
         const idioma = localStorage.getItem('userLanguage') || 'ES';
         const rutaBase = obtenerRutaBase();
-        const paginaBusqueda = idioma === 'EN' ? 'search.html' : 'busqueda.html';
+        const paginaBusqueda = idioma === 'EN' ? 'search.html' : idioma === 'FR' ? 'recherche.html' : idioma === 'EU' ? 'bilaketa.html' : 'busqueda.html';
         window.location.href = `${rutaBase}${idioma}/${paginaBusqueda}?q=${encodeURIComponent(consulta)}`;
     }
 
     function obtenerRutaBase() {
         const path = window.location.pathname;
-        if (path.includes('/catalogo/') || path.includes('/catalog/')) {
+        if (path.includes('/catalogo/') || path.includes('/catalog/') || path.includes('/catalogue/') || path.includes('/katalogoa/')) {
             return '../../../';
-        } else if (path.includes('/ES/') || path.includes('/EN/')) {
+        } else if (path.includes('/ES/') || path.includes('/EN/') || path.includes('/FR/') || path.includes('/EU/')) {
             return '../';
         }
-        return '/';
+        return './';
     }
 }
 
@@ -814,9 +1016,55 @@ function updateDateTime() {
     // Obtener el elemento HTML
     const displayElement = document.getElementById('datetime-display');
     if (!displayElement) return;
+    
+    // Add notranslate class to prevent Google Translate from translating the date
+    displayElement.classList.add('notranslate');
+
+    // Check if Google Translate is active and get the target language
+    let targetLanguage = localStorage.getItem('userLanguage') || 'ES';
+    
+    // Check if page is translated by Google Translate
+    const body = document.body;
+    const isTranslated = body.classList.contains('translated-ltr') || 
+                        body.classList.contains('translated-rtl');
+    
+    if (isTranslated) {
+        // Try to detect Google Translate target language from the select element (from footer)
+        const translateSelect = document.querySelector('#footer-google-translate-element select');
+        if (translateSelect && translateSelect.value) {
+            const gtLang = translateSelect.value;
+            // Map Google Translate language codes to our language codes
+            const langMap = {
+                'es': 'ES',
+                'en': 'EN',
+                'fr': 'FR',
+                'eu': 'EU',
+                'ca': 'ES', // Catalan -> Spanish
+                'pt': 'ES', // Portuguese -> Spanish
+                'it': 'ES', // Italian -> Spanish
+                'de': 'EN', // German -> English
+                'nl': 'EN', // Dutch -> English
+                'ru': 'EN', // Russian -> English
+                'zh': 'EN', // Chinese -> English
+                'ja': 'EN', // Japanese -> English
+                'ko': 'EN', // Korean -> English
+                'ar': 'EN', // Arabic -> English
+                'hi': 'EN', // Hindi -> English
+            };
+            
+            // Get first 2 characters of Google Translate language code
+            const langCode = gtLang.substring(0, 2).toLowerCase();
+            if (langMap[langCode]) {
+                targetLanguage = langMap[langCode];
+            } else if (['es', 'en', 'fr', 'eu'].includes(langCode)) {
+                // Direct match for our 4 languages
+                targetLanguage = langCode.toUpperCase();
+            }
+        }
+    }
 
     // Obtener el idioma del usuario desde localStorage
-    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    const userLanguage = targetLanguage;
     
     // Traducciones manuales para Euskera
     const euTranslations = {
@@ -905,3 +1153,95 @@ updateDateTime();
 
 // Actualizar la hora cada segundo (1000 milisegundos)
 setInterval(updateDateTime, 1000);
+
+// Also update date when Google Translate changes language (from footer)
+function monitorGoogleTranslateForDate() {
+    const translateSelect = document.querySelector('#footer-google-translate-element select');
+    if (translateSelect) {
+        translateSelect.addEventListener('change', () => {
+            // Update date display when translation language changes
+            setTimeout(updateDateTime, 500);
+        });
+    }
+}
+
+// Monitor for Google Translate language changes to update date (from footer)
+function setupDateTranslationMonitor() {
+    // Check periodically for Google Translate select element
+    const checkInterval = setInterval(() => {
+        const translateSelect = document.querySelector('#footer-google-translate-element select');
+        if (translateSelect) {
+            // Add event listener if not already added
+            if (!translateSelect.hasAttribute('data-date-listener')) {
+                translateSelect.setAttribute('data-date-listener', 'true');
+                translateSelect.addEventListener('change', () => {
+                    // Update date display when translation language changes
+                    setTimeout(updateDateTime, 500);
+                });
+            }
+            clearInterval(checkInterval); // Stop checking once we found it
+        }
+    }, 500);
+    
+    // Stop checking after 10 seconds
+    setTimeout(() => clearInterval(checkInterval), 10000);
+}
+
+// Start monitoring when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(setupDateTranslationMonitor, 1000);
+    });
+} else {
+    setTimeout(setupDateTranslationMonitor, 1000);
+}
+
+// Also monitor for translation state changes
+let dateStateObserver = null;
+
+// Initialize date state observer when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        if (document.body) {
+            dateStateObserver = new MutationObserver(() => {
+                const body = document.body;
+                if (body) {
+                    const isTranslated = body.classList.contains('translated-ltr') || 
+                                      body.classList.contains('translated-rtl');
+                    
+                    if (isTranslated) {
+                        // Update date when translation is detected
+                        setTimeout(updateDateTime, 300);
+                    }
+                }
+            });
+            
+            // Observe body for translation class changes
+            dateStateObserver.observe(document.body, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        }
+    });
+} else {
+    if (document.body) {
+        dateStateObserver = new MutationObserver(() => {
+            const body = document.body;
+            if (body) {
+                const isTranslated = body.classList.contains('translated-ltr') || 
+                                  body.classList.contains('translated-rtl');
+                
+                if (isTranslated) {
+                    // Update date when translation is detected
+                    setTimeout(updateDateTime, 300);
+                }
+            }
+        });
+        
+        // Observe body for translation class changes
+        dateStateObserver.observe(document.body, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+}

@@ -27,19 +27,43 @@ export const cartStore = {
         return cartStorage;
     },
 
-    addToCart(param) {
+    addToCart(param, id) {
 
-        if (!param || !param.target) {
-            return;
+        if (!param || !param.target || id !== undefined) {
+
+            console.log('id', id);
+
+            cart = this.cartLoadFromStorage(); //obtengo el carrito del localStorage para operar
+
+            const element = document.querySelector(`[data-product-id="${id}"]`);
+            const imgSrc = element.querySelector('.preview-image img').src;
+            const name = element.querySelector('.preview-main h1').textContent;
+            const price = element.querySelector('.preview-main .precio').textContent;
+
+            if (cart.some(product => product.id === id)) {
+
+                cart = cart.map(product => product.id === id ? { ...product, quantity: product.quantity + 1 } : product);
+
+            } else {
+                //Creo el objeto del producto
+                const product = {
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: imgSrc,
+                    quantity: 1
+                }
+
+                cart = [...cart, product];
+            }
+
+            this.syncStorage(); //lo que tengo en array lo guardo en localStorage
+            return cart;
+
+
         }
 
-        //const cartDrawerTotal = document.querySelector('.cart-drawer__total strong');//Mostrar el resultado total
-        // const productInCart = document.querySelector('.cart-item');
-        // const productList = document.querySelector('.container-products');
-
-        // productList.addEventListener('click', (event) => {
-
-        if (param.target.classList.contains('btn-add-to-cart')) {
+        if (param.target.classList.contains('btn-add-to-cart') && id === undefined) {
 
             cart = this.cartLoadFromStorage(); //obtengo el carrito del localStorage para operar
 
@@ -62,8 +86,6 @@ export const cartStore = {
                 cart = [...cart, product];
             }
 
-            // console.log(cart);
-            // this.countCart();
             this.syncStorage(); //lo que tengo en array lo guardo en localStorage
             return cart;
 
@@ -113,6 +135,36 @@ export const cartStore = {
             total += parseFloat(product.price.replace('€', '')) * product.quantity;
         });
         return total.toFixed(2);
+    },
+    loyaltyDiscount() {
+        cart = this.cartLoadFromStorage();
+        let allItems = [];
+
+        // Expand cart items into individual product instances with their prices
+        cart.forEach(product => {
+            const price = parseFloat(product.price.replace('€', '').trim());
+            for (let i = 0; i < product.quantity; i++) {
+                allItems.push(price); // Obtengo todos los precios de los productos por su cantidad
+            }
+        });
+
+        // Check if total items > 5 Si es mayor a 5 aplica el descuento
+        if (allItems.length > 5) {
+            // Sort by price ascending (cheapest first)
+            allItems.sort((a, b) => a - b); // Ordena los precios de menor a mayor
+
+            // Remove the 3 cheapest items (slice starting from index 3)
+            const itemsToCharge = allItems.slice(3); // Quita los 3 productos mas baratos
+
+            // Sum the remaining items
+            const total = itemsToCharge.reduce((sum, price) => sum + price, 0); // Suma los precios restantes
+
+            return total.toFixed(2); // Devuelve el total con dos decimales
+        } else {
+            // Return normal total if 5 or fewer items
+            const total = allItems.reduce((sum, price) => sum + price, 0); // Suma los precios restantes
+            return total.toFixed(2); // Devuelve el total con dos decimales
+        }
     }
 
 

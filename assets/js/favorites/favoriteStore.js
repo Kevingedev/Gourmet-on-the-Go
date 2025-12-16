@@ -5,9 +5,10 @@ let wishlist = [];
 export const favoriteStore = {
 
     syncStorage() {
-
         const jsonWishlist = JSON.stringify(wishlist);
         localStorage.setItem('wishlist', jsonWishlist);
+        // Dispatch event to update nav count
+        window.dispatchEvent(new Event('favoritesUpdated'));
     },
     wishlistLoadFromStorage() {
         // obtengo el carrito del localStorage para operar.
@@ -22,48 +23,71 @@ export const favoriteStore = {
         return wishlistStorage;
     },
     addToWishlist(param) {
+        // Always start with fresh wishlist from storage
+        wishlist = this.wishlistLoadFromStorage();
 
         if (!param || !param.target) {
-            return;
+            return wishlist;
         }
 
-        // productList.addEventListener('click', (event) => {
+        // Find the button element (could be the target itself or parent if clicking icon)
+        const button = param.target.classList.contains('btn-favorite') || 
+                       param.target.classList.contains('btn-add-to-wishlist') 
+                       ? param.target 
+                       : param.target.closest('.btn-favorite') || 
+                         param.target.closest('.btn-add-to-wishlist');
 
-        if (param.target.classList.contains('btn-add-to-wishlist')) {
+        // Check if this is a favorite button
+        const isFavoriteButton = button && (
+            button.classList.contains('btn-favorite') || 
+            button.classList.contains('btn-add-to-wishlist')
+        );
 
-            wishlist = this.wishlistLoadFromStorage(); //obtengo el carrito del localStorage para operar
+        if (isFavoriteButton) {
+            // Find the product card element - try multiple strategies
+            const element = button.closest('.cart-item') || 
+                           button.closest('.search-product-card') ||
+                           button.closest('[data-product-id]') ||
+                           param.target.closest('.cart-item') ||
+                           param.target.closest('.search-product-card') ||
+                           param.target.closest('[data-product-id]') ||
+                           button.parentElement?.parentElement;
 
-            const element = param.target.parentNode.parentNode;
-
-            if (!wishlist.some(product => product.id === element.getAttribute('data-product-id'))) {
-
-                // wishlist = wishlist.map(product => product.id === element.getAttribute('data-product-id') ? { ...product, quantity: product.quantity + 1 } : product);
-
-            /* } 
-            else { */
-                //Creo el objeto del producto
-                const product = {
-                    id: element.getAttribute('data-product-id'),
-                    name: element.querySelector('.item_title').textContent,
-                    description: element.querySelector('.item_description').textContent,
-                    price: element.querySelector('.item_price').textContent,
-                    image: element.querySelector('img').src
-                }
-
-                wishlist = [...wishlist, product];
-
-                // wishlist = [{},{},{}, product];
-
+            if (!element) {
+                console.warn('No product card element found');
+                return wishlist;
             }
 
-            this.syncStorage(); //lo que tengo en array lo guardo en localStorage
-            return wishlist;
+            const productId = element.getAttribute('data-product-id');
 
+            if (!productId) {
+                console.warn('No product ID found');
+                return wishlist;
+            }
+
+            // Check if product is already in wishlist
+            if (!wishlist.some(product => product.id === productId)) {
+                // Create product object
+                const product = {
+                    id: productId,
+                    name: element.querySelector('.item_title')?.textContent?.trim() || '',
+                    description: element.querySelector('.item_description')?.textContent?.trim() || '',
+                    price: element.querySelector('.item_price')?.textContent?.trim() || '0€',
+                    image: element.querySelector('img')?.src || ''
+                };
+
+                wishlist = [...wishlist, product];
+                this.syncStorage(); // Save to localStorage
+            } else {
+                // If already in wishlist, remove it (toggle behavior)
+                wishlist = wishlist.filter(product => product.id !== productId);
+                this.syncStorage();
+            }
+
+            return wishlist;
         }
 
-
-
-
+        return wishlist;
     },
     removeItem(idProducto) {
         wishlist = this.wishlistLoadFromStorage();
@@ -74,6 +98,10 @@ export const favoriteStore = {
         }
         this.syncStorage();
         return wishlist;
+    },
+    countWishlist() {
+        wishlist = this.wishlistLoadFromStorage();
+        return wishlist.length;
     },
     totalWishlist() {
         wishlist = this.wishlistLoadFromStorage();

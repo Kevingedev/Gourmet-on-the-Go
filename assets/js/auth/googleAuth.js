@@ -7,8 +7,10 @@ export const googleAuth = {
         // Wait for Google Identity Services to load
         if (window.google && window.google.accounts) {
             window.google.accounts.id.initialize({
-                client_id: '874722548600-ob5nqpav0u3plvu2sbruqivrkv4u71jb.apps.googleusercontent.com', // Replace with your actual Client ID
+                client_id: '769410473994-c0khdv0vkklsi3pc435po8uacr9gen54.apps.googleusercontent.com',
                 callback: this.handleCredentialResponse.bind(this)
+                // Note: If you get "origin not allowed" error, add your domain to:
+                // https://console.cloud.google.com/apis/credentials -> OAuth 2.0 Client IDs -> Authorized JavaScript origins
             });
         }
     },
@@ -140,13 +142,16 @@ export const googleAuth = {
     // Render Google Sign-In button
     renderButton(elementId) {
         if (window.google && window.google.accounts) {
+            const buttonElement = document.getElementById(elementId);
+            if (!buttonElement) return;
+            
             window.google.accounts.id.renderButton(
-                document.getElementById(elementId),
+                buttonElement,
                 {
                     theme: 'outline',
                     size: 'large',
                     text: 'signin_with',
-                    width: '100%',
+                    // width parameter removed - let it auto-size, CSS will handle responsiveness
                     locale: localStorage.getItem('userLanguage') || 'es'
                 }
             );

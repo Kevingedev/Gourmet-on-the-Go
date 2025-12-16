@@ -20,19 +20,15 @@
     <div id="datetime-display" class="minimal-datetime"></div>
     
     <main id="main" class="main-container">
-        <!-- <section class="content-page container-products products-grid" >
-            
-        </section> -->
-        <section class="section-productos-destacados search-results-section" style="max-width: 90%; margin-top: 2rem;">
+        <section class="search-results-section">
             <div class="search-header">
                 <h1 class="text-dark" id="category-title">Favoritos</h1>
             </div>
             <hr class="text-dark">
 
             <!-- Products Grid -->
-            <!-- data-base-path points to root relative to this file -->
-            <div class="products-grid container-products" id="wishlist-container">
-                <!-- Products will be loaded here by favoriteStore.js and use favoriteViews.js-->
+            <div class="search-results-container container-products" id="wishlist-container">
+                <!-- Products will be loaded here by favoritesView.js -->
             </div>
         </section>
     </main>
@@ -41,6 +37,9 @@
     <div id="showModal"></div>
     <div id="cart-drawer"></div>
 
+    <!-- Middleware: Protege la página - debe ejecutarse primero -->
+    <script src="../assets/js/auth/middleware.js" type="module"></script>
+    
     <script src="../assets/js/nav.js"></script>
     <script src="../assets/js/footer.js"></script>
     <script src="../assets/js/cart/cartView.js" type="module"></script>
@@ -50,8 +49,6 @@
     <script src="../assets/js/cart/cartStore.js" type="module"></script>
     <script src="../assets/js/favorites/favoriteStore.js" type="module"></script>
     <script src="../assets/js/favorites/favoritesView.js" type="module"></script>
-
-
 
 </body>
 

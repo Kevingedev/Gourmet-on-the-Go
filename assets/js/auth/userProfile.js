@@ -1,94 +1,137 @@
 import { authService } from './authService.js';
 
+// User Profile Display Functions
 document.addEventListener('DOMContentLoaded', () => {
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
     const currentUser = authService.getUser();
-    const userLanguage = authService.getLanguage();
     
     if (!currentUser) {
-        // Redirect to home if not logged in
-        const redirectPath = userLanguage === 'EN' ? '../EN/index.html' : '../ES/index.html';
-        window.location.href = redirectPath;
         return;
     }
-
-    const texts = userLanguage === 'EN' ? {
-        title: 'My Account',
-        username: 'Username',
-        email: 'Email',
-        fullName: 'Full Name',
-        role: 'Role',
-        registrationDate: 'Registration Date',
-        provider: 'Login Method',
-        backHome: 'Back to Home'
-    } : {
-        title: 'Mi Perfil',
-        username: 'Usuario',
-        email: 'Correo',
-        fullName: 'Nombre Completo',
-        role: 'Rol',
-        registrationDate: 'Fecha de Registro',
-        provider: 'Método de Inicio',
-        backHome: 'Volver al Inicio'
+    
+    // Texts for different languages
+    const texts = {
+        ES: {
+            username: 'Usuario',
+            email: 'Correo electrónico',
+            fullName: 'Nombre completo',
+            role: 'Rol',
+            registrationDate: 'Fecha de registro',
+            provider: 'Método de inicio de sesión'
+        },
+        EN: {
+            username: 'Username',
+            email: 'Email',
+            fullName: 'Full name',
+            role: 'Role',
+            registrationDate: 'Registration date',
+            provider: 'Sign-in method'
+        },
+        FR: {
+            username: 'Nom d\'utilisateur',
+            email: 'Email',
+            fullName: 'Nom complet',
+            role: 'Rôle',
+            registrationDate: 'Date d\'enregistrement',
+            provider: 'Méthode de connexion'
+        },
+        EU: {
+            username: 'Erabiltzaile izena',
+            email: 'Email',
+            fullName: 'Izen osoa',
+            role: 'Rola',
+            registrationDate: 'Erregistro data',
+            provider: 'Saioa hasteko metodoa'
+        }
     };
-
-    // Get avatar
+    
+    const currentTexts = texts[userLanguage] || texts.ES;
+    
+    // Get role directly from user (from users.json)
+    const userRole = currentUser.rol || currentUser.role || 'usuario';
+    
+    // Role translations
+    const roleTranslations = {
+        ES: {
+            'usuario': 'Usuario',
+            'admin': 'Administrador',
+            'administrador': 'Administrador'
+        },
+        EN: {
+            'usuario': 'User',
+            'admin': 'Administrator',
+            'administrador': 'Administrator'
+        },
+        FR: {
+            'usuario': 'Utilisateur',
+            'admin': 'Administrateur',
+            'administrador': 'Administrateur'
+        },
+        EU: {
+            'usuario': 'Erabiltzailea',
+            'admin': 'Administratzailea',
+            'administrador': 'Administratzailea'
+        }
+    };
+    const roleText = roleTranslations[userLanguage]?.[userRole.toLowerCase()] || userRole;
+    
+    // Get user's full name
+    const fullName = currentUser.nombre_completo || currentUser.fullName || currentUser.username || 'Usuario';
+    
+    // Get avatar (initials or picture)
     const avatar = authService.getAvatar();
     const hasPicture = currentUser.picture;
-
-    // Build profile header
+    
+    // Update profile header with name, picture, and role
     const profileHeader = document.getElementById('profile-header');
     if (profileHeader) {
         profileHeader.innerHTML = `
-            ${hasPicture 
-                ? `<img src="${currentUser.picture}" alt="Avatar" class="profile-avatar" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">`
-                : `<div class="profile-avatar">${avatar}</div>`
-            }
+            <div class="profile-avatar" id="profile-avatar">
+                ${hasPicture 
+                    ? `<img src="${currentUser.picture}" alt="${fullName}" id="profile-picture">`
+                    : `<span>${avatar}</span>`
+                }
+            </div>
             <div class="profile-info">
-                <h1>${currentUser.nombre_completo || currentUser.email}</h1>
-                <p>${currentUser.email}</p>
-                <p style="color: var(--color-primary); font-weight: 600;">${currentUser.rol || currentUser.role || 'usuario'}</p>
+                <h1>${fullName}</h1>
+                <p style="color: var(--color-primary); font-weight: 600; margin-top: 0.5rem;">${roleText}</p>
+                <p style="color: var(--muted); margin-top: 0.25rem;">${currentUser.email || ''}</p>
             </div>
         `;
     }
-
-    // Build profile details
+    
+    // Update profile display
     const profileDetails = document.getElementById('profile-details');
     if (profileDetails) {
-        // Get role directly from user (from users.json)
-        const userRole = currentUser.rol || currentUser.role || 'usuario';
-        
         const providerText = currentUser.provider === 'google'
-            ? (userLanguage === 'EN' ? 'Google Sign-In' : 'Inicio con Google')
-            : (userLanguage === 'EN' ? 'Username/Password' : 'Usuario/Contraseña');
+            ? (userLanguage === 'EN' ? 'Google Sign-In' : userLanguage === 'FR' ? 'Connexion Google' : userLanguage === 'EU' ? 'Google-rekin saioa' : 'Inicio con Google')
+            : (userLanguage === 'EN' ? 'Username/Password' : userLanguage === 'FR' ? 'Nom d\'utilisateur/Mot de passe' : userLanguage === 'EU' ? 'Erabiltzaile izena/Pasahitza' : 'Usuario/Contraseña');
 
         profileDetails.innerHTML = `
             <div class="detail-item">
-                <span class="detail-label">${texts.username}:</span>
+                <span class="detail-label">${currentTexts.username}:</span>
                 <span class="detail-value">${currentUser.username || 'N/A'}</span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">${texts.email}:</span>
+                <span class="detail-label">${currentTexts.email}:</span>
                 <span class="detail-value">${currentUser.email || 'N/A'}</span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">${texts.fullName}:</span>
-                <span class="detail-value">${currentUser.nombre_completo || 'N/A'}</span>
+                <span class="detail-label">${currentTexts.fullName}:</span>
+                <span class="detail-value">${fullName}</span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">${texts.role}:</span>
-                <span class="detail-value">${userRole}</span>
+                <span class="detail-label">${currentTexts.role}:</span>
+                <span class="detail-value">${roleText}</span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">${texts.provider}:</span>
+                <span class="detail-label">${currentTexts.registrationDate}:</span>
+                <span class="detail-value">${currentUser.fecha_registro || currentUser.registrationDate || 'N/A'}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">${currentTexts.provider}:</span>
                 <span class="detail-value">${providerText}</span>
             </div>
-            ${currentUser.fecha_registro ? `
-            <div class="detail-item">
-                <span class="detail-label">${texts.registrationDate}:</span>
-                <span class="detail-value">${currentUser.fecha_registro}</span>
-            </div>
-            ` : ''}
         `;
     }
 });
-
