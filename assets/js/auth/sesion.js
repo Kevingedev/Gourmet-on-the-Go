@@ -88,7 +88,7 @@ function updateLoginModal() {
     if (modalDialog) {
         modalDialog.querySelector('#login-title').textContent = loginTexts.title;
         modalDialog.querySelector('#login-desc').textContent = loginTexts.subtitle;
-        modalDialog.querySelector('.field__label').textContent = loginTexts.username;
+
         modalDialog.querySelectorAll('.field__label')[1].textContent = loginTexts.password;
         modalDialog.querySelector('#btn-enter').textContent = loginTexts.enter;
         modalDialog.querySelector('.btn--ghost').textContent = loginTexts.cancel;
