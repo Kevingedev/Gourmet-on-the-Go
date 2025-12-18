@@ -54,7 +54,7 @@ export const authService = {
         }
         
         const jsonPath = `${PATH}assets/data/users.json`;
-        console.log('Loading users from:', jsonPath);
+        console.log('Loading users from:', jsonPath + ' ' + PATH);
 
         let finderUser;
 
