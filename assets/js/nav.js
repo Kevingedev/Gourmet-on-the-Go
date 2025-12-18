@@ -1,3 +1,10 @@
+// updateFavoritesCount() actualiza el contador de favoritos
+//const navbar  declaracion de la variable navbar
+// cart-count declaracion de la variable cart-count y la actualizo en cartview.js
+// fetchCategories(container) funcion para cargar las categorias en el NAVBAR.
+//// Productos encontrados en el input del buscador resultadosBusqueda.innerHTML
+
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -5,15 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlCategoria = url.split('/');
     const userLanguage = localStorage.getItem('userLanguage');
     const header = document.getElementById('header');
-    
+
     // Calculate PATH based on current location
     let PATH = '';
     const pathname = window.location.pathname;
-    
+
     // Count depth by counting slashes (excluding leading slash)
     const pathParts = pathname.split('/').filter(p => p.length > 0);
     const depth = pathParts.length;
-    
+
     // More reliable path calculation
     if (pathParts.includes('catalogo') || pathParts.includes('catalog') || pathParts.includes('catalogue') || pathParts.includes('katalogoa')) {
         // We're in a catalog subfolder (e.g., ES/catalogo/carnes/, FR/catalogue/viandes/)
@@ -40,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // console.log(currentUserData);
     let btnSesion;
     let wellcome = {
-        ES: `Hola <strong>${!currentUserData.username ? ' ' : currentUserData.username }  </strong> te damos la Bienvenida a Gourmet on the Go!`,
+        ES: `Hola <strong>${!currentUserData.username ? ' ' : currentUserData.username}  </strong> te damos la Bienvenida a Gourmet on the Go!`,
         EN: `Hello <strong>${!currentUserData.username ? '' : currentUserData.username}</strong> we welcome you to Gourmet on the Go!`,
         FR: `Bonjour <strong>${!currentUserData.username ? '' : currentUserData.username}</strong> nous vous souhaitons la bienvenue à Gourmet on the Go!`,
         EU: `Kaixo <strong>${!currentUserData.username ? '' : currentUserData.username}</strong> Gourmet on the Go-ra ongi etorri!`
@@ -55,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         FR: 'Français',
         EU: 'Euskera'
     };
-    
+
     if (userLanguage === 'ES') {
         langSelect = `
         <select class="lang-select select-custom" aria-label="Seleccionar idioma">
@@ -115,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const favoritesLink = favoritesLinks[userLanguage] || favoritesLinks.ES;
     const favoritesLabel = favoritesLabels[userLanguage] || favoritesLabels.ES;
     const favoritesTitle = favoritesTitles[userLanguage] || favoritesTitles.ES;
-    
+
 
     // Textos para botones de sesión según idioma
     const sessionTexts = {
@@ -161,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     const sessionText = sessionTexts[userLanguage] || sessionTexts.ES;
-    
+
     if (currentUser) {
         const username = currentUserData.username || '';
         const logoutTitle = `${sessionText.logoutTitle}${username ? ` - ${username}` : ''}`;
@@ -172,13 +179,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Ensure PATH ends with / for consistent path construction
     const assetsPath = PATH.endsWith('/') ? PATH : `${PATH}/`;
-    
+
     // Debug: log the paths (remove in production)
     // console.log('URL:', url);
     // console.log('PATH:', PATH);
     // console.log('assetsPath:', assetsPath);
     // console.log('jsonPath will be:', `${assetsPath}assets/data/categories.json`);
-    
+
     // Announcement banner texts for all languages
     const announcementTexts = {
         ES: {
@@ -199,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     const announcement = announcementTexts[userLanguage] || announcementTexts.ES;
-    
+
     const navbar = `
 <div class="announcement-banner" id="announcement-banner">
     <div class="announcement-banner__content">
@@ -256,12 +263,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // estoy insertando el navbar y el cartDrawer
     header.innerHTML = navbar;
-    
+
     // Handle announcement banner close
     const announcementBanner = document.getElementById('announcement-banner');
     const announcementClose = document.querySelector('.announcement-banner__close');
     const nav = document.querySelector('.nav');
-    
+
     if (announcementBanner && nav) {
         // Check if banner was previously closed
         if (localStorage.getItem('announcementBannerClosed') === 'true') {
@@ -269,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nav.classList.remove('nav--with-banner');
         } else {
             nav.classList.add('nav--with-banner');
-            
+
             // Save state when closed and hide banner
             if (announcementClose) {
                 announcementClose.addEventListener('click', () => {
@@ -280,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    // console.log(WELCOME);
+    // console.log(WELCOME); MENSAJE DE BIENVENIDA
     if (WELCOME != null) {
         if (!currentUser) {
             document.getElementById('section-bienvenida').innerHTML = `
@@ -356,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    fetchCategories(categoryLinksContainer);
+    fetchCategories(categoryLinksContainer); // LLAMANDO LA FUNCION PARA CARGAR CATEGORIAS.
 
     // FUNCION DE ACCIONES PARA EL CAMBIO DE IDIOMA
     async function changeUrl(lang, url) {
@@ -466,7 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // CODIGO DE ACCIONES PARA EL CAMBIO DE IDIOMA
 
-    
+
     document.querySelector('.lang-select').addEventListener('change', function () {
         const lang = this.value; // El VALOR DEL SELECT
         let currentUrl;
@@ -480,16 +487,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Obtener el nombre del archivo actual (sin query parameters)
         let currentFileName = urlCategoria[urlCategoria.length - 1] || 'index.html';
-        
+
         // Preservar query parameters (como ?pd=PM002)
         const urlObj = new URL(url);
         const queryParams = urlObj.search; // Esto incluye el "?" y los parámetros
-        
+
         // Remover query params del filename si están incluidos
         if (currentFileName.includes('?')) {
             currentFileName = currentFileName.split('?')[0];
         }
-        
+
         // Determinar la ruta base según la ubicación
         let basePath = '';
         if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog' || urlCategoria[4] == 'catalogue' || urlCategoria[4] == 'katalogoa') {
@@ -512,7 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(err);
                 localStorage.setItem('userLanguage', lang);
             });
-        } 
+        }
         // Manejar páginas normales (contacto, producto-detalle, etc.)
         else if (currentFileName.includes('.html')) {
             // Verificar si existe un mapeo para esta página
@@ -581,28 +588,28 @@ document.addEventListener('DOMContentLoaded', () => {
 function monitorGoogleTranslateState() {
     const langSelectWrapper = document.querySelector('.lang-select-wrapper');
     if (!langSelectWrapper) return;
-    
+
     // Store original display style
     const originalDisplay = langSelectWrapper.style.display || 'inline-flex';
-    
+
     // Check if translation is active
     function checkTranslationState() {
         // Check if Google Translate has translated the page
         const body = document.body;
         const html = document.documentElement;
-        
+
         // Google Translate adds these classes when active
-        const isTranslated = body.classList.contains('translated-ltr') || 
-                            body.classList.contains('translated-rtl') ||
-                            html.classList.contains('translated-ltr') ||
-                            html.classList.contains('translated-rtl') ||
-                            body.getAttribute('dir') === 'rtl' ||
-                            body.getAttribute('dir') === 'ltr';
-        
+        const isTranslated = body.classList.contains('translated-ltr') ||
+            body.classList.contains('translated-rtl') ||
+            html.classList.contains('translated-ltr') ||
+            html.classList.contains('translated-rtl') ||
+            body.getAttribute('dir') === 'rtl' ||
+            body.getAttribute('dir') === 'ltr';
+
         // Check if Google Translate frame exists (indicates translation is active)
         const translateFrame = document.querySelector('.goog-te-banner-frame');
         const isFrameVisible = translateFrame && translateFrame.style.display !== 'none';
-        
+
         // Hide 4-language selector if translation is active
         if (isTranslated) {
             langSelectWrapper.style.display = 'none';
@@ -610,12 +617,12 @@ function monitorGoogleTranslateState() {
             langSelectWrapper.style.display = originalDisplay;
         }
     }
-    
+
     // Monitor for translation changes on body and html
     const observer = new MutationObserver(() => {
         checkTranslationState();
     });
-    
+
     // Observe body and html for class changes (only if they exist)
     if (document.body) {
         observer.observe(document.body, {
@@ -624,7 +631,7 @@ function monitorGoogleTranslateState() {
             subtree: false
         });
     }
-    
+
     if (document.documentElement) {
         observer.observe(document.documentElement, {
             attributes: true,
@@ -632,7 +639,7 @@ function monitorGoogleTranslateState() {
             subtree: false
         });
     }
-    
+
     // Check when Google Translate select is interacted with (from footer)
     setTimeout(() => {
         const translateSelect = document.querySelector('#footer-google-translate-element select');
@@ -641,14 +648,14 @@ function monitorGoogleTranslateState() {
             translateSelect.addEventListener('mousedown', () => {
                 langSelectWrapper.style.display = 'none';
             });
-            
+
             translateSelect.addEventListener('focus', () => {
                 langSelectWrapper.style.display = 'none';
             });
-            
+
             translateSelect.addEventListener('change', (e) => {
                 const selectedValue = e.target.value;
-                
+
                 // Check if user selected "Original" or empty value (restores original)
                 if (!selectedValue || selectedValue === '' || selectedValue === 'auto') {
                     // Show 4-language selector when original is selected
@@ -665,12 +672,12 @@ function monitorGoogleTranslateState() {
             });
         }
     }, 300);
-    
+
     // Check periodically for translation state
     const stateCheckInterval = setInterval(() => {
         checkTranslationState();
     }, 500);
-    
+
     // Listen for clicks on "Show original" or similar buttons
     document.addEventListener('click', (e) => {
         const target = e.target;
@@ -678,7 +685,7 @@ function monitorGoogleTranslateState() {
         if (target.tagName === 'A' || target.closest('a')) {
             const link = target.tagName === 'A' ? target : target.closest('a');
             const linkText = link.textContent.toLowerCase();
-            
+
             // Check for "Show original" in multiple languages
             if (linkText.includes('show original') ||
                 linkText.includes('mostrar original') ||
@@ -686,7 +693,7 @@ function monitorGoogleTranslateState() {
                 linkText.includes('afficher original') ||
                 linkText.includes('jatorrizkoa erakutsi') ||
                 linkText.includes('original') && linkText.includes('show')) {
-                
+
                 // Show 4-language selector when original is restored
                 setTimeout(() => {
                     langSelectWrapper.style.display = originalDisplay;
@@ -695,7 +702,7 @@ function monitorGoogleTranslateState() {
             }
         }
     }, true);
-    
+
     // Also check when page visibility changes (user might have closed translate)
     document.addEventListener('visibilitychange', () => {
         if (!document.hidden) {
@@ -712,7 +719,7 @@ function updateFavoritesCount() {
         const favoritesCountElement = document.getElementById('favorites-count');
         if (favoritesCountElement) {
             const count = wishlist.length || 0;
-            favoritesCountElement.textContent = count;
+            favoritesCountElement.textContent = count; // Mostrar el número de favoritos
             // Hide badge if count is 0
             if (count === 0) {
                 favoritesCountElement.style.display = 'none';
@@ -896,6 +903,7 @@ async function inicializarBuscador() {
         const closeText = idioma === 'EN' ? 'Close' : 'Cerrar';
 
         if (productos.length === 0) {
+            // Mostrar mensaje de sin resultados
             resultadosBusqueda.innerHTML = `
                 <div class="search-results-header">
                     <span>${idioma === 'EN' ? 'No products found' : 'Sin resultados'}</span>
@@ -911,7 +919,7 @@ async function inicializarBuscador() {
             resultadosBusqueda.classList.add('is-visible');
         } else {
             const rutaBase = obtenerRutaBase();
-
+            // Productos encontrados en el input del buscador 
             resultadosBusqueda.innerHTML = `
                 <div class="search-results-header">
                     <span>${idioma === 'EN' ? 'Search Results' : 'Resultados'}</span>
@@ -977,7 +985,7 @@ async function inicializarBuscador() {
 
         const idioma = localStorage.getItem('userLanguage') || 'ES';
         const rutaBase = obtenerRutaBase();
-        
+
         // Mapeo de páginas de detalle según idioma
         const detailPages = {
             ES: 'producto-detalle.html',
@@ -985,7 +993,7 @@ async function inicializarBuscador() {
             FR: 'detail-produit.html',
             EU: 'produktu-xehetasuna.html'
         };
-        
+
         const detailPage = detailPages[idioma] || detailPages.ES;
         window.location.href = `${rutaBase}${idioma}/${detailPage}?pd=${encodeURIComponent(productId)}`;
     }
@@ -1016,18 +1024,18 @@ function updateDateTime() {
     // Obtener el elemento HTML
     const displayElement = document.getElementById('datetime-display');
     if (!displayElement) return;
-    
+
     // Add notranslate class to prevent Google Translate from translating the date
     displayElement.classList.add('notranslate');
 
     // Check if Google Translate is active and get the target language
     let targetLanguage = localStorage.getItem('userLanguage') || 'ES';
-    
+
     // Check if page is translated by Google Translate
     const body = document.body;
-    const isTranslated = body.classList.contains('translated-ltr') || 
-                        body.classList.contains('translated-rtl');
-    
+    const isTranslated = body.classList.contains('translated-ltr') ||
+        body.classList.contains('translated-rtl');
+
     if (isTranslated) {
         // Try to detect Google Translate target language from the select element (from footer)
         const translateSelect = document.querySelector('#footer-google-translate-element select');
@@ -1051,7 +1059,7 @@ function updateDateTime() {
                 'ar': 'EN', // Arabic -> English
                 'hi': 'EN', // Hindi -> English
             };
-            
+
             // Get first 2 characters of Google Translate language code
             const langCode = gtLang.substring(0, 2).toLowerCase();
             if (langMap[langCode]) {
@@ -1065,7 +1073,7 @@ function updateDateTime() {
 
     // Obtener el idioma del usuario desde localStorage
     const userLanguage = targetLanguage;
-    
+
     // Traducciones manuales para Euskera
     const euTranslations = {
         days: {
@@ -1092,7 +1100,7 @@ function updateDateTime() {
             'december': 'abendua'
         }
     };
-    
+
     const localeMap = {
         ES: 'es-ES',
         EN: 'en-US',
@@ -1107,13 +1115,13 @@ function updateDateTime() {
     // --- Obtener las partes con el formato solicitado según el idioma ---
 
     let dayOfWeek, month;
-    
+
     if (userLanguage === 'EU') {
         // Para Euskera, usar traducciones manuales
         const dayIndex = now.getDay(); // 0 = domingo, 1 = lunes, etc.
         const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
         dayOfWeek = euTranslations.days[dayNames[dayIndex]];
-        
+
         const monthIndex = now.getMonth(); // 0 = enero, 11 = diciembre
         const monthNames = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
         month = euTranslations.months[monthNames[monthIndex]];
@@ -1182,7 +1190,7 @@ function setupDateTranslationMonitor() {
             clearInterval(checkInterval); // Stop checking once we found it
         }
     }, 500);
-    
+
     // Stop checking after 10 seconds
     setTimeout(() => clearInterval(checkInterval), 10000);
 }
@@ -1206,16 +1214,16 @@ if (document.readyState === 'loading') {
             dateStateObserver = new MutationObserver(() => {
                 const body = document.body;
                 if (body) {
-                    const isTranslated = body.classList.contains('translated-ltr') || 
-                                      body.classList.contains('translated-rtl');
-                    
+                    const isTranslated = body.classList.contains('translated-ltr') ||
+                        body.classList.contains('translated-rtl');
+
                     if (isTranslated) {
                         // Update date when translation is detected
                         setTimeout(updateDateTime, 300);
                     }
                 }
             });
-            
+
             // Observe body for translation class changes
             dateStateObserver.observe(document.body, {
                 attributes: true,
@@ -1228,16 +1236,16 @@ if (document.readyState === 'loading') {
         dateStateObserver = new MutationObserver(() => {
             const body = document.body;
             if (body) {
-                const isTranslated = body.classList.contains('translated-ltr') || 
-                                  body.classList.contains('translated-rtl');
-                
+                const isTranslated = body.classList.contains('translated-ltr') ||
+                    body.classList.contains('translated-rtl');
+
                 if (isTranslated) {
                     // Update date when translation is detected
                     setTimeout(updateDateTime, 300);
                 }
             }
         });
-        
+
         // Observe body for translation class changes
         dateStateObserver.observe(document.body, {
             attributes: true,

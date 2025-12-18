@@ -4,11 +4,11 @@ import { authService } from './authService.js';
 document.addEventListener('DOMContentLoaded', () => {
     const userLanguage = localStorage.getItem('userLanguage') || 'ES';
     const currentUser = authService.getUser();
-    
+
     if (!currentUser) {
         return;
     }
-    
+
     // Texts for different languages
     const texts = {
         ES: {
@@ -44,12 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
             provider: 'Saioa hasteko metodoa'
         }
     };
-    
+
     const currentTexts = texts[userLanguage] || texts.ES;
-    
+
     // Get role directly from user (from users.json)
     const userRole = currentUser.rol || currentUser.role || 'usuario';
-    
+
     // Role translations
     const roleTranslations = {
         ES: {
@@ -74,23 +74,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     const roleText = roleTranslations[userLanguage]?.[userRole.toLowerCase()] || userRole;
-    
+
     // Get user's full name
     const fullName = currentUser.nombre_completo || currentUser.fullName || currentUser.username || 'Usuario';
-    
+
     // Get avatar (initials or picture)
     const avatar = authService.getAvatar();
     const hasPicture = currentUser.picture;
-    
+
     // Update profile header with name, picture, and role
     const profileHeader = document.getElementById('profile-header');
     if (profileHeader) {
         profileHeader.innerHTML = `
             <div class="profile-avatar" id="profile-avatar">
-                ${hasPicture 
-                    ? `<img src="${currentUser.picture}" alt="${fullName}" id="profile-picture">`
-                    : `<span>${avatar}</span>`
-                }
+                ${hasPicture
+                ? `<img src="${currentUser.picture}" alt="${fullName}" id="profile-picture">`
+                : `<span>${avatar}</span>`
+            }
             </div>
             <div class="profile-info">
                 <h1>${fullName}</h1>
@@ -99,10 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
     }
-    
+
     // Update profile display
     const profileDetails = document.getElementById('profile-details');
-    if (profileDetails) {
+    if (profileDetails) { // Si el elemento profile-details existe en el DOM pinto todo el perfil.
         const providerText = currentUser.provider === 'google'
             ? (userLanguage === 'EN' ? 'Google Sign-In' : userLanguage === 'FR' ? 'Connexion Google' : userLanguage === 'EU' ? 'Google-rekin saioa' : 'Inicio con Google')
             : (userLanguage === 'EN' ? 'Username/Password' : userLanguage === 'FR' ? 'Nom d\'utilisateur/Mot de passe' : userLanguage === 'EU' ? 'Erabiltzaile izena/Pasahitza' : 'Usuario/Contraseña');

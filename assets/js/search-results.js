@@ -1,9 +1,13 @@
 import { gestorDeDatos } from "./data-loader/productService.js";
 
-const urlParams = new URLSearchParams(window.location.search);
-const busqueda = urlParams.get('q') || '';
-const idioma = localStorage.getItem('userLanguage') || 'ES';
+// .. ok ?
 
+// Obtener parámetros de la URL y configuración del idioma
+const urlParams = new URLSearchParams(window.location.search);
+const busqueda = urlParams.get('q') || ''; // Término de búsqueda desde la URL
+const idioma = localStorage.getItem('userLanguage') || 'ES'; // Idioma del usuario (ES, EN, FR, EU)
+
+// Referencias a los elementos del DOM
 const contenedorResultados = document.getElementById('search-results-container');
 const mensajeCarga = document.getElementById('loading-message');
 const tituloBusqueda = document.getElementById('search-title');
@@ -25,6 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarResultados();
 });
 
+/**
+ * Función principal que carga y muestra los resultados de búsqueda de productos.
+ * Obtiene el término de búsqueda de la URL, valida que exista, y luego busca productos
+ * usando el servicio de datos. Muestra un mensaje de carga mientras busca y actualiza
+ * la interfaz con los resultados encontrados o un mensaje de error si no hay resultados.
+ */
 async function cargarResultados() {
     const textos = {
         ES: {
@@ -78,22 +88,27 @@ async function cargarResultados() {
     };
     const currentTexts = textos[idioma] || textos.ES;
 
+    // Validar que haya un término de búsqueda
     if (!busqueda || busqueda.trim().length < 1) {
         mostrarSinResultados(currentTexts.noQuery);
         return;
     }
 
     try {
+        // Mostrar mensaje de carga mientras se buscan los productos
         mensajeCarga.style.display = 'block';
         mensajeCarga.textContent = currentTexts.loading;
+        // Buscar productos por nombre usando el servicio de datos
         const productos = await gestorDeDatos.cargarProductosPorNombre(busqueda);
         mensajeCarga.style.display = 'none';
 
+        // Actualizar información de búsqueda con el número de resultados
         const resultadoTexto = productos.length === 1
             ? currentTexts.results
             : currentTexts.resultsPlural;
         infoBusqueda.textContent = `${currentTexts.searching}: "${busqueda}" - ${productos.length} ${resultadoTexto}`;
 
+        // Mostrar resultados o mensaje de sin resultados
         if (productos.length === 0) {
             mostrarSinResultados(`${currentTexts.noResults} "${busqueda}"`);
         } else {
@@ -106,6 +121,13 @@ async function cargarResultados() {
     }
 }
 
+/**
+ * Función que renderiza y muestra los productos encontrados en la página.
+ * Crea el HTML para cada producto con su imagen, nombre, descripción, precio y botones
+ * de acción. También configura los event listeners para hacer clic en las tarjetas de
+ * producto y actualiza el estado de los botones de favoritos.
+ * @param {Array} productos - Array de objetos de productos a mostrar
+ */
 function mostrarProductos(productos) {
     const rutaBase = '../';
     const textos = {
@@ -152,6 +174,7 @@ function mostrarProductos(productos) {
     const detailPage = detailPages[idioma] || 'producto-detalle.html';
     const langPath = langPaths[idioma] || 'ES';
 
+    // Generar HTML para cada producto encontrado en la busqueda.html
     contenedorResultados.innerHTML = `
         <div class="products-grid container-products">
             ${productos.map(producto => `
@@ -191,10 +214,10 @@ function mostrarProductos(productos) {
         </div>
     `;
     
-    // Add click handler to entire product card (except buttons)
+    // Añadir manejador de clic a cada tarjeta de producto (excepto en los botones)
     contenedorResultados.querySelectorAll('.search-product-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            // Don't navigate if clicking on buttons or links
+            // No navegar si se hace clic en botones o enlaces
             if (e.target.closest('.item_actions') || 
                 e.target.closest('.btn-add-to-cart') || 
                 e.target.closest('.btn-favorite') ||
@@ -202,7 +225,7 @@ function mostrarProductos(productos) {
                 return;
             }
             
-            // Navigate to product detail
+            // Navegar a la página de detalle del producto
             const productId = card.getAttribute('data-product-id');
             if (productId) {
                 const productLink = card.querySelector('.product-link');
@@ -212,26 +235,33 @@ function mostrarProductos(productos) {
             }
         });
         
-        // Add cursor pointer style
+        // Añadir estilo de cursor pointer para indicar que es clickeable
         card.style.cursor = 'pointer';
     });
     
-    // Update favorite buttons state after products are loaded
+    // Actualizar el estado de los botones de favoritos después de cargar los productos
     if (typeof updateAllFavoriteButtons === 'function') {
         updateAllFavoriteButtons();
     } else {
-        // Fallback: dispatch event to update buttons
+        // Alternativa: disparar evento para actualizar los botones
         setTimeout(() => {
             window.dispatchEvent(new Event('favoritesUpdated'));
         }, 100);
     }
     
-    // No need to initialize buttons here - cartView.js already handles it
-    // The container-products class will be picked up by cartView.js automatically
+    // No es necesario inicializar los botones aquí - cartView.js ya los maneja
+    // La clase container-products será detectada automáticamente por cartView.js
 }
 
 // Removed duplicate event listener - cartView.js already handles add to cart functionality
 
+/**
+ * Función que obtiene el nombre traducido de una categoría según el idioma actual.
+ * Recibe el ID de la categoría y devuelve su nombre en el idioma correspondiente.
+ * Si la categoría no existe, devuelve el ID original.
+ * @param {string} idCategoria - ID de la categoría (ej: 'protein_meat', 'fish_seafood')
+ * @returns {string} - Nombre de la categoría traducido al idioma actual
+ */
 function obtenerNombreCategoria(idCategoria) {
     const categorias = {
         ES: {
@@ -263,6 +293,12 @@ function obtenerNombreCategoria(idCategoria) {
     return catMap[idCategoria] || idCategoria;
 }
 
+/**
+ * Función que muestra un mensaje cuando no se encuentran resultados de búsqueda.
+ * Renderiza un mensaje visual con un ícono de búsqueda y el texto proporcionado
+ * en el contenedor de resultados.
+ * @param {string} mensaje - Mensaje a mostrar al usuario
+ */
 function mostrarSinResultados(mensaje) {
     contenedorResultados.innerHTML = `
         <div class="no-results">

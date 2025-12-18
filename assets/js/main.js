@@ -1,4 +1,10 @@
+//categoriesLoader.innerHTML pintar las categorias en el index
+//gestorDeDatos.cargarProductosDestacados() pintar los productos destacados en el index.
+
 import { gestorDeDatos } from "./data-loader/productService.js";
+
+
+// Función para cargar productos destacados cargarProductosDestacados()
 
 const featuredProductsLoader = document.getElementById('featured-products-loader');
 const categoriesLoader = document.getElementById('categorias-loader');
