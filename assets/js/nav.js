@@ -22,13 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const depth = pathParts.length;
 
     // More reliable path calculation
-    if (pathParts.includes('catalogo') || pathParts.includes('catalog') || pathParts.includes('catalogue') || pathParts.includes('katalogoa')) {
+    const upperParts = pathParts.map(p => p.toUpperCase());
+
+    if (upperParts.some(p => ['CATALOGO', 'CATALOG', 'CATALOGUE', 'KATALOGOA'].includes(p))) {
         // We're in a catalog subfolder (e.g., ES/catalogo/carnes/, FR/catalogue/viandes/)
         PATH = '../../../';
-    } else if (pathParts.includes('404')) {
+    } else if (upperParts.includes('404')) {
         // We're in 404 folder (e.g., ES/404/index.html)
         PATH = '../../../';
-    } else if (pathParts.includes('ES') || pathParts.includes('EN') || pathParts.includes('FR') || pathParts.includes('EU')) {
+    } else if (upperParts.some(p => ['ES', 'EN', 'FR', 'EU'].includes(p))) {
         // We're in ES/, EN/, FR/, or EU/ folder (e.g., ES/index.html)
         // Need to go up one level to reach assets folder
         PATH = '../';

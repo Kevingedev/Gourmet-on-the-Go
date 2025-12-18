@@ -2,31 +2,31 @@
 
 export const authService = {
 
-    isAuthenticated(){
+    isAuthenticated() {
         return !!this.getUser(); // Devuelve true si USER existe, false si no
     },
-    getUser(){
+    getUser() {
         return JSON.parse(localStorage.getItem('currentUser'));
     },
-    login(user){
+    login(user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
     },
-    logout(){
+    logout() {
         localStorage.removeItem('currentUser');
-        localStorage.removeItem('hasSeenFirstPurchasePopup');   
+        localStorage.removeItem('hasSeenFirstPurchasePopup');
     },
-    getAvatar(){
+    getAvatar() {
         const user = this.getUser();
         if (!user) return 'U';
-        
+
         const nombreCompleto = user.nombre_completo;
         if (!nombreCompleto) return 'U';
-        
+
         // Handle Google users who might have picture
         if (user.picture) {
             return null; // Return null to use image instead
         }
-        
+
         const nameParts = nombreCompleto.split(' ');
         if (nameParts.length >= 2) { //Retornando las iniciales
             const iniciales = nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0);
@@ -36,23 +36,24 @@ export const authService = {
             return nombreCompleto.charAt(0).toUpperCase();
         }
     },
-    getLanguage(){
+    getLanguage() {
         return localStorage.getItem('userLanguage') || 'ES';
     },
     async validateLogin(username, password) {
-        const url = window.location.href;
-        const urlCategoria = url.split('/');
+        // Calculate PATH based on current location (Robust & Case Insensitive)
+        const pathname = window.location.pathname;
+        const pathParts = pathname.split('/').filter(p => p.length > 0);
+        const upperParts = pathParts.map(p => p.toUpperCase());
         let PATH = '';
-        
-        // Better path calculation
-        if (urlCategoria[4] == 'catalogo' || urlCategoria[4] == 'catalog') {
+
+        if (upperParts.some(p => ['CATALOGO', 'CATALOG', 'CATALOGUE', 'KATALOGOA'].includes(p))) {
             PATH = '../../../';
-        } else if (urlCategoria[3] == 'ES' || urlCategoria[3] == 'EN') {
+        } else if (upperParts.some(p => ['ES', 'EN', 'FR', 'EU'].includes(p))) {
             PATH = '../';
         } else {
             PATH = './';
         }
-        
+
         const jsonPath = `${PATH}assets/data/users.json`;
         console.log('Loading users from:', jsonPath + ' ' + PATH);
 
@@ -61,7 +62,7 @@ export const authService = {
         async function fetchUsers() {
             try {
                 const response = await fetch(jsonPath);
-                
+
                 if (!response.ok) {
                     console.error('Failed to fetch users.json:', response.status, response.statusText);
                     return false;
@@ -70,8 +71,8 @@ export const authService = {
                 const users = await response.json();
                 console.log('Users loaded:', users.length, 'users found');
 
-                const user = users.find(user => 
-                    user.username === username && 
+                const user = users.find(user =>
+                    user.username === username &&
                     user.password === password
                 );
 
@@ -98,12 +99,12 @@ export const authService = {
                 return false;
             }
         }
-        
+
         finderUser = await fetchUsers();
         return finderUser;
     }
 
-    
-    
+
+
 
 }

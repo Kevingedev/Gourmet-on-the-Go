@@ -6,11 +6,13 @@ function getBasePath() {
     const depth = pathParts.length;
 
     // More reliable path calculation
-    if (pathParts.includes('catalogo') || pathParts.includes('catalog') || pathParts.includes('catalogue') || pathParts.includes('katalogoa')) {
+    const upperParts = pathParts.map(p => p.toUpperCase());
+
+    if (upperParts.some(p => ['CATALOGO', 'CATALOG', 'CATALOGUE', 'KATALOGOA'].includes(p))) {
         return '../../../';
-    } else if (pathParts.includes('404')) {
+    } else if (upperParts.includes('404')) {
         return '../../../';
-    } else if (pathParts.includes('ES') || pathParts.includes('EN') || pathParts.includes('FR') || pathParts.includes('EU')) {
+    } else if (upperParts.some(p => ['ES', 'EN', 'FR', 'EU'].includes(p))) {
         return '../';
     } else if (depth === 0 || (depth === 1 && pathParts[0] === 'index.html')) {
         return './';
