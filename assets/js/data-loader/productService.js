@@ -1,6 +1,6 @@
 
-const pathProducts = "/assets/data/products.json";
-const pathCategories = "/assets/data/categories.json";
+const pathProducts = "./assets/data/products.json";
+const pathCategories = "./assets/data/categories.json";
 
 // Function to detect language from URL path
 function detectLanguageFromUrl() {
