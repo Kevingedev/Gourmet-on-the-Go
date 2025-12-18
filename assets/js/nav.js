@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <nav class="nav">
         <div class="nav__logo">
             <img src="${assetsPath}assets/img/gourmet-logo-icon.png" alt="Logo Gourmet on the Go" width="40" class="logo-icon">
-            <a href="/${userLanguage}">Gourmet on the Go</a>
+            <a href="${PATH}${userLanguage}/">Gourmet on the Go</a>
             <img src="${assetsPath}assets/img/gourmet-logo-text.png" alt="Logo Gourmet on the Go" width="35" class="logo-text">
         </div>
 
