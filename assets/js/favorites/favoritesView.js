@@ -4,15 +4,15 @@ import { favoriteStore } from "./favoriteStore.js";
 
 const pathname = window.location.pathname;
 // Verifica si la página actual es la de favoritos en varios idiomas
-const isWishlistPage = pathname.includes('favoritos.html') || 
-                       pathname.includes('favorites.html') || 
-                       pathname.includes('favoris.html') || 
-                       pathname.includes('gogokoak.html');
+const isWishlistPage = pathname.includes('favoritos.html') ||
+    pathname.includes('favorites.html') ||
+    pathname.includes('favoris.html') ||
+    pathname.includes('gogokoak.html');
 
 // Function to detect language from URL path
 function detectLanguageFromUrl() {
     const pathParts = pathname.split('/').filter(p => p.length > 0);
-    
+
     // Check if we're in a language folder (ES, EN, FR, EU)
     for (const part of pathParts) {
         if (part === 'ES' || part === 'EN' || part === 'FR' || part === 'EU') {
@@ -23,7 +23,7 @@ function detectLanguageFromUrl() {
             return part;
         }
     }
-    
+
     // Fallback to localStorage or default
     return localStorage.getItem("userLanguage") || 'ES';
 }
@@ -104,26 +104,26 @@ let currentTexts = getCurrentTexts();
 // Function to redirect to login page with proper language and path
 function redirectToLogin() {
     const userLanguage = authService.getLanguage() || 'ES';
-    
+
     // Get texts in user's language
     const userTexts = texts[userLanguage] || texts.ES;
-    
+
     // Show alert in user's language
     alert(userTexts.loginRequired);
-    
+
     // Calculate base path using pathname (more reliable)
     const pathname = window.location.pathname;
     const pathParts = pathname.split('/').filter(p => p.length > 0);
-    
+
     // Check if we're in a catalog subfolder
-    const isInCatalog = pathParts.includes('catalogo') || pathParts.includes('catalog') || 
-                        pathParts.includes('catalogue') || pathParts.includes('katalogoa');
-    
+    const isInCatalog = pathParts.includes('catalogo') || pathParts.includes('catalog') ||
+        pathParts.includes('catalogue') || pathParts.includes('katalogoa');
+
     // Check if we're already in the language folder
-    const isInLanguageFolder = pathParts.length > 0 && 
-                               (pathParts[0] === 'ES' || pathParts[0] === 'EN' || 
-                                pathParts[0] === 'FR' || pathParts[0] === 'EU');
-    
+    const isInLanguageFolder = pathParts.length > 0 &&
+        (pathParts[0] === 'ES' || pathParts[0] === 'EN' ||
+            pathParts[0] === 'FR' || pathParts[0] === 'EU');
+
     // Login page names by language
     const loginPages = {
         ES: 'sesion.html',
@@ -131,7 +131,7 @@ function redirectToLogin() {
         FR: 'connexion.html',
         EU: 'saioa.html'
     };
-    
+
     // Favorites page names by language (for redirect)
     const favoritesPages = {
         ES: 'favoritos.html',
@@ -139,10 +139,10 @@ function redirectToLogin() {
         FR: 'favoris.html',
         EU: 'gogokoak.html'
     };
-    
+
     const loginPage = loginPages[userLanguage] || 'sesion.html';
     const redirectPage = favoritesPages[userLanguage] || 'favoritos.html';
-    
+
     // Build the correct URL based on current location
     let loginUrl;
     if (isInCatalog) {
@@ -155,7 +155,7 @@ function redirectToLogin() {
         // We're at root, need to go to language folder
         loginUrl = `${userLanguage}/${loginPage}?redirect=${redirectPage}`;
     }
-    
+
     window.location.href = loginUrl;
 }
 
@@ -187,16 +187,16 @@ document.addEventListener('click', (event) => {
     }
 
     // Handle add to favorites button
-    const favoriteButton = event.target.closest('.btn-favorite') || 
-                          (event.target.classList.contains('btn-add-to-wishlist') ? event.target : null) ||
-                          (event.target.closest('.btn-add-to-wishlist'));
-    
+    const favoriteButton = event.target.closest('.btn-favorite') ||
+        (event.target.classList.contains('btn-add-to-wishlist') ? event.target : null) ||
+        (event.target.closest('.btn-add-to-wishlist'));
+
     if (favoriteButton) {
         // Don't handle if it's a remove button
         if (favoriteButton.classList.contains('btn-remove-to-wishlist')) {
             return;
         }
-        
+
         if (!authService.isAuthenticated()) {
             redirectToLogin();
             return;
@@ -207,13 +207,13 @@ document.addEventListener('click', (event) => {
             target: favoriteButton,
             currentTarget: favoriteButton
         };
-        
+
         const wishlist = favoriteStore.addToWishlist(syntheticEvent);
         console.log('Productos en favoritos:', wishlist);
-        
+
         // Update button visual state (toggle heart color)
         updateFavoriteButtonState(favoriteButton, wishlist);
-        
+
         // Dispatch event to update nav count
         window.dispatchEvent(new Event('favoritesUpdated'));
     }
@@ -223,15 +223,15 @@ document.addEventListener('click', (event) => {
 function updateFavoriteButtonState(button, wishlist) {
     const heartIcon = button.querySelector('i');
     if (!heartIcon) return;
-    
-    const productCard = button.closest('.cart-item') || 
-                       button.closest('.search-product-card') ||
-                       button.closest('[data-product-id]');
+
+    const productCard = button.closest('.cart-item') ||
+        button.closest('.search-product-card') ||
+        button.closest('[data-product-id]');
     if (!productCard) return;
-    
+
     const productId = productCard.getAttribute('data-product-id');
     if (!productId) return;
-    
+
     const isInWishlist = wishlist && wishlist.some(p => p.id === productId);
     if (isInWishlist) {
         heartIcon.style.color = '#ef4444';
@@ -276,23 +276,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (wishlistContainer) {
             const userLanguage = authService.getLanguage() || LANGUAGE;
             const userTexts = texts[userLanguage] || texts.ES;
-            
+
             // Calculate base path using pathname (more reliable)
             const pathname = window.location.pathname;
             const pathParts = pathname.split('/').filter(p => p.length > 0);
-            
+
             // Check if we're already in the language folder
-            const isInLanguageFolder = pathParts.length > 0 && 
-                                      (pathParts[0] === 'ES' || pathParts[0] === 'EN' || 
-                                       pathParts[0] === 'FR' || pathParts[0] === 'EU');
-            
+            const isInLanguageFolder = pathParts.length > 0 &&
+                (pathParts[0] === 'ES' || pathParts[0] === 'EN' ||
+                    pathParts[0] === 'FR' || pathParts[0] === 'EU');
+
             const loginPages = {
                 ES: 'sesion.html',
                 EN: 'session.html',
                 FR: 'connexion.html',
                 EU: 'saioa.html'
             };
-            
+
             // Favorites page names by language (for redirect)
             const favoritesPages = {
                 ES: 'favoritos.html',
@@ -300,10 +300,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 FR: 'favoris.html',
                 EU: 'gogokoak.html'
             };
-            
+
             const loginPage = loginPages[userLanguage] || 'sesion.html';
             const redirectPage = favoritesPages[userLanguage] || 'favoritos.html';
-            
+
             // If we're already in the language folder, use same folder (no basePath needed)
             // Otherwise, we need to navigate to the language folder
             let loginUrl;
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // We're at root, need to go to language folder
                 loginUrl = `${userLanguage}/${loginPage}?redirect=${redirectPage}`;
             }
-            
+
             wishlistContainer.innerHTML = `
                 <div class="no-results" style="text-align: center; padding: 3rem 2rem;">
                     <i class="fa-solid fa-lock" style="font-size: 3rem; color: #9ca3af; margin-bottom: 1rem; display: block;"></i>
@@ -382,7 +382,7 @@ function mostrarProductos(productos) {
     // Ensure language and texts are current
     LANGUAGE = getCurrentLanguage();
     currentTexts = getCurrentTexts();
-    
+
     const rutaBase = '../';
     const wishlistContainer = document.getElementById('wishlist-container');
     if (!wishlistContainer) return;
@@ -403,7 +403,7 @@ function mostrarProductos(productos) {
     const detailPage = detailPages[LANGUAGE] || 'producto-detalle.html';
     const langPath = langPaths[LANGUAGE] || 'ES';
 
-    // Match search-results structure exactly
+    // Match search-results structure exactly pintar todos los productos en el html
     wishlistContainer.innerHTML = `
         <div class="products-grid container-products">
             ${productos.map(producto => `
@@ -447,21 +447,21 @@ function mostrarProductos(productos) {
             `).join('')} 
         </div>
     `;
-            //Join para unir todos los productos en una sola cadena de texto y no imprima las comas por cada producto (pasa por ser un array)
+    //Join para unir todos los productos en una sola cadena de texto y no imprima las comas por cada producto (pasa por ser un array)
 
     // Add click handler to entire product card (except buttons)
     const productCards = wishlistContainer.querySelectorAll('.search-product-card');
     productCards.forEach(card => {
         card.addEventListener('click', (e) => {
             // Don't navigate if clicking on buttons, links, or remove icon
-            if (e.target.closest('.item_actions') || 
-                e.target.closest('.btn-add-to-cart') || 
+            if (e.target.closest('.item_actions') ||
+                e.target.closest('.btn-add-to-cart') ||
                 e.target.closest('.btn-favorite') ||
                 e.target.closest('.btn-remove-favorite-icon') ||
                 e.target.closest('.product-link')) {
                 return;
             }
-            
+
             // Navigate to product detail
             const productId = card.getAttribute('data-product-id');
             if (productId) {
@@ -471,7 +471,7 @@ function mostrarProductos(productos) {
                 }
             }
         });
-        
+
         // Add cursor pointer style
         card.style.cursor = 'pointer';
     });

@@ -625,7 +625,7 @@ function handleCheckoutSubmit(e) {
 
     alert(successMessage + checkoutData.total);
 
-    // Clear cart
+    // Clear cart-
     cartStore.removeItem(cartStore.cartLoadFromStorage().map(item => item.id));
 
     // Redirect to home

@@ -6,14 +6,14 @@ const pathCategories = "/assets/data/categories.json";
 function detectLanguageFromUrl() {
     const pathname = window.location.pathname;
     const pathParts = pathname.split('/').filter(p => p.length > 0);
-    
+
     // Check if we're in a language folder (ES, EN, FR, EU)
     for (const part of pathParts) {
         if (part === 'ES' || part === 'EN' || part === 'FR' || part === 'EU') {
             return part;
         }
     }
-    
+
     // Fallback to localStorage or default
     return localStorage.getItem("userLanguage") || "ES";
 }
@@ -91,7 +91,7 @@ export const gestorDeDatos = {
         const dataProducts = await this.cargarProductos();
         const idioma = this.language || 'ES';
         const busqueda = nombreProducto.toLowerCase().trim();
-        
+
         const productosPorNombre = dataProducts.filter(product => {
             const nombreES = product.nombre.ES ? product.nombre.ES.toLowerCase() : '';
             const nombreEN = product.nombre.EN ? product.nombre.EN.toLowerCase() : '';
@@ -101,17 +101,17 @@ export const gestorDeDatos = {
             const descripcionEN = product.descripcion.EN ? product.descripcion.EN.toLowerCase() : '';
             const descripcionFR = product.descripcion.FR ? product.descripcion.FR.toLowerCase() : '';
             const descripcionEU = product.descripcion.EU ? product.descripcion.EU.toLowerCase() : '';
-            
-            return nombreES.includes(busqueda) || 
-                   nombreEN.includes(busqueda) || 
-                   nombreFR.includes(busqueda) ||
-                   nombreEU.includes(busqueda) ||
-                   descripcionES.includes(busqueda) || 
-                   descripcionEN.includes(busqueda) ||
-                   descripcionFR.includes(busqueda) ||
-                   descripcionEU.includes(busqueda);
+
+            return nombreES.includes(busqueda) ||
+                nombreEN.includes(busqueda) ||
+                nombreFR.includes(busqueda) ||
+                nombreEU.includes(busqueda) ||
+                descripcionES.includes(busqueda) ||
+                descripcionEN.includes(busqueda) ||
+                descripcionFR.includes(busqueda) ||
+                descripcionEU.includes(busqueda);
         });
-        
+
         return productosPorNombre; // Devuelve un array de objetos con los productos que coinciden con el nombre o descripción
     },
 

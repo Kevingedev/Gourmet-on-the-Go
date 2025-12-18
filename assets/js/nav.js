@@ -2,6 +2,7 @@
 //const navbar  declaracion de la variable navbar
 // cart-count declaracion de la variable cart-count y la actualizo en cartview.js
 // fetchCategories(container) funcion para cargar las categorias en el NAVBAR.
+//// Productos encontrados en el input del buscador resultadosBusqueda.innerHTML
 
 
 
@@ -718,7 +719,7 @@ function updateFavoritesCount() {
         const favoritesCountElement = document.getElementById('favorites-count');
         if (favoritesCountElement) {
             const count = wishlist.length || 0;
-            favoritesCountElement.textContent = count;
+            favoritesCountElement.textContent = count; // Mostrar el número de favoritos
             // Hide badge if count is 0
             if (count === 0) {
                 favoritesCountElement.style.display = 'none';
@@ -902,6 +903,7 @@ async function inicializarBuscador() {
         const closeText = idioma === 'EN' ? 'Close' : 'Cerrar';
 
         if (productos.length === 0) {
+            // Mostrar mensaje de sin resultados
             resultadosBusqueda.innerHTML = `
                 <div class="search-results-header">
                     <span>${idioma === 'EN' ? 'No products found' : 'Sin resultados'}</span>
@@ -917,7 +919,7 @@ async function inicializarBuscador() {
             resultadosBusqueda.classList.add('is-visible');
         } else {
             const rutaBase = obtenerRutaBase();
-
+            // Productos encontrados en el input del buscador 
             resultadosBusqueda.innerHTML = `
                 <div class="search-results-header">
                     <span>${idioma === 'EN' ? 'Search Results' : 'Resultados'}</span>

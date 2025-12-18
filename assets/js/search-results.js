@@ -174,7 +174,7 @@ function mostrarProductos(productos) {
     const detailPage = detailPages[idioma] || 'producto-detalle.html';
     const langPath = langPaths[idioma] || 'ES';
 
-    // Generar HTML para cada producto encontrado
+    // Generar HTML para cada producto encontrado en la busqueda.html
     contenedorResultados.innerHTML = `
         <div class="products-grid container-products">
             ${productos.map(producto => `

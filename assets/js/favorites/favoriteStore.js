@@ -31,27 +31,27 @@ export const favoriteStore = {
         }
 
         // Find the button element (could be the target itself or parent if clicking icon)
-        const button = param.target.classList.contains('btn-favorite') || 
-                       param.target.classList.contains('btn-add-to-wishlist') 
-                       ? param.target 
-                       : param.target.closest('.btn-favorite') || 
-                         param.target.closest('.btn-add-to-wishlist');
+        const button = param.target.classList.contains('btn-favorite') ||
+            param.target.classList.contains('btn-add-to-wishlist')
+            ? param.target
+            : param.target.closest('.btn-favorite') ||
+            param.target.closest('.btn-add-to-wishlist');
 
         // Check if this is a favorite button
         const isFavoriteButton = button && (
-            button.classList.contains('btn-favorite') || 
+            button.classList.contains('btn-favorite') ||
             button.classList.contains('btn-add-to-wishlist')
         );
 
         if (isFavoriteButton) {
             // Find the product card element - try multiple strategies
-            const element = button.closest('.cart-item') || 
-                           button.closest('.search-product-card') ||
-                           button.closest('[data-product-id]') ||
-                           param.target.closest('.cart-item') ||
-                           param.target.closest('.search-product-card') ||
-                           param.target.closest('[data-product-id]') ||
-                           button.parentElement?.parentElement;
+            const element = button.closest('.cart-item') ||
+                button.closest('.search-product-card') ||
+                button.closest('[data-product-id]') ||
+                param.target.closest('.cart-item') ||
+                param.target.closest('.search-product-card') ||
+                param.target.closest('[data-product-id]') ||
+                button.parentElement?.parentElement;
 
             if (!element) {
                 console.warn('No product card element found');

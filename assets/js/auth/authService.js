@@ -28,7 +28,7 @@ export const authService = {
         }
         
         const nameParts = nombreCompleto.split(' ');
-        if (nameParts.length >= 2) {
+        if (nameParts.length >= 2) { //Retornando las iniciales
             const iniciales = nameParts[0].charAt(0) + nameParts[nameParts.length - 1].charAt(0);
             return iniciales.toUpperCase();
         } else {
@@ -66,7 +66,7 @@ export const authService = {
                     console.error('Failed to fetch users.json:', response.status, response.statusText);
                     return false;
                 }
-                
+                // validacion de usuarios si existen.
                 const users = await response.json();
                 console.log('Users loaded:', users.length, 'users found');
 

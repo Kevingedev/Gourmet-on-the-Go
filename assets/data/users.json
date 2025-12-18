@@ -29,15 +29,5 @@
         "email": "german@portafolio.dev",
         "edad": 30,
         "fecha_registro": "2024-03-01"
-    },
-    {
-        "id": 4,
-        "username": "Anna",
-        "password": "clave123",
-        "rol": "administración",
-        "nombre_completo": "Anna Nikolenko",
-        "email": "anna@portafolio.dev",
-        "edad": 30,
-        "fecha_registro": "2024-03-01"
     }
 ]

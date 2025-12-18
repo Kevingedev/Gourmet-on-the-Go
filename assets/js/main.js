@@ -1,3 +1,6 @@
+//categoriesLoader.innerHTML pintar las categorias en el index
+//gestorDeDatos.cargarProductosDestacados() pintar los productos destacados en el index.
+
 import { gestorDeDatos } from "./data-loader/productService.js";
 
 
