@@ -1,6 +1,36 @@
 
-const pathProducts = "/assets/data/products.json";
-const pathCategories = "/assets/data/categories.json";
+// Calculate PATH based on current location
+function getBasePath() {
+    const pathname = window.location.pathname;
+    const pathParts = pathname.split('/').filter(p => p.length > 0);
+    const depth = pathParts.length;
+
+    // More reliable path calculation
+    const upperParts = pathParts.map(p => p.toUpperCase());
+
+    if (upperParts.some(p => ['CATALOGO', 'CATALOG', 'CATALOGUE', 'KATALOGOA'].includes(p))) {
+        return '../../../';
+    } else if (upperParts.includes('404')) {
+        return '../../../';
+    } else if (upperParts.some(p => ['ES', 'EN', 'FR', 'EU'].includes(p))) {
+        return '../';
+    } else if (depth === 0 || (depth === 1 && pathParts[0] === 'index.html')) {
+        return './';
+    } else {
+        // Default fallback - try relative path based on segments if not matching known structure
+        // But for main pages in subfolders, ../ is safest default if we assume one level deep
+        return '../';
+    }
+}
+
+const getPath = (fileName) => {
+    const basePath = getBasePath();
+    const assetsPath = basePath.endsWith('/') ? basePath : `${basePath}/`;
+    return `${assetsPath}assets/data/${fileName}`;
+};
+
+const pathProducts = getPath("products.json");
+const pathCategories = getPath("categories.json");
 
 // Function to detect language from URL path
 function detectLanguageFromUrl() {
