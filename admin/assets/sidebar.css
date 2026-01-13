@@ -1,0 +1,192 @@
+/* admin/assets/sidebar.css */
+
+:root {
+    --sidebar-width: 260px;
+    --admin-primary: #0c8038;
+    --admin-primary-light: #10a34a;
+    --admin-primary-50: rgba(12, 128, 56, 0.05);
+    --admin-primary-100: rgba(12, 128, 56, 0.1);
+    --admin-surface: #ffffff;
+    --admin-text: #1a1f1c;
+    --admin-text-secondary: #5f6d64;
+    --admin-text-muted: #9aa8a0;
+    --admin-border: rgba(12, 128, 56, 0.12);
+    --admin-radius-lg: 0.75rem;
+    --header-height: 70px;
+}
+
+/* Layout Setup */
+body {
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "sidebar main";
+    grid-template-columns: var(--sidebar-width) 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa;
+    font-family: 'Inter', sans-serif;
+}
+
+#header {
+    grid-area: header;
+}
+
+aside {
+    grid-area: sidebar;
+    background-color: var(--admin-surface);
+    border-right: 1px solid var(--admin-border);
+    padding: 1.5rem 0.75rem;
+    height: calc(100vh - var(--header-height));
+    position: sticky;
+    top: var(--header-height);
+    z-index: 900;
+}
+
+#main {
+    grid-area: main;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.sidebar-menu a {
+    text-decoration: none;
+    color: var(--admin-text-secondary);
+    display: flex;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    border-radius: var(--admin-radius-lg);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.sidebar-menu a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--admin-primary-50);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.sidebar-menu a:hover::before {
+    opacity: 1;
+}
+
+.sidebar-menu a:hover {
+    color: var(--admin-primary);
+    transform: translateX(4px);
+}
+
+.sidebar-menu a.active {
+    background: linear-gradient(135deg, var(--admin-primary) 0%, var(--admin-primary-light) 100%);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(12, 128, 56, 0.2);
+}
+
+.sidebar-menu i {
+    margin-right: 12px;
+    font-size: 1.1rem;
+    color: var(--admin-text-muted);
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-menu a.active i {
+    color: #ffffff;
+}
+
+/* --- Full Responsive --- */
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 220px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        grid-template-areas:
+            "header"
+            "main"
+            "sidebar";
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+    }
+
+    aside {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: auto;
+        width: 100%;
+        height: 70px;
+        padding: 0.5rem;
+        border-right: none;
+        border-top: 1px solid var(--admin-border);
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 500px;
+        justify-content: space-around;
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .sidebar-menu a {
+        flex-direction: column;
+        padding: 0.5rem;
+        font-size: 0.75rem;
+        gap: 4px;
+        text-align: center;
+    }
+
+    .sidebar-menu a:hover {
+        transform: none;
+    }
+
+    .sidebar-menu i {
+        margin-right: 0;
+        font-size: 1.2rem;
+    }
+
+    #main {
+        padding: 1.5rem;
+        margin-bottom: 70px;
+        /* Space for the bottom sidebar */
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-menu a span {
+        display: none;
+        /* Icon icons only on very small screens */
+    }
+
+    .sidebar-menu a {
+        padding: 0.8rem;
+    }
+
+    .sidebar-menu i {
+        font-size: 1.4rem;
+    }
+}

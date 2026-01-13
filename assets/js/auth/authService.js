@@ -54,7 +54,7 @@ export const authService = {
             PATH = './';
         }
 
-        const jsonPath = `${PATH}assets/data/users.json`;
+        const jsonPath = "http://localhost:3005/users";
         console.log('Loading users from:', jsonPath + ' ' + PATH);
 
         let finderUser;

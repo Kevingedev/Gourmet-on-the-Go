@@ -445,7 +445,7 @@ function setupCheckoutButton(button) {
                 EU: 'erosketa-bukatu.html'
             };
             const checkoutPage = checkoutPages[userLanguage] || 'finalizar-compra.html';
-            window.location.href = `${basePath}${checkoutPage}`;
+            window.location.href = `${basePath}${userLanguage}/${checkoutPage}`;
         }
     });
 }
