@@ -23,7 +23,7 @@ function checkAdminAccess() {
         const userData = JSON.parse(currentUser);
         console.log('Parsed user data:', userData);
         console.log('User role (rol):', userData.rol);
-        console.log('User role (role):', userData.role);
+        console.log('User role (role):', userData.oler);
         
         // Check if user has admin role (check both fields for compatibility)
         const isAdmin = userData.rol === 'admin' || userData.role === 'admin';
