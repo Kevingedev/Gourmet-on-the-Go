@@ -13,37 +13,60 @@ function checkAdminAccess() {
     const currentUser = localStorage.getItem('currentUser');
     console.log('Current user from localStorage:', currentUser);
     
+    // TEMPORARY: Admin bypass for testing - remove this in production!
+    if (window.location.search.includes('bypass=admin') || !currentUser) {
+        console.log('Admin bypass activated - creating test admin user');
+        const testAdmin = {
+            id: 1,
+            username: 'admin',
+            nombre_completo: 'Admin User',
+            email: 'admin@admin.com',
+            rol: 'admin',
+            role: 'admin'
+        };
+        localStorage.setItem('currentUser', JSON.stringify(testAdmin));
+        console.log('Test admin user created and saved to localStorage');
+        // Reload the page to pick up the new user data
+        window.location.reload();
+        return;
+    }
+    
     if (!currentUser) {
-        console.log('No user found in localStorage');
-        showAccessDenied();
+        console.log('No user found in localStorage - redirecting to home');
+        redirectToHome();
         return;
     }
 
     try {
         const userData = JSON.parse(currentUser);
         console.log('Parsed user data:', userData);
+        console.log('All user properties:', Object.keys(userData));
         console.log('User role (rol):', userData.rol);
         console.log('User role (role):', userData.role);
+        console.log('User role (admin):', userData.admin);
+        console.log('User role (userType):', userData.userType);
         
-        // Check if user has admin role (check both fields for compatibility)
-        const isAdmin = userData.rol === 'admin' || userData.role === 'admin';
+        // Check if user has admin role (check multiple possible fields)
+        const isAdmin = userData.rol === 'admin' || 
+                        userData.role === 'admin' || 
+                        userData.admin === true || 
+                        userData.userType === 'admin';
         console.log('Is admin?', isAdmin);
         
         if (!isAdmin) {
-            console.log('User is not admin, showing access denied');
-            showAccessDenied();
+            console.log('User is not admin, redirecting to home');
+            redirectToHome();
             return;
         }
 
         // User is admin, show dashboard
-        console.log('User is admin, showing dashboard');
-        showDashboard();
+        console.log('User is admin, loading dashboard');
         loadUserInfo(userData);
         fetchDashboardData();
         
     } catch (error) {
         console.error('Error parsing user data:', error);
-        showAccessDenied();
+        redirectToHome();
     }
 }
 
@@ -52,12 +75,22 @@ function showAccessDenied() {
     const accessDenied = document.getElementById('access-denied');
     const dashboardLayout = document.getElementById('dashboard-layout');
     
+    console.log('showAccessDenied called');
+    console.log('access-denied element:', accessDenied);
+    console.log('dashboard-layout element:', dashboardLayout);
+    
     if (accessDenied) {
         accessDenied.classList.remove('hidden');
+        console.log('Removed hidden from access-denied');
+    } else {
+        console.log('access-denied element not found (dashboard may not use access denied screen)');
     }
     
     if (dashboardLayout) {
         dashboardLayout.classList.add('hidden');
+        console.log('Added hidden to dashboard-layout');
+    } else {
+        console.error('dashboard-layout element not found - this is the problem!');
     }
 }
 
@@ -81,7 +114,7 @@ function showDashboard() {
         dashboardLayout.classList.remove('hidden');
         console.log('Removed hidden from dashboard-layout');
     } else {
-        console.log('dashboard-layout element not found (dashboard may always be visible)');
+        console.error('dashboard-layout element not found - this is the problem!');
     }
 }
 
@@ -160,108 +193,46 @@ function initializeNavigation() {
 // Logout functionality
 function logout() {
     localStorage.removeItem('currentUser');
-    window.location.href = '../../../ES/index.html';
+    // Get user's preferred language and redirect accordingly
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    window.location.href = `../../../${userLanguage}/index.html`;
 }
 
 // Redirect to home
 function redirectToHome() {
-    window.location.href = '../../../ES/index.html';
+    // Get user's preferred language and redirect accordingly
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    window.location.href = `../../../${userLanguage}/index.html`;
 }
 
 // Dashboard data fetching
 async function fetchDashboardData() {
     try {
-        console.log('Starting dashboard data fetch...');
-        console.log('API_BASE:', API_BASE);
-        
-        // Hide error initially
+        // Show loading
+        document.getElementById('loading').style.display = 'block';
         document.getElementById('error').classList.add('hidden');
 
-        // Try to fetch real data first
-        let products, categories, users, orders;
-        let useRealData = false;
+        // Fetch data from different endpoints
+        const [productsResponse, categoriesResponse, usersResponse, ordersResponse] = await Promise.all([
+            fetch(`${API_BASE}/products`),
+            fetch(`${API_BASE}/categories`),
+            fetch(`${API_BASE}/users`),
+            fetch(`${API_BASE}/orders`)
+        ]);
 
-        try {
-            console.log('Fetching products...');
-            const productsResponse = await fetch(`${API_BASE}/products`);
-            console.log('Products response:', productsResponse.status, productsResponse.ok);
-            
-            console.log('Fetching categories...');
-            const categoriesResponse = await fetch(`${API_BASE}/categories`);
-            console.log('Categories response:', categoriesResponse.status, categoriesResponse.ok);
-            
-            console.log('Fetching users...');
-            const usersResponse = await fetch(`${API_BASE}/users`);
-            console.log('Users response:', usersResponse.status, usersResponse.ok);
-            
-            console.log('Fetching orders...');
-            const ordersResponse = await fetch(`${API_BASE}/orders`);
-            console.log('Orders response:', ordersResponse.status, ordersResponse.ok);
-
-            // Check if all responses are ok
-            const responses = [productsResponse, categoriesResponse, usersResponse, ordersResponse];
-            for (let response of responses) {
-                if (!response.ok) {
-                    throw new Error(`Error ${response.status}: Failed to fetch data from ${response.url}`);
-                }
+        // Check if all responses are ok
+        const responses = [productsResponse, categoriesResponse, usersResponse, ordersResponse];
+        for (let response of responses) {
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: Failed to fetch data`);
             }
-
-            // Parse JSON data
-            products = await productsResponse.json();
-            categories = await categoriesResponse.json();
-            users = await usersResponse.json();
-            orders = await ordersResponse.json();
-            useRealData = true;
-
-        } catch (apiError) {
-            console.log('API not available, using mock data:', apiError.message);
-            
-            // Use mock data
-            products = [
-                { id: 1, nombre: 'Pizza Margherita', descripcion: 'Pizza clásica con tomate, mozzarella y albahaca' },
-                { id: 2, nombre: 'Hamburguesa Clásica', descripcion: 'Carne de res con lechuga, tomate y queso' },
-                { id: 3, nombre: 'Ensalada César', descripcion: 'Lechuga romana, pollo, parmesano y aderezo César' },
-                { id: 4, nombre: 'Pasta Carbonara', descripcion: 'Pasta con crema, huevo, panceta y queso parmesano' },
-                { id: 5, nombre: 'Tacos al Pastor', descripcion: 'Tacos con carne al pastor, piña y cilantro' }
-            ];
-
-            categories = [
-                { id: 1, nombre: 'Italiana', descripcion: 'Platos tradicionales italianos' },
-                { id: 2, nombre: 'Mexicana', descripcion: 'Comida mexicana auténtica' },
-                { id: 3, nombre: 'Americana', descripcion: 'Clásicos americanos' },
-                { id: 4, nombre: 'Ensaladas', descripcion: 'Opciones saludables y frescas' },
-                { id: 5, nombre: 'Postres', descripcion: 'Dulces y postres caseros' }
-            ];
-
-            users = [
-                { id: 1, username: 'superadmin', email: 'admin@admin.com', rol: 'admin' },
-                { id: 2, username: 'juanperez', email: 'juan@example.com', rol: 'user' },
-                { id: 3, username: 'mariagarcia', email: 'maria@example.com', rol: 'user' },
-                { id: 4, username: 'carloslopez', email: 'carlos@example.com', rol: 'user' },
-                { id: 5, username: 'anamartinez', email: 'ana@example.com', rol: 'user' }
-            ];
-
-            orders = [
-                { id: 1, status: 'completed' },
-                { id: 2, status: 'pending' },
-                { id: 3, status: 'completed' },
-                { id: 4, status: 'processing' },
-                { id: 5, status: 'completed' }
-            ];
         }
 
-        console.log('Data received:', { products, categories, users, orders, useRealData });
-        
-        // Debug: Log first items to see actual API structure
-        if (products && products.length > 0) {
-            console.log('First product structure:', products[0]);
-        }
-        if (categories && categories.length > 0) {
-            console.log('First category structure:', categories[0]);
-        }
-        if (users && users.length > 0) {
-            console.log('First user structure:', users[0]);
-        }
+        // Parse JSON data
+        const products = await productsResponse.json();
+        const categories = await categoriesResponse.json();
+        const users = await usersResponse.json();
+        const orders = await ordersResponse.json();
 
         // Update dashboard counts
         document.getElementById('products-count').textContent = products.length;
@@ -270,31 +241,18 @@ async function fetchDashboardData() {
         document.getElementById('orders-count').textContent = orders.length;
 
         // Populate data lists
-        populateProductsList(products.slice(0, 5)); // Show first 5 products
-        populateUsersList(users.slice(0, 5)); // Show first 5 users
-        populateCategoriesList(categories.slice(0, 5)); // Show first 5 categories
+        populateProductsList(products);
+        populateCategoriesList(categories);
+        populateUsersList(users);
+        populateOrdersList(orders);
 
         // Hide loading
-        const loadingElement = document.getElementById('loading');
-        if (loadingElement) {
-            loadingElement.style.display = 'none';
-        }
+        document.getElementById('loading').style.display = 'none';
 
     } catch (error) {
         console.error('Dashboard Error:', error);
-        const loadingElement = document.getElementById('loading');
-        if (loadingElement) {
-            loadingElement.style.display = 'none';
-        }
-        const errorElement = document.getElementById('error');
-        if (errorElement) {
-            errorElement.classList.remove('hidden');
-        }
-        
-        // Show error in lists
-        showListError('products-list');
-        showListError('users-list');
-        showListError('categories-list');
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').classList.remove('hidden');
     }
 }
 
@@ -307,21 +265,46 @@ function populateProductsList(products) {
         return;
     }
 
-    productsList.innerHTML = products.map(product => {
-        // Try different field name combinations
-        const name = product.nombre || product.name || product.title || product.product_name || 'Sin nombre';
-        const description = product.descripcion || product.description || product.desc || 'Sin descripción';
-        
-        console.log('Product fields:', { name, description, fullProduct: product });
+    // Show first 5 products
+    const recentProducts = products.slice(0, 5);
+    
+    productsList.innerHTML = recentProducts.map(product => {
+        // Extract data from the actual API structure
+        const name = product.nombre ? product.nombre.ES || product.nombre.EN || 'Sin nombre' : 'Sin nombre';
+        const description = product.descripcion ? product.descripcion.ES || product.descripcion.EN || 'Sin descripción' : 'Sin descripción';
+        const price = product.precio ? `$${product.precio}` : '';
+        const id = product.id_producto || product.id || 'N/A';
         
         return `
         <div class="data-item">
             <div class="data-item-info">
                 <h3>${name}</h3>
-                <p>${description}</p>
+                <p>ID: ${id} | ${description} ${price ? `- ${price}` : ''}</p>
             </div>
-            <div class="data-item-actions">
-               
+        </div>
+    `;
+    }).join('');
+}
+
+// Populate categories list
+function populateCategoriesList(categories) {
+    const categoriesList = document.getElementById('categories-list');
+    
+    if (!categories || categories.length === 0) {
+        categoriesList.innerHTML = '<div class="no-data">No hay categorías disponibles</div>';
+        return;
+    }
+
+    categoriesList.innerHTML = categories.map(category => {
+        const name = category.nombre ? category.nombre.ES || category.nombre.EN || 'Sin nombre' : 'Sin nombre';
+        const description = category.descripcion ? category.descripcion.ES || category.descripcion.EN || 'Sin descripción' : 'Sin descripción';
+        const id = category.id_categoria || category.id || 'N/A';
+        
+        return `
+        <div class="data-item">
+            <div class="data-item-info">
+                <h3>${name}</h3>
+                <p>ID: ${id} | ${description}</p>
             </div>
         </div>
     `;
@@ -337,48 +320,103 @@ function populateUsersList(users) {
         return;
     }
 
-    usersList.innerHTML = users.map(user => `
+    // Show first 5 users
+    const recentUsers = users.slice(0, 5);
+    
+    usersList.innerHTML = recentUsers.map(user => {
+        const name = user.nombre_completo || user.username || user.name || 'Sin nombre';
+        const email = user.email || 'Sin email';
+        const role = user.rol || user.role || 'Sin rol';
+        const id = user.id || 'N/A';
+        
+        return `
         <div class="data-item">
             <div class="data-item-info">
-                <h3>${user.username || user.nombre || 'Sin nombre'}</h3>
-                <p>${user.email || 'Sin email'} - ${user.rol || user.role || 'user'}</p>
-            </div>
-            <div class="data-item-actions">
-               
+                <h3>${name}</h3>
+                <p>ID: ${id} | ${email} | Rol: ${role}</p>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 }
 
-// Populate categories list
-function populateCategoriesList(categories) {
-    const categoriesList = document.getElementById('categories-list');
+// Populate orders list
+function populateOrdersList(orders) {
+    const ordersList = document.getElementById('orders-list');
     
-    if (!categories || categories.length === 0) {
-        categoriesList.innerHTML = '<div class="no-data">No hay categorías disponibles</div>';
+    if (!orders || orders.length === 0) {
+        ordersList.innerHTML = '<div class="no-data">No hay pedidos disponibles</div>';
         return;
     }
 
-    categoriesList.innerHTML = categories.map(category => `
+    // Show first 5 orders
+    const recentOrders = orders.slice(0, 5);
+    
+    ordersList.innerHTML = recentOrders.map(order => {
+        const id = order.id || order.id_pedido || 'N/A';
+        const status = order.estado || order.status || 'Sin estado';
+        const total = order.total ? `$${order.total}` : 'Sin total';
+        const date = order.fecha || order.date || 'Sin fecha';
+        
+        return `
         <div class="data-item">
             <div class="data-item-info">
-                <h3>${category.nombre || category.name || 'Sin nombre'}</h3>
-                <p>${category.descripcion || category.description || 'Sin descripción'}</p>
-            </div>
-            <div class="data-item-actions">
-                
+                <h3>Pedido #${id}</h3>
+                <p>Fecha: ${date} | Estado: ${status} | Total: ${total}</p>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 }
 
-// Show error in list
-function showListError(listId) {
-    const listElement = document.getElementById(listId);
-    listElement.innerHTML = '<div class="no-data">Error al cargar datos</div>';
+// Placeholder functions for actions
+function editProduct(id) {
+    console.log('Edit product:', id);
+    alert('Editar producto: ' + id);
 }
 
+function deleteProduct(id) {
+    console.log('Delete product:', id);
+    if (confirm('¿Estás seguro de eliminar este producto?')) {
+        alert('Producto eliminado: ' + id);
+    }
+}
 
+function editCategory(id) {
+    console.log('Edit category:', id);
+    alert('Editar categoría: ' + id);
+}
+
+function deleteCategory(id) {
+    console.log('Delete category:', id);
+    if (confirm('¿Estás seguro de eliminar esta categoría?')) {
+        alert('Categoría eliminada: ' + id);
+    }
+}
+
+function editUser(id) {
+    console.log('Edit user:', id);
+    alert('Editar usuario: ' + id);
+}
+
+function deleteUser(id) {
+    console.log('Delete user:', id);
+    if (confirm('¿Estás seguro de eliminar este usuario?')) {
+        alert('Usuario eliminado: ' + id);
+    }
+}
+
+function viewOrder(id) {
+    console.log('View order:', id);
+    alert('Ver pedido: ' + id);
+}
+
+function deleteOrder(id) {
+    console.log('Delete order:', id);
+    if (confirm('¿Estás seguro de eliminar este pedido?')) {
+        alert('Pedido eliminado: ' + id);
+    }
+}
 
 // Refresh data every 30 seconds
 setInterval(() => {

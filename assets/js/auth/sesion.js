@@ -121,7 +121,7 @@ const accountMenuTexts = {
         title: 'Mi cuenta',
         viewAccount: 'Ver mi cuenta',
         favorites: 'Mis favoritos',
-        adminDashboard: 'Panel de administración',
+        adminDashboard: 'Panel de Administración',
         logout: 'Cerrar sesión',
         closePanel: 'Cerrar panel',
         confirmLogout: 'Cerrar sesión',
@@ -151,7 +151,7 @@ const accountMenuTexts = {
         title: 'Mon Compte',
         viewAccount: 'Voir mon compte',
         favorites: 'Mes Favoris',
-        adminDashboard: 'Tableau de bord admin',
+        adminDashboard: 'Tableau de Bord Admin',
         logout: 'Déconnexion',
         closePanel: 'Fermer le panneau',
         confirmLogout: 'Déconnexion',
@@ -166,7 +166,7 @@ const accountMenuTexts = {
         title: 'Nire Kontua',
         viewAccount: 'Ikusi nire kontua',
         favorites: 'Nire Gogokoak',
-        adminDashboard: 'Admin panela',
+        adminDashboard: 'Admin Panela',
         logout: 'Saioa Itxi',
         closePanel: 'Panela itxi',
         confirmLogout: 'Saioa Itxi',
@@ -227,6 +227,8 @@ function renderAccountMenu() {
     const url = window.location.href;
     const userLanguage = localStorage.getItem('userLanguage') || 'ES';
     const PATH = url.includes('catalogo') || url.includes('catalog') || url.includes('catalogue') || url.includes('katalogoa') ? '../../' : '../'+userLanguage+'/';
+    // Admin dashboard should use absolute path from root
+    const ADMIN_PATH = '../../admin/app/dashboard/index.html';
     const texts = getAccountMenuTexts(userLanguage);
     
     showModal.innerHTML = `
@@ -272,8 +274,8 @@ function renderAccountMenu() {
                     
                     <a href="${PATH}${texts.favoritesPage}" class="links-sesion account-item"><span><i class="fa-regular fa-heart icon-sesion"></i> ${texts.favorites}</span></a>
 
-                    ${currentUser.rol === 'admin' || currentUser.role === 'admin' ? 
-                        `<a href="../../admin/app/dashboard/index.html" class="links-sesion account-item"><span><i class="fa-solid fa-gear icon-sesion"></i> ${texts.adminDashboard}</span></a>` 
+                    ${currentUser.rol === 'admin' || currentUser.role === 'admin' || currentUser.admin === true || currentUser.userType === 'admin' ? 
+                        `<a href="${ADMIN_PATH}" class="links-sesion account-item"><span><i class="fa-solid fa-gear icon-sesion"></i> ${texts.adminDashboard}</span></a>` 
                         : ''}
 
                     <a role="button" class="links-sesion account-item account-item-danger" id="logout"><span><i class="fa-solid fa-arrow-right-from-bracket"></i> ${texts.logout}</span></a>
@@ -326,6 +328,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Leer el idioma directamente de localStorage para asegurar que sea el más reciente
         const userLanguage = localStorage.getItem('userLanguage') || 'ES';
         const PATH = url.includes('catalogo') || url.includes('catalog') || url.includes('catalogue') || url.includes('katalogoa') ? '../../' : '../'+userLanguage+'/';
+        // Admin dashboard should use absolute path from root
+        const ADMIN_PATH = '../../admin/app/dashboard/index.html';
     
     // Function to get redirect page after login
     function getRedirectPage() {

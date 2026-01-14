@@ -1,5 +1,9 @@
 /* admin/components/Header.js */
 const Header = {
+    getUserLanguage: function() {
+        return localStorage.getItem('userLanguage') || 'ES';
+    },
+
     init: function () {
         this.render();
         this.bindEvents();
@@ -8,6 +12,19 @@ const Header = {
     render: function () {
         const headerElement = document.getElementById('header');
         if (!headerElement) return;
+
+        const userLanguage = this.getUserLanguage();
+        
+        // Different profile page names for different languages
+        const profilePages = {
+            'ES': 'perfil.html',
+            'EN': 'profile.html',
+            'FR': 'profil.html',
+            'EU': 'profila.html'
+        };
+        
+        const profilePage = profilePages[userLanguage] || 'perfil.html';
+        const profileUrl = `/${userLanguage}/${profilePage}`;
 
         headerElement.innerHTML = `
             <div class="header-logo">
@@ -30,7 +47,7 @@ const Header = {
                         <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="userDropdownMenu">
-                        <a href="#"><i class="fas fa-user-circle"></i> Mi Perfil</a>
+                        <a href="${profileUrl}"><i class="fas fa-user-circle"></i> Mi Perfil</a>
                         <a href="#"><i class="fas fa-cog"></i> Configuración</a>
                         <hr>
                         <a href="#" onclick="Header.handleLogout()" class="logout-link">
