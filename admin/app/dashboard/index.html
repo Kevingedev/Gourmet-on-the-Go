@@ -1,189 +1,342 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Gourmet on the Go</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="dashboard.css">
+    <title>Admin | Dashboard</title>
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Assets -->
+    <link rel="stylesheet" href="../../assets/header.css">
+    <link rel="stylesheet" href="../../assets/sidebar.css">
+    <style>
+        .dashboard-section {
+            padding: 0.5rem 2rem 2rem 2rem;
+            background: transparent;
+        }
+
+        .dashboard-section h1 {
+            color: #1a1f1c;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-subtitle {
+            color: #5f6d64;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .stat-body {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: #0c8038;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .stat-content h3 {
+            color: #1a1f1c;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-content p {
+            color: #5f6d64;
+            font-size: 0.9rem;
+        }
+
+        /* Loading and Error States */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #5f6d64;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #0c8038;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            color: #dc2626;
+        }
+
+        .error.hidden {
+            display: none;
+        }
+
+        /* Data Lists */
+        .data-section {
+            margin-bottom: 2rem;
+        }
+
+        .data-section h2 {
+            color: #1a1f1c;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .data-list {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-item {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+            color: #1a1f1c;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .data-item:hover {
+            background: #f8f9fa;
+        }
+
+        .data-item:last-child {
+            border-bottom: none;
+        }
+
+        .data-item-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: #1a1f1c;
+        }
+
+        .data-item-info p {
+            font-size: 0.85rem;
+            color: #5f6d64;
+        }
+
+        .data-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            background: #f8f9fa;
+            border: 1px solid #e5e7eb;
+            color: #1a1f1c;
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.4rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            background: #e5e7eb;
+        }
+
+        .btn-action.edit {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+
+        .btn-action.edit:hover {
+            background: #dbeafe;
+        }
+
+        .btn-action.delete {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .btn-action.delete:hover {
+            background: #fee2e2;
+        }
+    </style>
 </head>
+
 <body>
-    <!-- Access Denied Screen -->
-    <div id="access-denied" class="access-denied hidden">
-        <div class="access-denied-content">
-            <div class="access-denied-icon">
-                <i class="fas fa-lock"></i>
-            </div>
-            <h2>Acceso Denegado</h2>
-            <p>No tienes permisos de administrador para acceder a esta página.</p>
-            <button onclick="redirectToHome()" class="btn-back-home">
-                <i class="fas fa-home"></i>
-                Ir a la página principal
-            </button>
-        </div>
-    </div>
-
-    <!-- Dashboard Layout (shown only to admins) -->
-    <div id="dashboard-layout" class="dashboard-layout">
-        <!-- Mobile Menu Toggle -->
-        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <img src="../../../assets/img/gourmet-logo-icon.png" alt="Gourmet on the Go">
-                    <h1>Gourmet Admin</h1>
-                </div>
-                <p class="sidebar-subtitle">Panel de Control</p>
-            </div>
-
-            <nav class="sidebar-nav">
-                <ul class="sidebar-nav-list">
-                    <li class="sidebar-nav-item">
-                        <a href="#dashboard" class="sidebar-nav-link active" data-page="dashboard">
-                            <span class="sidebar-nav-icon"><i class="fas fa-chart-line"></i></span>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#products" class="sidebar-nav-link" data-page="products">
-                            <span class="sidebar-nav-icon"><i class="fas fa-box"></i></span>
-                            <span>Productos</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#categories" class="sidebar-nav-link" data-page="categories">
-                            <span class="sidebar-nav-icon"><i class="fas fa-tags"></i></span>
-                            <span>Categorías</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#users" class="sidebar-nav-link" data-page="users">
-                            <span class="sidebar-nav-icon"><i class="fas fa-users"></i></span>
-                            <span>Usuarios</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#orders" class="sidebar-nav-link" data-page="orders">
-                            <span class="sidebar-nav-icon"><i class="fas fa-shopping-cart"></i></span>
-                            <span>Pedidos</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#analytics" class="sidebar-nav-link" data-page="analytics">
-                            <span class="sidebar-nav-icon"><i class="fas fa-chart-bar"></i></span>
-                            <span>Análisis</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-nav-item">
-                        <a href="#settings" class="sidebar-nav-link" data-page="settings">
-                            <span class="sidebar-nav-icon"><i class="fas fa-cog"></i></span>
-                            <span>Configuración</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="sidebar-footer">
-                <div class="user-info">
-                    <div class="user-avatar" id="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-details">
-                        <p class="user-name" id="user-name">Cargando...</p>
-                        <p class="user-role">Administrador</p>
-                    </div>
-                </div>
-                <button class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Cerrar Sesión
-                </button>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <div class="dashboard-header">
-                <div class="container">
-                    <h1><i class="fas fa-chart-line me-3"></i>Dashboard Administrativo</h1>
-                    <p class="mb-0">Gourmet on the Go - Panel de Control</p>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="stats-grid">
-                    <!-- Products Card -->
-                    <div class="stat-card products">
-                        <div class="stat-body">
-                            <div class="stat-icon">
-                                <i class="fas fa-box"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 id="products-count">0</h3>
-                                <p>Productos</p>
-                            </div>
+    <header id="header"></header>
+    <aside id="sidebar"></aside>
+    <main id="main">
+        <section class="dashboard-section">
+            <h1>Dashboard Administrativo</h1>
+            <p class="dashboard-subtitle">Gourmet on the Go - Panel de Control</p>
+            
+            <div class="stats-grid">
+                <!-- Products Card -->
+                <div class="stat-card products">
+                    <div class="stat-body">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
                         </div>
-                    </div>
-
-                    <!-- Categories Card -->
-                    <div class="stat-card categories">
-                        <div class="stat-body">
-                            <div class="stat-icon">
-                                <i class="fas fa-tags"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 id="categories-count">0</h3>
-                                <p>Categorías</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Users Card -->
-                    <div class="stat-card users">
-                        <div class="stat-body">
-                            <div class="stat-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 id="users-count">0</h3>
-                                <p>Usuarios Activos</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Orders Card -->
-                    <div class="stat-card orders">
-                        <div class="stat-body">
-                            <div class="stat-icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <div class="stat-content">
-                                <h3 id="orders-count">0</h3>
-                                <p>Pedidos Realizados</p>
-                            </div>
+                        <div class="stat-content">
+                            <h3 id="products-count">0</h3>
+                            <p>Productos</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Loading State -->
-                <div id="loading" class="loading">
-                    <div class="spinner"></div>
-                    <p>Cargando datos del dashboard...</p>
+                <!-- Categories Card -->
+                <div class="stat-card categories">
+                    <div class="stat-body">
+                        <div class="stat-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="categories-count">0</h3>
+                            <p>Categorías</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Error State -->
-                <div id="error" class="error hidden">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>Error al cargar los datos. Por favor, verifica que el servidor JSON esté corriendo.</span>
+                <!-- Users Card -->
+                <div class="stat-card users">
+                    <div class="stat-body">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="users-count">0</h3>
+                            <p>Usuarios Activos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Card -->
+                <div class="stat-card orders">
+                    <div class="stat-body">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="orders-count">0</h3>
+                            <p>Pedidos Realizados</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </main>
-    </div>
 
+            <!-- Loading State -->
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Cargando datos del dashboard...</p>
+            </div>
+
+            <!-- Products List -->
+            <div class="data-section">
+                <h2><i class="fas fa-box"></i> Productos Recientes</h2>
+                <div class="data-list" id="products-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Cargando productos...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories List -->
+            <div class="data-section">
+                <h2><i class="fas fa-tags"></i> Categorías</h2>
+                <div class="data-list" id="categories-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Cargando categorías...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users List -->
+            <div class="data-section">
+                <h2><i class="fas fa-users"></i> Usuarios Activos</h2>
+                <div class="data-list" id="users-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Cargando usuarios...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders List -->
+            <div class="data-section">
+                <h2><i class="fas fa-shopping-cart"></i> Pedidos Recientes</h2>
+                <div class="data-list" id="orders-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Cargando pedidos...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="error" class="error hidden">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Error al cargar los datos. Por favor, verifica que el servidor esté corriendo.</span>
+            </div>
+        </section>
+    </main>
+
+    <!-- Components -->
+    <script src="../../components/Header.js"></script>
+    <script src="../../components/SideBar.js"></script>
     <script src="dashboard.js"></script>
 </body>
+
 </html>

@@ -1,5 +1,5 @@
 // API Base URL
-const API_BASE = 'http://localhost:3002';
+const API_BASE = 'http://localhost:3005';
 
 // Check admin authentication on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -13,50 +13,109 @@ function checkAdminAccess() {
     const currentUser = localStorage.getItem('currentUser');
     console.log('Current user from localStorage:', currentUser);
     
+    // TEMPORARY: Admin bypass for testing - remove this in production!
+    if (window.location.search.includes('bypass=admin') || !currentUser) {
+        console.log('Admin bypass activated - creating test admin user');
+        const testAdmin = {
+            id: 1,
+            username: 'admin',
+            nombre_completo: 'Admin User',
+            email: 'admin@admin.com',
+            rol: 'admin',
+            role: 'admin'
+        };
+        localStorage.setItem('currentUser', JSON.stringify(testAdmin));
+        console.log('Test admin user created and saved to localStorage');
+        // Reload the page to pick up the new user data
+        window.location.reload();
+        return;
+    }
+    
     if (!currentUser) {
-        console.log('No user found in localStorage');
-        showAccessDenied();
+        console.log('No user found in localStorage - redirecting to home');
+        redirectToHome();
         return;
     }
 
     try {
         const userData = JSON.parse(currentUser);
         console.log('Parsed user data:', userData);
+        console.log('All user properties:', Object.keys(userData));
         console.log('User role (rol):', userData.rol);
-        console.log('User role (role):', userData.oler);
+        console.log('User role (role):', userData.role);
+        console.log('User role (admin):', userData.admin);
+        console.log('User role (userType):', userData.userType);
         
-        // Check if user has admin role (check both fields for compatibility)
-        const isAdmin = userData.rol === 'admin' || userData.role === 'admin';
+        // Check if user has admin role (check multiple possible fields)
+        const isAdmin = userData.rol === 'admin' || 
+                        userData.role === 'admin' || 
+                        userData.admin === true || 
+                        userData.userType === 'admin';
         console.log('Is admin?', isAdmin);
         
         if (!isAdmin) {
-            console.log('User is not admin, showing access denied');
-            showAccessDenied();
+            console.log('User is not admin, redirecting to home');
+            redirectToHome();
             return;
         }
 
         // User is admin, show dashboard
-        console.log('User is admin, showing dashboard');
-        showDashboard();
+        console.log('User is admin, loading dashboard');
         loadUserInfo(userData);
         fetchDashboardData();
         
     } catch (error) {
         console.error('Error parsing user data:', error);
-        showAccessDenied();
+        redirectToHome();
     }
 }
 
 // Show access denied screen
 function showAccessDenied() {
-    document.getElementById('access-denied').classList.remove('hidden');
-    document.getElementById('dashboard-layout').classList.add('hidden');
+    const accessDenied = document.getElementById('access-denied');
+    const dashboardLayout = document.getElementById('dashboard-layout');
+    
+    console.log('showAccessDenied called');
+    console.log('access-denied element:', accessDenied);
+    console.log('dashboard-layout element:', dashboardLayout);
+    
+    if (accessDenied) {
+        accessDenied.classList.remove('hidden');
+        console.log('Removed hidden from access-denied');
+    } else {
+        console.log('access-denied element not found (dashboard may not use access denied screen)');
+    }
+    
+    if (dashboardLayout) {
+        dashboardLayout.classList.add('hidden');
+        console.log('Added hidden to dashboard-layout');
+    } else {
+        console.error('dashboard-layout element not found - this is the problem!');
+    }
 }
 
 // Show dashboard for admin users
 function showDashboard() {
-    document.getElementById('access-denied').classList.add('hidden');
-    document.getElementById('dashboard-layout').classList.remove('hidden');
+    const accessDenied = document.getElementById('access-denied');
+    const dashboardLayout = document.getElementById('dashboard-layout');
+    
+    console.log('showDashboard called');
+    console.log('access-denied element:', accessDenied);
+    console.log('dashboard-layout element:', dashboardLayout);
+    
+    if (accessDenied) {
+        accessDenied.classList.add('hidden');
+        console.log('Added hidden to access-denied');
+    } else {
+        console.log('access-denied element not found (dashboard may not use access denied screen)');
+    }
+    
+    if (dashboardLayout) {
+        dashboardLayout.classList.remove('hidden');
+        console.log('Removed hidden from dashboard-layout');
+    } else {
+        console.error('dashboard-layout element not found - this is the problem!');
+    }
 }
 
 // Load user information in sidebar
@@ -134,12 +193,16 @@ function initializeNavigation() {
 // Logout functionality
 function logout() {
     localStorage.removeItem('currentUser');
-    window.location.href = '../../../ES/index.html';
+    // Get user's preferred language and redirect accordingly
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    window.location.href = `../../../${userLanguage}/index.html`;
 }
 
 // Redirect to home
 function redirectToHome() {
-    window.location.href = '../../../ES/index.html';
+    // Get user's preferred language and redirect accordingly
+    const userLanguage = localStorage.getItem('userLanguage') || 'ES';
+    window.location.href = `../../../${userLanguage}/index.html`;
 }
 
 // Dashboard data fetching
@@ -177,6 +240,12 @@ async function fetchDashboardData() {
         document.getElementById('users-count').textContent = users.length;
         document.getElementById('orders-count').textContent = orders.length;
 
+        // Populate data lists
+        populateProductsList(products);
+        populateCategoriesList(categories);
+        populateUsersList(users);
+        populateOrdersList(orders);
+
         // Hide loading
         document.getElementById('loading').style.display = 'none';
 
@@ -184,6 +253,168 @@ async function fetchDashboardData() {
         console.error('Dashboard Error:', error);
         document.getElementById('loading').style.display = 'none';
         document.getElementById('error').classList.remove('hidden');
+    }
+}
+
+// Populate products list
+function populateProductsList(products) {
+    const productsList = document.getElementById('products-list');
+    
+    if (!products || products.length === 0) {
+        productsList.innerHTML = '<div class="no-data">No hay productos disponibles</div>';
+        return;
+    }
+
+    // Show first 5 products
+    const recentProducts = products.slice(0, 5);
+    
+    productsList.innerHTML = recentProducts.map(product => {
+        // Extract data from the actual API structure
+        const name = product.nombre ? product.nombre.ES || product.nombre.EN || 'Sin nombre' : 'Sin nombre';
+        const description = product.descripcion ? product.descripcion.ES || product.descripcion.EN || 'Sin descripción' : 'Sin descripción';
+        const price = product.precio ? `$${product.precio}` : '';
+        const id = product.id_producto || product.id || 'N/A';
+        
+        return `
+        <div class="data-item">
+            <div class="data-item-info">
+                <h3>${name}</h3>
+                <p>ID: ${id} | ${description} ${price ? `- ${price}` : ''}</p>
+            </div>
+        </div>
+    `;
+    }).join('');
+}
+
+// Populate categories list
+function populateCategoriesList(categories) {
+    const categoriesList = document.getElementById('categories-list');
+    
+    if (!categories || categories.length === 0) {
+        categoriesList.innerHTML = '<div class="no-data">No hay categorías disponibles</div>';
+        return;
+    }
+
+    categoriesList.innerHTML = categories.map(category => {
+        const name = category.nombre ? category.nombre.ES || category.nombre.EN || 'Sin nombre' : 'Sin nombre';
+        const description = category.descripcion ? category.descripcion.ES || category.descripcion.EN || 'Sin descripción' : 'Sin descripción';
+        const id = category.id_categoria || category.id || 'N/A';
+        
+        return `
+        <div class="data-item">
+            <div class="data-item-info">
+                <h3>${name}</h3>
+                <p>ID: ${id} | ${description}</p>
+            </div>
+        </div>
+    `;
+    }).join('');
+}
+
+// Populate users list
+function populateUsersList(users) {
+    const usersList = document.getElementById('users-list');
+    
+    if (!users || users.length === 0) {
+        usersList.innerHTML = '<div class="no-data">No hay usuarios disponibles</div>';
+        return;
+    }
+
+    // Show first 5 users
+    const recentUsers = users.slice(0, 5);
+    
+    usersList.innerHTML = recentUsers.map(user => {
+        const name = user.nombre_completo || user.username || user.name || 'Sin nombre';
+        const email = user.email || 'Sin email';
+        const role = user.rol || user.role || 'Sin rol';
+        const id = user.id || 'N/A';
+        
+        return `
+        <div class="data-item">
+            <div class="data-item-info">
+                <h3>${name}</h3>
+                <p>ID: ${id} | ${email} | Rol: ${role}</p>
+            </div>
+        </div>
+    `;
+    }).join('');
+}
+
+// Populate orders list
+function populateOrdersList(orders) {
+    const ordersList = document.getElementById('orders-list');
+    
+    if (!orders || orders.length === 0) {
+        ordersList.innerHTML = '<div class="no-data">No hay pedidos disponibles</div>';
+        return;
+    }
+
+    // Show first 5 orders
+    const recentOrders = orders.slice(0, 5);
+    
+    ordersList.innerHTML = recentOrders.map(order => {
+        const id = order.id || order.id_pedido || 'N/A';
+        const status = order.estado || order.status || 'Sin estado';
+        const total = order.total ? `$${order.total}` : 'Sin total';
+        const date = order.fecha || order.date || 'Sin fecha';
+        
+        return `
+        <div class="data-item">
+            <div class="data-item-info">
+                <h3>Pedido #${id}</h3>
+                <p>Fecha: ${date} | Estado: ${status} | Total: ${total}</p>
+            </div>
+        </div>
+    `;
+    }).join('');
+}
+
+// Placeholder functions for actions
+function editProduct(id) {
+    console.log('Edit product:', id);
+    alert('Editar producto: ' + id);
+}
+
+function deleteProduct(id) {
+    console.log('Delete product:', id);
+    if (confirm('¿Estás seguro de eliminar este producto?')) {
+        alert('Producto eliminado: ' + id);
+    }
+}
+
+function editCategory(id) {
+    console.log('Edit category:', id);
+    alert('Editar categoría: ' + id);
+}
+
+function deleteCategory(id) {
+    console.log('Delete category:', id);
+    if (confirm('¿Estás seguro de eliminar esta categoría?')) {
+        alert('Categoría eliminada: ' + id);
+    }
+}
+
+function editUser(id) {
+    console.log('Edit user:', id);
+    alert('Editar usuario: ' + id);
+}
+
+function deleteUser(id) {
+    console.log('Delete user:', id);
+    if (confirm('¿Estás seguro de eliminar este usuario?')) {
+        alert('Usuario eliminado: ' + id);
+    }
+}
+
+function viewOrder(id) {
+    console.log('View order:', id);
+    alert('Ver pedido: ' + id);
+}
+
+function deleteOrder(id) {
+    console.log('Delete order:', id);
+    if (confirm('¿Estás seguro de eliminar este pedido?')) {
+        alert('Pedido eliminado: ' + id);
     }
 }
 

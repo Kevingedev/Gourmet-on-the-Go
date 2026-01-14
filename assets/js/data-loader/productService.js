@@ -79,7 +79,7 @@ export const gestorDeDatos = {
     },
 
     async cargarProductos() {
-        const responseProducts = await fetch("http://localhost:3001/products");
+        const responseProducts = await fetch(pathProducts);
         const dataProducts = await responseProducts.json();
         return dataProducts; // Devuelve un array de objetos con todos los productos
     },
