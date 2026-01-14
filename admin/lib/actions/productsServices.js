@@ -52,6 +52,14 @@ export const productsService = {
         const data = await response.json();
         return data;
     },
+    
+    async deleteProduct(id_producto) {
+        const response = await fetch(`${API_URL}/products/${id_producto}`, {
+            method: "DELETE",
+        });
+        const data = await response.json();
+        return data;
+    },
 
 
 }

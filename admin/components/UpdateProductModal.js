@@ -120,11 +120,12 @@ export const updateProductModal = {
                 const id_producto = totalProducts;
 
                 // Formatear nombre para la URL de la imagen (minúsculas, guiones, sin acentos básicos)
-                const cleanName = product.name
+                /* const cleanName = product.name
                     .toLowerCase()
                     .normalize("NFD")
                     .replace(/[\u0300-\u036f]/g, "")
-                    .replace(/\s+/g, '-');
+                    .replace(/\s+/g, '-'); */
+                const cleanName = "img-test";
 
                 const img_url = `assets/img/product-images/${cleanName}.jpg`;
 

@@ -2,6 +2,7 @@
 import { productsService } from "../../lib/actions/productsServices.js";
 import { addProductModal } from "../../components/AddProductModal.js";
 import { updateProductModal } from "../../components/UpdateProductModal.js";
+import { deleteProductModal } from "../../components/DeleteProductModal.js";
 
 const body = document.getElementById("products-table-body");
 const footer = document.getElementById("products-table-footer");
@@ -15,7 +16,6 @@ renderProducts();
 function renderProducts() {
     productsService.getProductsPagination(currentPage, itemsPerPage).then(({ products, total }) => {
         const totalPages = Math.ceil(total / itemsPerPage);
-        // console.log(products);
         // Render rows
         body.innerHTML = "";
         products.forEach(product => {
@@ -29,7 +29,7 @@ function renderProducts() {
             <td>${product.featured ? `<span class="featured">Destacado</span>` : `<span class="not-featured">No destacado</span>`}</td>
             <td>
             <button class="action-btn edit" data-id="${product.id}"><i class="fa-solid fa-pen-to-square"></i></button>
-            <button class="action-btn delete"><i class="fa-solid fa-trash"></i></button>
+            <button class="action-btn delete" data-id="${product.id}" data-name="${product.nombre.ES}"><i class="fa-solid fa-trash"></i></button>
             </td>
             </tr>
             `;
@@ -75,19 +75,23 @@ btnOpen.onclick = () => {
 
 const table = document.getElementById("products-table");
 table.addEventListener("click", (e) => {
+    // Edit button
     const btnEdit = e.target.closest(".edit");
     if (btnEdit) {
         const id = btnEdit.getAttribute("data-id");
-        // console.log("click en editar: " + id);
-        
         updateProductModal.renderUpdateProductModal(id);
+    }
+
+    // Delete button
+    const btnDelete = e.target.closest(".delete");
+    if (btnDelete) {
+        const id = btnDelete.getAttribute("data-id");
+        const name = btnDelete.getAttribute("data-name");
+        deleteProductModal.render(id, name);
     }
 });
 
-// EJECUTAR SIN REFRESCAR LA PAGINA:
-window.addEventListener('productAdded', () => {
-    renderProducts();
-});
-window.addEventListener('productUpdated', () => {
-    renderProducts();
-});
+// Eventos para refrescar tabla
+window.addEventListener('productAdded', () => renderProducts());
+window.addEventListener('productUpdated', () => renderProducts());
+window.addEventListener('productDeleted', () => renderProducts());
