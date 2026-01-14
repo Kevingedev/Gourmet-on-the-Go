@@ -1,6 +1,5 @@
 const API_URL = "http://localhost:3005/users";
 
-// ELEMENTOS DEL DOM
 const tabla = document.querySelector("#tabla-usuarios tbody");
 const modal = document.getElementById("modal");
 const form = document.getElementById("form-usuario");
@@ -11,45 +10,41 @@ const modalTitle = document.getElementById("modal-title");
 let editando = false;
 let usuarioId = null;
 
-// ----------------------
-// 1. CARGAR USUARIOS
-// ----------------------
 async function cargarUsuarios() {
     const res = await fetch(API_URL);
     const data = await res.json();
 
     tabla.innerHTML = data.map(user => `
     <tr>
-      <td>${user.id}</td>
-      <td>${user.username}</td>
-      <td>${user.email}</td>
-      <td>${user.rol}</td>
-      <td>
-        <button class="btn-editar" data-id="${user.id}">Editar</button>
-        <button class="btn-borrar" data-id="${user.id}">Eliminar</button>
+      <td data-label="ID">${user.id}</td>
+      <td data-label="Usuario">${user.username}</td>
+      <td data-label="Email">${user.email}</td>
+      <td data-label="Rol">
+        <span class="badge ${user.rol === "admin" ? "badge-success" : "badge-warning"}">
+          ${user.rol}
+        </span>
+      </td>
+      <td data-label="Acciones">
+        <button class="action-btn edit" data-id="${user.id}">✏️</button>
+        <button class="action-btn delete" data-id="${user.id}">🗑️</button>
       </td>
     </tr>
-  `).join("");
+`).join("");
+
 
     activarBotones();
 }
 
-// ----------------------
-// 2. ACTIVAR BOTONES
-// ----------------------
 function activarBotones() {
-    document.querySelectorAll(".btn-editar").forEach(btn => {
+    document.querySelectorAll(".action-btn.edit").forEach(btn => {
         btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id));
     });
 
-    document.querySelectorAll(".btn-borrar").forEach(btn => {
+    document.querySelectorAll(".action-btn.delete").forEach(btn => {
         btn.addEventListener("click", () => borrarUsuario(btn.dataset.id));
     });
 }
 
-// ----------------------
-// 3. ABRIR MODAL NUEVO
-// ----------------------
 btnNuevo.addEventListener("click", () => {
     editando = false;
     usuarioId = null;
@@ -58,9 +53,6 @@ btnNuevo.addEventListener("click", () => {
     modal.classList.remove("hidden");
 });
 
-// ----------------------
-// 4. ABRIR MODAL EDITAR
-// ----------------------
 async function abrirModalEditar(id) {
     editando = true;
     usuarioId = id;
@@ -79,9 +71,6 @@ async function abrirModalEditar(id) {
     modal.classList.remove("hidden");
 }
 
-// ----------------------
-// 5. GUARDAR (POST/PUT)
-// ----------------------
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -108,9 +97,6 @@ form.addEventListener("submit", async (e) => {
     cargarUsuarios();
 });
 
-// ----------------------
-// 6. BORRAR USUARIO
-// ----------------------
 async function borrarUsuario(id) {
     if (confirm("¿Eliminar usuario?")) {
         await fetch(`${API_URL}/${id}`, { method: "DELETE" });
@@ -118,14 +104,9 @@ async function borrarUsuario(id) {
     }
 }
 
-// ----------------------
-// 7. CERRAR MODAL
-// ----------------------
 btnCerrar.addEventListener("click", () => {
     modal.classList.add("hidden");
 });
 
-// ----------------------
-// 8. INICIALIZAR
-// ----------------------
 cargarUsuarios();
+
