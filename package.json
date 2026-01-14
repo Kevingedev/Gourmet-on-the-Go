@@ -4,7 +4,7 @@
   "description": "Una tienda online de alimentos precocinados gourmet, creada con HTML5, CSS3, JavaScript y JSON.",
   "main": "main.js",
   "scripts": {
-    "dev": "json-server --watch assets/data/db.js --port 3005"
+    "dev": "json-server --watch db.json --port 3005"
   },
   "repository": {
     "type": "git",
