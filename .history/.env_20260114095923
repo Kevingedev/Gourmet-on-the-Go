@@ -307,12 +307,37 @@ function populateProductsList(products) {
         return;
     }
 
-    productsList.innerHTML = products.map(product => {
-        // Try different field name combinations
-        const name = product.nombre || product.name || product.title || product.product_name || 'Sin nombre';
-        const description = product.descripcion || product.description || product.desc || 'Sin descripción';
+    console.log('All products:', products);
+    
+    productsList.innerHTML = products.map((product, index) => {
+        // Try different field name combinations and log what we find
+        const possibleNames = ['nombre', 'name', 'title', 'product_name', 'productName', 'producto_nombre'];
+        const possibleDescriptions = ['descripcion', 'description', 'desc', 'detalle', 'detalles'];
         
-        console.log('Product fields:', { name, description, fullProduct: product });
+        let name = 'Sin nombre';
+        let description = 'Sin descripción';
+        
+        // Find name field
+        for (const field of possibleNames) {
+            if (product[field]) {
+                name = product[field];
+                break;
+            }
+        }
+        
+        // Find description field
+        for (const field of possibleDescriptions) {
+            if (product[field]) {
+                description = product[field];
+                break;
+            }
+        }
+        
+        console.log(`Product ${index + 1}:`, {
+            name: name,
+            description: description,
+            original: product
+        });
         
         return `
         <div class="data-item">

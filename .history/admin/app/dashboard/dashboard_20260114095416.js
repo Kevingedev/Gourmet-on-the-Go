@@ -49,16 +49,8 @@ function checkAdminAccess() {
 
 // Show access denied screen
 function showAccessDenied() {
-    const accessDenied = document.getElementById('access-denied');
-    const dashboardLayout = document.getElementById('dashboard-layout');
-    
-    if (accessDenied) {
-        accessDenied.classList.remove('hidden');
-    }
-    
-    if (dashboardLayout) {
-        dashboardLayout.classList.add('hidden');
-    }
+    document.getElementById('access-denied').classList.remove('hidden');
+    document.getElementById('dashboard-layout').classList.add('hidden');
 }
 
 // Show dashboard for admin users
@@ -74,14 +66,14 @@ function showDashboard() {
         accessDenied.classList.add('hidden');
         console.log('Added hidden to access-denied');
     } else {
-        console.log('access-denied element not found (dashboard may not use access denied screen)');
+        console.error('access-denied element not found');
     }
     
     if (dashboardLayout) {
         dashboardLayout.classList.remove('hidden');
         console.log('Removed hidden from dashboard-layout');
     } else {
-        console.log('dashboard-layout element not found (dashboard may always be visible)');
+        console.error('dashboard-layout element not found');
     }
 }
 
@@ -251,17 +243,6 @@ async function fetchDashboardData() {
         }
 
         console.log('Data received:', { products, categories, users, orders, useRealData });
-        
-        // Debug: Log first items to see actual API structure
-        if (products && products.length > 0) {
-            console.log('First product structure:', products[0]);
-        }
-        if (categories && categories.length > 0) {
-            console.log('First category structure:', categories[0]);
-        }
-        if (users && users.length > 0) {
-            console.log('First user structure:', users[0]);
-        }
 
         // Update dashboard counts
         document.getElementById('products-count').textContent = products.length;
@@ -275,21 +256,12 @@ async function fetchDashboardData() {
         populateCategoriesList(categories.slice(0, 5)); // Show first 5 categories
 
         // Hide loading
-        const loadingElement = document.getElementById('loading');
-        if (loadingElement) {
-            loadingElement.style.display = 'none';
-        }
+        document.getElementById('loading').style.display = 'none';
 
     } catch (error) {
         console.error('Dashboard Error:', error);
-        const loadingElement = document.getElementById('loading');
-        if (loadingElement) {
-            loadingElement.style.display = 'none';
-        }
-        const errorElement = document.getElementById('error');
-        if (errorElement) {
-            errorElement.classList.remove('hidden');
-        }
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').classList.remove('hidden');
         
         // Show error in lists
         showListError('products-list');
@@ -307,25 +279,17 @@ function populateProductsList(products) {
         return;
     }
 
-    productsList.innerHTML = products.map(product => {
-        // Try different field name combinations
-        const name = product.nombre || product.name || product.title || product.product_name || 'Sin nombre';
-        const description = product.descripcion || product.description || product.desc || 'Sin descripción';
-        
-        console.log('Product fields:', { name, description, fullProduct: product });
-        
-        return `
+    productsList.innerHTML = products.map(product => `
         <div class="data-item">
             <div class="data-item-info">
-                <h3>${name}</h3>
-                <p>${description}</p>
+                <h3>${product.nombre || product.name || 'Sin nombre'}</h3>
+                <p>${product.descripcion || product.description || 'Sin descripción'}</p>
             </div>
             <div class="data-item-actions">
                
             </div>
         </div>
-    `;
-    }).join('');
+    `).join('');
 }
 
 // Populate users list

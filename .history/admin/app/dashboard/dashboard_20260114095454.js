@@ -251,17 +251,6 @@ async function fetchDashboardData() {
         }
 
         console.log('Data received:', { products, categories, users, orders, useRealData });
-        
-        // Debug: Log first items to see actual API structure
-        if (products && products.length > 0) {
-            console.log('First product structure:', products[0]);
-        }
-        if (categories && categories.length > 0) {
-            console.log('First category structure:', categories[0]);
-        }
-        if (users && users.length > 0) {
-            console.log('First user structure:', users[0]);
-        }
 
         // Update dashboard counts
         document.getElementById('products-count').textContent = products.length;
@@ -307,25 +296,17 @@ function populateProductsList(products) {
         return;
     }
 
-    productsList.innerHTML = products.map(product => {
-        // Try different field name combinations
-        const name = product.nombre || product.name || product.title || product.product_name || 'Sin nombre';
-        const description = product.descripcion || product.description || product.desc || 'Sin descripción';
-        
-        console.log('Product fields:', { name, description, fullProduct: product });
-        
-        return `
+    productsList.innerHTML = products.map(product => `
         <div class="data-item">
             <div class="data-item-info">
-                <h3>${name}</h3>
-                <p>${description}</p>
+                <h3>${product.nombre || product.name || 'Sin nombre'}</h3>
+                <p>${product.descripcion || product.description || 'Sin descripción'}</p>
             </div>
             <div class="data-item-actions">
                
             </div>
         </div>
-    `;
-    }).join('');
+    `).join('');
 }
 
 // Populate users list

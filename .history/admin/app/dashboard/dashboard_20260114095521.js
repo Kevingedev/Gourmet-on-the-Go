@@ -252,15 +252,9 @@ async function fetchDashboardData() {
 
         console.log('Data received:', { products, categories, users, orders, useRealData });
         
-        // Debug: Log first items to see actual API structure
+        // Debug: Log first product to see structure
         if (products && products.length > 0) {
             console.log('First product structure:', products[0]);
-        }
-        if (categories && categories.length > 0) {
-            console.log('First category structure:', categories[0]);
-        }
-        if (users && users.length > 0) {
-            console.log('First user structure:', users[0]);
         }
 
         // Update dashboard counts

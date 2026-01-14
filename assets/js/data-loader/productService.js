@@ -1,3 +1,4 @@
+import { env } from "node:process";
 
 // Calculate PATH based on current location
 function getBasePath() {
@@ -79,7 +80,7 @@ export const gestorDeDatos = {
     },
 
     async cargarProductos() {
-        const responseProducts = await fetch("http://localhost:3001/products");
+        const responseProducts = await fetch (env("API_URL") + "/products");
         const dataProducts = await responseProducts.json();
         return dataProducts; // Devuelve un array de objetos con todos los productos
     },

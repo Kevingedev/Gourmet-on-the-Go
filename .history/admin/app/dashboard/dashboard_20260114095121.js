@@ -49,16 +49,8 @@ function checkAdminAccess() {
 
 // Show access denied screen
 function showAccessDenied() {
-    const accessDenied = document.getElementById('access-denied');
-    const dashboardLayout = document.getElementById('dashboard-layout');
-    
-    if (accessDenied) {
-        accessDenied.classList.remove('hidden');
-    }
-    
-    if (dashboardLayout) {
-        dashboardLayout.classList.add('hidden');
-    }
+    document.getElementById('access-denied').classList.remove('hidden');
+    document.getElementById('dashboard-layout').classList.add('hidden');
 }
 
 // Show dashboard for admin users
@@ -74,14 +66,14 @@ function showDashboard() {
         accessDenied.classList.add('hidden');
         console.log('Added hidden to access-denied');
     } else {
-        console.log('access-denied element not found (dashboard may not use access denied screen)');
+        console.error('access-denied element not found');
     }
     
     if (dashboardLayout) {
         dashboardLayout.classList.remove('hidden');
         console.log('Removed hidden from dashboard-layout');
     } else {
-        console.log('dashboard-layout element not found (dashboard may always be visible)');
+        console.error('dashboard-layout element not found');
     }
 }
 
@@ -177,91 +169,38 @@ async function fetchDashboardData() {
         // Hide error initially
         document.getElementById('error').classList.add('hidden');
 
-        // Try to fetch real data first
-        let products, categories, users, orders;
-        let useRealData = false;
-
-        try {
-            console.log('Fetching products...');
-            const productsResponse = await fetch(`${API_BASE}/products`);
-            console.log('Products response:', productsResponse.status, productsResponse.ok);
-            
-            console.log('Fetching categories...');
-            const categoriesResponse = await fetch(`${API_BASE}/categories`);
-            console.log('Categories response:', categoriesResponse.status, categoriesResponse.ok);
-            
-            console.log('Fetching users...');
-            const usersResponse = await fetch(`${API_BASE}/users`);
-            console.log('Users response:', usersResponse.status, usersResponse.ok);
-            
-            console.log('Fetching orders...');
-            const ordersResponse = await fetch(`${API_BASE}/orders`);
-            console.log('Orders response:', ordersResponse.status, ordersResponse.ok);
-
-            // Check if all responses are ok
-            const responses = [productsResponse, categoriesResponse, usersResponse, ordersResponse];
-            for (let response of responses) {
-                if (!response.ok) {
-                    throw new Error(`Error ${response.status}: Failed to fetch data from ${response.url}`);
-                }
-            }
-
-            // Parse JSON data
-            products = await productsResponse.json();
-            categories = await categoriesResponse.json();
-            users = await usersResponse.json();
-            orders = await ordersResponse.json();
-            useRealData = true;
-
-        } catch (apiError) {
-            console.log('API not available, using mock data:', apiError.message);
-            
-            // Use mock data
-            products = [
-                { id: 1, nombre: 'Pizza Margherita', descripcion: 'Pizza clásica con tomate, mozzarella y albahaca' },
-                { id: 2, nombre: 'Hamburguesa Clásica', descripcion: 'Carne de res con lechuga, tomate y queso' },
-                { id: 3, nombre: 'Ensalada César', descripcion: 'Lechuga romana, pollo, parmesano y aderezo César' },
-                { id: 4, nombre: 'Pasta Carbonara', descripcion: 'Pasta con crema, huevo, panceta y queso parmesano' },
-                { id: 5, nombre: 'Tacos al Pastor', descripcion: 'Tacos con carne al pastor, piña y cilantro' }
-            ];
-
-            categories = [
-                { id: 1, nombre: 'Italiana', descripcion: 'Platos tradicionales italianos' },
-                { id: 2, nombre: 'Mexicana', descripcion: 'Comida mexicana auténtica' },
-                { id: 3, nombre: 'Americana', descripcion: 'Clásicos americanos' },
-                { id: 4, nombre: 'Ensaladas', descripcion: 'Opciones saludables y frescas' },
-                { id: 5, nombre: 'Postres', descripcion: 'Dulces y postres caseros' }
-            ];
-
-            users = [
-                { id: 1, username: 'superadmin', email: 'admin@admin.com', rol: 'admin' },
-                { id: 2, username: 'juanperez', email: 'juan@example.com', rol: 'user' },
-                { id: 3, username: 'mariagarcia', email: 'maria@example.com', rol: 'user' },
-                { id: 4, username: 'carloslopez', email: 'carlos@example.com', rol: 'user' },
-                { id: 5, username: 'anamartinez', email: 'ana@example.com', rol: 'user' }
-            ];
-
-            orders = [
-                { id: 1, status: 'completed' },
-                { id: 2, status: 'pending' },
-                { id: 3, status: 'completed' },
-                { id: 4, status: 'processing' },
-                { id: 5, status: 'completed' }
-            ];
-        }
-
-        console.log('Data received:', { products, categories, users, orders, useRealData });
+        // Fetch data from different endpoints
+        console.log('Fetching products...');
+        const productsResponse = await fetch(`${API_BASE}/products`);
+        console.log('Products response:', productsResponse.status, productsResponse.ok);
         
-        // Debug: Log first items to see actual API structure
-        if (products && products.length > 0) {
-            console.log('First product structure:', products[0]);
+        console.log('Fetching categories...');
+        const categoriesResponse = await fetch(`${API_BASE}/categories`);
+        console.log('Categories response:', categoriesResponse.status, categoriesResponse.ok);
+        
+        console.log('Fetching users...');
+        const usersResponse = await fetch(`${API_BASE}/users`);
+        console.log('Users response:', usersResponse.status, usersResponse.ok);
+        
+        console.log('Fetching orders...');
+        const ordersResponse = await fetch(`${API_BASE}/orders`);
+        console.log('Orders response:', ordersResponse.status, ordersResponse.ok);
+
+        // Check if all responses are ok
+        const responses = [productsResponse, categoriesResponse, usersResponse, ordersResponse];
+        for (let response of responses) {
+            if (!response.ok) {
+                throw new Error(`Error ${response.status}: Failed to fetch data from ${response.url}`);
+            }
         }
-        if (categories && categories.length > 0) {
-            console.log('First category structure:', categories[0]);
-        }
-        if (users && users.length > 0) {
-            console.log('First user structure:', users[0]);
-        }
+
+        // Parse JSON data
+        const products = await productsResponse.json();
+        const categories = await categoriesResponse.json();
+        const users = await usersResponse.json();
+        const orders = await ordersResponse.json();
+
+        console.log('Data received:', { products, categories, users, orders });
 
         // Update dashboard counts
         document.getElementById('products-count').textContent = products.length;
@@ -275,21 +214,12 @@ async function fetchDashboardData() {
         populateCategoriesList(categories.slice(0, 5)); // Show first 5 categories
 
         // Hide loading
-        const loadingElement = document.getElementById('loading');
-        if (loadingElement) {
-            loadingElement.style.display = 'none';
-        }
+        document.getElementById('loading').style.display = 'none';
 
     } catch (error) {
         console.error('Dashboard Error:', error);
-        const loadingElement = document.getElementById('loading');
-        if (loadingElement) {
-            loadingElement.style.display = 'none';
-        }
-        const errorElement = document.getElementById('error');
-        if (errorElement) {
-            errorElement.classList.remove('hidden');
-        }
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').classList.remove('hidden');
         
         // Show error in lists
         showListError('products-list');
@@ -298,35 +228,6 @@ async function fetchDashboardData() {
     }
 }
 
-// Populate products list
-function populateProductsList(products) {
-    const productsList = document.getElementById('products-list');
-    
-    if (!products || products.length === 0) {
-        productsList.innerHTML = '<div class="no-data">No hay productos disponibles</div>';
-        return;
-    }
-
-    productsList.innerHTML = products.map(product => {
-        // Try different field name combinations
-        const name = product.nombre || product.name || product.title || product.product_name || 'Sin nombre';
-        const description = product.descripcion || product.description || product.desc || 'Sin descripción';
-        
-        console.log('Product fields:', { name, description, fullProduct: product });
-        
-        return `
-        <div class="data-item">
-            <div class="data-item-info">
-                <h3>${name}</h3>
-                <p>${description}</p>
-            </div>
-            <div class="data-item-actions">
-               
-            </div>
-        </div>
-    `;
-    }).join('');
-}
 
 // Populate users list
 function populateUsersList(users) {
@@ -344,7 +245,12 @@ function populateUsersList(users) {
                 <p>${user.email || 'Sin email'} - ${user.rol || user.role || 'user'}</p>
             </div>
             <div class="data-item-actions">
-               
+                <button class="btn-action edit" onclick="editUser(${user.id})">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+                <button class="btn-action delete" onclick="deleteUser(${user.id})">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
             </div>
         </div>
     `).join('');
@@ -366,7 +272,12 @@ function populateCategoriesList(categories) {
                 <p>${category.descripcion || category.description || 'Sin descripción'}</p>
             </div>
             <div class="data-item-actions">
-                
+                <button class="btn-action edit" onclick="editCategory(${category.id})">
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+                <button class="btn-action delete" onclick="deleteCategory(${category.id})">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
             </div>
         </div>
     `).join('');
