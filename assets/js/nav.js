@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Obtener el contenedor específico de los enlaces de categorías
     const categoryLinksContainer = document.getElementById('nav-links');
     // Use assetsPath for consistent path construction
-    const jsonPath = `${assetsPath}assets/data/categories.json`;
+    const jsonPath = "http://localhost:3005/categories";
 
     async function fetchCategories(container) {
         try {

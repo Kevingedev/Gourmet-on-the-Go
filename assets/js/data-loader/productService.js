@@ -29,8 +29,8 @@ const getPath = (fileName) => {
     return `${assetsPath}assets/data/${fileName}`;
 };
 
-const pathProducts = getPath("products.json");
-const pathCategories = getPath("categories.json");
+const pathProducts = "http://localhost:3005/products";
+const pathCategories = "http://localhost:3005/categories";
 
 // Function to detect language from URL path
 function detectLanguageFromUrl() {

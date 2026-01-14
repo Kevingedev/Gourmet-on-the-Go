@@ -1,94 +1,96 @@
-[
-  {
-    "id_categoria": "protein_meat",
-    "nombre": {
-      "ES": "Carnes",
-      "EN": "Meat",
-      "FR": "Viandes",
-      "EU": "Haragiak"
+{
+  "categories": [
+    {
+      "id_categoria": "protein_meat",
+      "nombre": {
+        "ES": "Carnes",
+        "EN": "Meat",
+        "FR": "Viandes",
+        "EU": "Haragiak"
+      },
+      "descripcion": {
+        "ES": "Recetas de vacuno, cerdo, pollo y pavo listas para servir.",
+        "EN": "Ready-to-serve beef, pork, chicken, and turkey recipes.",
+        "FR": "Recettes de bœuf, porc, poulet et dinde prêtes à servir.",
+        "EU": "Behi, txerri, oilasko eta indioilar errezetak zerbitzatzeko prest."
+      },
+      "icono_clase": "fa-solid fa-drumstick-bite",
+      "url_slug": {
+        "ES": "/catalogo/carnes",
+        "EN": "/catalog/meat",
+        "FR": "/catalogue/viandes",
+        "EU": "/katalogoa/haragiak"
+      },
+      "img": "../assets/img/carnes.png"
     },
-    "descripcion": {
-      "ES": "Recetas de vacuno, cerdo, pollo y pavo listas para servir.",
-      "EN": "Ready-to-serve beef, pork, chicken, and turkey recipes.",
-      "FR": "Recettes de bœuf, porc, poulet et dinde prêtes à servir.",
-      "EU": "Behi, txerri, oilasko eta indioilar errezetak zerbitzatzeko prest."
+    {
+      "id_categoria": "fish_seafood",
+      "nombre": {
+        "ES": "Mariscos",
+        "EN": "Seafood",
+        "FR": "Fruits de mer",
+        "EU": "Itsaskiak"
+      },
+      "descripcion": {
+        "ES": "Platos preparados con pescado, marisco y opciones de base de agua.",
+        "EN": "Dishes prepared with fish, shellfish, and water-based options.",
+        "FR": "Plats préparés avec du poisson, des fruits de mer et des options à base d'eau.",
+        "EU": "Arrain, itsaski eta ur oinarriko aukerekin prestaturiko platerak."
+      },
+      "icono_clase": "fa-solid fa-fish",
+      "url_slug": {
+        "ES": "/catalogo/mariscos",
+        "EN": "/catalog/seafood",
+        "FR": "/catalogue/fruits-de-mer",
+        "EU": "/katalogoa/itsaskiak"
+      },
+      "img": "../assets/img/mariscos.png"
     },
-    "icono_clase": "fa-solid fa-drumstick-bite",
-    "url_slug": {
-      "ES": "/catalogo/carnes",
-      "EN": "/catalog/meat",
-      "FR": "/catalogue/viandes",
-      "EU": "/katalogoa/haragiak"
+    {
+      "id_categoria": "sides_comp",
+      "nombre": {
+        "ES": "Acompañamientos",
+        "EN": "Complements",
+        "FR": "Accompagnements",
+        "EU": "Osagarriak"
+      },
+      "descripcion": {
+        "ES": "Arroces, pastas, verduras y salsas listos para combinar con tu plato principal.",
+        "EN": "Rice, pasta, vegetables, and sauces ready to combine with your main dish.",
+        "FR": "Riz, pâtes, légumes et sauces prêts à combiner avec votre plat principal.",
+        "EU": "Arrozak, pastak, barazkiak eta saltsak zure plater nagusiarekin konbinatzeko prest."
+      },
+      "icono_clase": "fas fa-bread-slice",
+      "url_slug": {
+        "ES": "/catalogo/complementos",
+        "EN": "/catalog/complements",
+        "FR": "/catalogue/accompagnements",
+        "EU": "/katalogoa/osagarriak"
+      },
+      "img": "../assets/img/acompañamientos.png"
     },
-    "img": "../assets/img/carnes.png"
-  },
-  {
-    "id_categoria": "fish_seafood",
-    "nombre": {
-      "ES": "Mariscos",
-      "EN": "Seafood",
-      "FR": "Fruits de mer",
-      "EU": "Itsaskiak"
-    },
-    "descripcion": {
-      "ES": "Platos preparados con pescado, marisco y opciones de base de agua.",
-      "EN": "Dishes prepared with fish, shellfish, and water-based options.",
-      "FR": "Plats préparés avec du poisson, des fruits de mer et des options à base d'eau.",
-      "EU": "Arrain, itsaski eta ur oinarriko aukerekin prestaturiko platerak."
-    },
-    "icono_clase": "fa-solid fa-fish",
-    "url_slug": {
-      "ES": "/catalogo/mariscos",
-      "EN": "/catalog/seafood",
-      "FR": "/catalogue/fruits-de-mer",
-      "EU": "/katalogoa/itsaskiak"
-    },
-    "img": "../assets/img/mariscos.png"
-  },
-  {
-    "id_categoria": "sides_comp",
-    "nombre": {
-      "ES": "Acompañamientos",
-      "EN": "Complements",
-      "FR": "Accompagnements",
-      "EU": "Osagarriak"
-    },
-    "descripcion": {
-      "ES": "Arroces, pastas, verduras y salsas listos para combinar con tu plato principal.",
-      "EN": "Rice, pasta, vegetables, and sauces ready to combine with your main dish.",
-      "FR": "Riz, pâtes, légumes et sauces prêts à combiner avec votre plat principal.",
-      "EU": "Arrozak, pastak, barazkiak eta saltsak zure plater nagusiarekin konbinatzeko prest."
-    },
-    "icono_clase": "fas fa-bread-slice",
-    "url_slug": {
-      "ES": "/catalogo/complementos",
-      "EN": "/catalog/complements",
-      "FR": "/catalogue/accompagnements",
-      "EU": "/katalogoa/osagarriak"
-    },
-    "img": "../assets/img/acompañamientos.png"
-  },
-  {
-    "id_categoria": "breakfast_brunch",
-    "nombre": {
-      "ES": "Desayuno",
-      "EN": "Breakfast",
-      "FR": "Petit-déjeuner",
-      "EU": "Gosaria"
-    },
-    "descripcion": {
-      "ES": "Opciones precocinadas y semi-preparadas para empezar el día o disfrutar del fin de semana.",
-      "EN": "Pre-cooked and semi-prepared options to start the day or enjoy the weekend.",
-      "FR": "Options précuites et semi-préparées pour commencer la journée ou profiter du week-end.",
-      "EU": "Egunari hasiera emateko edo asteburua gozatzeko aurrez prestatuak eta erdi-prestatuak."
-    },
-    "icono_clase": "fa-solid fa-mug-hot",
-    "url_slug": {
-      "ES": "/catalogo/desayuno",
-      "EN": "/catalog/breakfast",
-      "FR": "/catalogue/petit-dejeuner",
-      "EU": "/katalogoa/gosaria"
-    },
-    "img": "../assets/img/desayunos.png"
-  }
-]
+    {
+      "id_categoria": "breakfast_brunch",
+      "nombre": {
+        "ES": "Desayuno",
+        "EN": "Breakfast",
+        "FR": "Petit-déjeuner",
+        "EU": "Gosaria"
+      },
+      "descripcion": {
+        "ES": "Opciones precocinadas y semi-preparadas para empezar el día o disfrutar del fin de semana.",
+        "EN": "Pre-cooked and semi-prepared options to start the day or enjoy the weekend.",
+        "FR": "Options précuites et semi-préparées pour commencer la journée ou profiter du week-end.",
+        "EU": "Egunari hasiera emateko edo asteburua gozatzeko aurrez prestatuak eta erdi-prestatuak."
+      },
+      "icono_clase": "fa-solid fa-mug-hot",
+      "url_slug": {
+        "ES": "/catalogo/desayuno",
+        "EN": "/catalog/breakfast",
+        "FR": "/catalogue/petit-dejeuner",
+        "EU": "/katalogoa/gosaria"
+      },
+      "img": "../assets/img/desayunos.png"
+    }
+  ]
+}
