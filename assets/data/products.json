@@ -1,6 +1,7 @@
 {
   "products": [
     {
+      "id": 1,
       "id_producto": "PM001",
       "id_categoria": "protein_meat",
       "nombre": {
@@ -26,6 +27,7 @@
       "img_url": "assets/img/product-images/pollo-asado.jpg"
     },
     {
+      "id": 2,
       "id_producto": "PM002",
       "id_categoria": "protein_meat",
       "nombre": {
@@ -51,9 +53,10 @@
       "img_url": "assets/img/product-images/solomillo-cerdo.jpg"
     },
     {
+      "id": 3,
       "id_producto": "PM003",
       "id_categoria": "protein_meat",
-      "nombre": {
+      "nombre": { 
         "ES": "Guiso de Vacuno Clásico",
         "EN": "Classic Beef Stew",
         "FR": "Ragoût de Bœuf Classique",
@@ -76,6 +79,7 @@
       "img_url": "assets/img/product-images/guiso-vacuno.jpg"
     },
     {
+      "id": 4,
       "id_producto": "PM004",
       "id_categoria": "protein_meat",
       "nombre": {
@@ -100,7 +104,8 @@
       "precio": 8.50,
       "img_url": "assets/img/product-images/albondigas.jpg"
     },
-    {
+    { 
+      "id": 5,
       "id_producto": "PM005",
       "id_categoria": "protein_meat",
       "nombre": {
@@ -126,6 +131,7 @@
       "img_url": "assets/img/product-images/tiras-pollo-fajitas.jpg"
     },
     {
+      "id": 6,
       "id_producto": "FS001",
       "id_categoria": "fish_seafood",
       "nombre": {
@@ -151,6 +157,7 @@
       "img_url": "assets/img/product-images/salmon-horneado.jpg"
     },
     {
+      "id": 7,
       "id_producto": "FS002",
       "id_categoria": "fish_seafood",
       "nombre": {
@@ -176,6 +183,7 @@
       "img_url": "assets/img/product-images/gammbas-ajillo.jpg"
     },
     {
+      "id": 8,
       "id_producto": "FS003",
       "id_categoria": "fish_seafood",
       "nombre": {
@@ -201,6 +209,7 @@
       "img_url": "assets/img/product-images/ensalada-atun.jpg"
     },
     {
+      "id": 9,
       "id_producto": "FS004",
       "id_categoria": "fish_seafood",
       "nombre": {
@@ -226,6 +235,7 @@
       "img_url": "assets/img/product-images/relleno-tacos.jpg"
     },
     {
+      "id": 10,
       "id_producto": "FS005",
       "id_categoria": "fish_seafood",
       "nombre": {
@@ -251,6 +261,7 @@
       "img_url": "assets/img/product-images/mejillones.jpg"
     },
     {
+      "id": 11,
       "id_producto": "SC001",
       "id_categoria": "sides_comp",
       "nombre": {
@@ -276,6 +287,7 @@
       "img_url": "assets/img/product-images/arroz.jpg"
     },
     {
+      "id": 12,
       "id_producto": "SC002",
       "id_categoria": "sides_comp",
       "nombre": {
@@ -301,6 +313,7 @@
       "img_url": "assets/img/product-images/verduras-asadas.jpg"
     },
     {
+      "id": 13,
       "id_producto": "SC003",
       "id_categoria": "sides_comp",
       "nombre": {
@@ -326,6 +339,7 @@
       "img_url": "assets/img/product-images/pasta-pesto.jpg"
     },
     {
+      "id": 14,
       "id_producto": "SC004",
       "id_categoria": "sides_comp",
       "nombre": {
@@ -351,6 +365,7 @@
       "img_url": "assets/img/product-images/pure-patata.jpg"
     },
     {
+      "id": 15,
       "id_producto": "SC005",
       "id_categoria": "sides_comp",
       "nombre": {
@@ -376,6 +391,7 @@
       "img_url": "assets/img/product-images/salsa gravy.jpg"
     },
     {
+      "id": 16,
       "id_producto": "BB001",
       "id_categoria": "breakfast_brunch",
       "nombre": {
@@ -401,6 +417,7 @@
       "img_url": "assets/img/product-images/huevo-revuelto.jpg"
     },
     {
+      "id": 17,
       "id_producto": "BB002",
       "id_categoria": "breakfast_brunch",
       "nombre": {
@@ -426,6 +443,7 @@
       "img_url": "assets/img/product-images/mezcla-pancakes.jpg"
     },
     {
+      "id": 18,
       "id_producto": "BB003",
       "id_categoria": "breakfast_brunch",
       "nombre": {
@@ -451,6 +469,7 @@
       "img_url": "assets/img/product-images/yogurt-frutas.jpg"
     },
     {
+      "id": 19,
       "id_producto": "BB004",
       "id_categoria": "breakfast_brunch",
       "nombre": {
@@ -476,6 +495,7 @@
       "img_url": "assets/img/product-images/salchichas.jpg"
     },
     {
+      "id": 20,
       "id_producto": "BB005",
       "id_categoria": "breakfast_brunch",
       "nombre": {
