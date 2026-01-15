@@ -1,10 +1,11 @@
 /* admin/components/SideBar.js */
 const Sidebar = {
     menuItems: [
-        { label: 'Dashboard', icon: 'fas fa-chart-line', link: '../dashboard/index.html' },
-        { label: 'Products', icon: 'fas fa-box', link: '../products/index.html' },
-        { label: 'Orders', icon: 'fas fa-shopping-cart', link: '../orders/index.html' },
-        { label: 'Users', icon: 'fas fa-users', link: '../users/index.html' },
+        { label: 'Dashboard', icon: 'fas fa-chart-line', link: '../dashboard/' },
+        { label: 'Products', icon: 'fas fa-box', link: '../products/' },
+        { label: 'Orders', icon: 'fas fa-shopping-cart', link: '../orders/' },
+        { label: 'Users', icon: 'fas fa-users', link: '../users/' },
+        { label: 'Categories', icon: 'fas fa-users', link: '../categories/' },
         { label: 'Settings', icon: 'fas fa-cog', link: '#settings' }
     ],
 
@@ -15,6 +16,7 @@ const Sidebar = {
         if (currentPath.includes('/products/')) return 'products';
         if (currentPath.includes('/orders/')) return 'orders';
         if (currentPath.includes('/users/')) return 'users';
+        if (currentPath.includes('/categories/')) return 'categories';
         
         return 'dashboard'; // default
     },
@@ -37,6 +39,7 @@ const Sidebar = {
             else if (item.link.includes('/products/') && currentPage === 'products') isActive = true;
             else if (item.link.includes('/orders/') && currentPage === 'orders') isActive = true;
             else if (item.link.includes('/users/') && currentPage === 'users') isActive = true;
+            else if (item.link.includes('/categories/') && currentPage === 'categories') isActive = true;
             
             return `
             <li>
