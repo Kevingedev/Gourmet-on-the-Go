@@ -1,4 +1,98 @@
 {
+  "categories": [
+    {
+      "id_categoria": "protein_meat",
+      "nombre": {
+        "ES": "Carnes",
+        "EN": "Meat",
+        "FR": "Viandes",
+        "EU": "Haragiak"
+      },
+      "descripcion": {
+        "ES": "Recetas de vacuno, cerdo, pollo y pavo listas para servir.",
+        "EN": "Ready-to-serve beef, pork, chicken, and turkey recipes.",
+        "FR": "Recettes de bœuf, porc, poulet et dinde prêtes à servir.",
+        "EU": "Behi, txerri, oilasko eta indioilar errezetak zerbitzatzeko prest."
+      },
+      "icono_clase": "fa-solid fa-drumstick-bite",
+      "url_slug": {
+        "ES": "/catalogo/carnes",
+        "EN": "/catalog/meat",
+        "FR": "/catalogue/viandes",
+        "EU": "/katalogoa/haragiak"
+      },
+      "img": "../assets/img/carnes.png"
+    },
+    {
+      "id_categoria": "fish_seafood",
+      "nombre": {
+        "ES": "Mariscos",
+        "EN": "Seafood",
+        "FR": "Fruits de mer",
+        "EU": "Itsaskiak"
+      },
+      "descripcion": {
+        "ES": "Platos preparados con pescado, marisco y opciones de base de agua.",
+        "EN": "Dishes prepared with fish, shellfish, and water-based options.",
+        "FR": "Plats préparés avec du poisson, des fruits de mer et des options à base d'eau.",
+        "EU": "Arrain, itsaski eta ur oinarriko aukerekin prestaturiko platerak."
+      },
+      "icono_clase": "fa-solid fa-fish",
+      "url_slug": {
+        "ES": "/catalogo/mariscos",
+        "EN": "/catalog/seafood",
+        "FR": "/catalogue/fruits-de-mer",
+        "EU": "/katalogoa/itsaskiak"
+      },
+      "img": "../assets/img/mariscos.png"
+    },
+    {
+      "id_categoria": "sides_comp",
+      "nombre": {
+        "ES": "Acompañamientos",
+        "EN": "Complements",
+        "FR": "Accompagnements",
+        "EU": "Osagarriak"
+      },
+      "descripcion": {
+        "ES": "Arroces, pastas, verduras y salsas listos para combinar con tu plato principal.",
+        "EN": "Rice, pasta, vegetables, and sauces ready to combine with your main dish.",
+        "FR": "Riz, pâtes, légumes et sauces prêts à combiner avec votre plat principal.",
+        "EU": "Arrozak, pastak, barazkiak eta saltsak zure plater nagusiarekin konbinatzeko prest."
+      },
+      "icono_clase": "fas fa-bread-slice",
+      "url_slug": {
+        "ES": "/catalogo/complementos",
+        "EN": "/catalog/complements",
+        "FR": "/catalogue/accompagnements",
+        "EU": "/katalogoa/osagarriak"
+      },
+      "img": "../assets/img/acompañamientos.png"
+    },
+    {
+      "id_categoria": "breakfast_brunch",
+      "nombre": {
+        "ES": "Desayuno",
+        "EN": "Breakfast",
+        "FR": "Petit-déjeuner",
+        "EU": "Gosaria"
+      },
+      "descripcion": {
+        "ES": "Opciones precocinadas y semi-preparadas para empezar el día o disfrutar del fin de semana.",
+        "EN": "Pre-cooked and semi-prepared options to start the day or enjoy the weekend.",
+        "FR": "Options précuites et semi-préparées pour commencer la journée ou profiter du week-end.",
+        "EU": "Egunari hasiera emateko edo asteburua gozatzeko aurrez prestatuak eta erdi-prestatuak."
+      },
+      "icono_clase": "fa-solid fa-mug-hot",
+      "url_slug": {
+        "ES": "/catalogo/desayuno",
+        "EN": "/catalog/breakfast",
+        "FR": "/catalogue/petit-dejeuner",
+        "EU": "/katalogoa/gosaria"
+      },
+      "img": "../assets/img/desayunos.png"
+    }
+  ],
   "products": [
     {
       "id": 1,
@@ -49,14 +143,14 @@
         "EU": "500 gramo"
       },
       "featured": false,
-      "precio": 12.50,
+      "precio": 12.5,
       "img_url": "assets/img/product-images/solomillo-cerdo.jpg"
     },
     {
       "id": 3,
       "id_producto": "PM003",
       "id_categoria": "protein_meat",
-      "nombre": { 
+      "nombre": {
         "ES": "Guiso de Vacuno Clásico",
         "EN": "Classic Beef Stew",
         "FR": "Ragoût de Bœuf Classique",
@@ -101,10 +195,10 @@
         "EU": "6 Unitatea (300 gramo)"
       },
       "featured": false,
-      "precio": 8.50,
+      "precio": 8.5,
       "img_url": "assets/img/product-images/albondigas.jpg"
     },
-    { 
+    {
       "id": 5,
       "id_producto": "PM005",
       "id_categoria": "protein_meat",
@@ -179,7 +273,7 @@
         "EU": "250 gramo"
       },
       "featured": true,
-      "precio": 15.50,
+      "precio": 15.5,
       "img_url": "assets/img/product-images/gammbas-ajillo.jpg"
     },
     {
@@ -205,7 +299,7 @@
         "EU": "200 gramo"
       },
       "featured": false,
-      "precio": 7.50,
+      "precio": 7.5,
       "img_url": "assets/img/product-images/ensalada-atun.jpg"
     },
     {
@@ -257,7 +351,7 @@
         "EU": "500 gramo"
       },
       "featured": true,
-      "precio": 13.50,
+      "precio": 13.5,
       "img_url": "assets/img/product-images/mejillones.jpg"
     },
     {
@@ -283,7 +377,7 @@
         "EU": "300 gramo"
       },
       "featured": false,
-      "precio": 4.50,
+      "precio": 4.5,
       "img_url": "assets/img/product-images/arroz.jpg"
     },
     {
@@ -387,7 +481,7 @@
         "EU": "200 ml"
       },
       "featured": true,
-      "precio": 3.50,
+      "precio": 3.5,
       "img_url": "assets/img/product-images/salsa gravy.jpg"
     },
     {
@@ -413,7 +507,7 @@
         "EU": "Porzio bakarra (150 gramo)"
       },
       "featured": false,
-      "precio": 5.50,
+      "precio": 5.5,
       "img_url": "assets/img/product-images/huevo-revuelto.jpg"
     },
     {
@@ -465,7 +559,7 @@
         "EU": "1 Basoa (200 gramo)"
       },
       "featured": false,
-      "precio": 6.00,
+      "precio": 6,
       "img_url": "assets/img/product-images/yogurt-frutas.jpg"
     },
     {
@@ -519,6 +613,62 @@
       "featured": false,
       "precio": 8.75,
       "img_url": "assets/img/product-images/mini-muffins.jpg"
+    },
+    {
+      "id": 21,
+      "id_producto": "PM021",
+      "id_categoria": "protein_meat",
+      "nombre": {
+        "ES": "Nuevo producto",
+        "EN": "Nuevo producto",
+        "FR": "Nuevo producto",
+        "EU": "Nuevo producto"
+      },
+      "descripcion": {
+        "ES": "Descripcion del nuevo producto",
+        "EN": "Descripcion del nuevo producto",
+        "FR": "Descripcion del nuevo producto",
+        "EU": "Descripcion del nuevo producto"
+      },
+      "unidad_medida": {
+        "ES": "5 kg",
+        "EN": "5 kg",
+        "FR": "5 kg",
+        "EU": "5 kg"
+      },
+      "featured": true,
+      "precio": 10,
+      "img_url": "assets/img/product-images/img-test.jpg"
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "userId": 1,
+      "productId": 2,
+      "quantity": 3,
+      "status": "completed",
+      "orderDate": "2023-10-01T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "productId": 1,
+      "quantity": 1,
+      "status": "completed",
+      "orderDate": "2023-10-02T14:30:00Z"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "superadmin",
+      "password": "admin123",
+      "rol": "admin",
+      "nombre_completo": "Super Admin",
+      "email": "admin@admin.com",
+      "edad": null,
+      "fecha_registro": "2025-12-10"
     }
   ]
 }

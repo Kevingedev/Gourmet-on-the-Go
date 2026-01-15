@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Administración de Usuarios</title>
+
+    <!-- Ruta correcta desde ADMIN/app/users/ -->
+    <link rel="stylesheet" href="../../assets/tables.css">
+</head>
+
+<body class="users-section">
+
+    <header>
+        <h1>Usuarios</h1>
+    </header>
+
+    <!-- Zona de acciones -->
+    <div class="actions-container">
+        <button id="btn-nuevo" class="btn">Nuevo Usuario</button>
+    </div>
+
+    <!-- Contenedor que tu CSS sí estiliza -->
+    <div class="users-container">
+        <table id="tabla-usuarios">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="hidden modal">
+        <div class="modal-content">
+            <h2 id="modal-title"></h2>
+
+            <form id="form-usuario">
+                <input id="username" placeholder="Usuario" required>
+                <input id="email" placeholder="Email" required>
+                <input id="nombre_completo" placeholder="Nombre completo" required>
+                <input id="password" type="password" placeholder="Contraseña" required>
+
+                <select id="rol">
+                    <option value="usuario">Usuario</option>
+                    <option value="admin">Administrador</option>
+                </select>
+
+                <button type="submit" class="btn">Guardar</button>
+                <button type="button" id="btn-cerrar" class="btn">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../../lib/actions/users.js"></script>
+</body>
+
+</html>
