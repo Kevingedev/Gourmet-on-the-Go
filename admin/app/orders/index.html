@@ -2,61 +2,57 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | Productos</title>
-    <!-- Fonts and Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Assets -->
-    <link rel="stylesheet" href="../../assets/header.css">
-    <link rel="stylesheet" href="../../assets/sidebar.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Productos</title>
+  <!-- Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Assets -->
+  <link rel="stylesheet" href="../../assets/header.css">
+  <link rel="stylesheet" href="../../assets/sidebar.css">
+  <link rel="stylesheet" href="table.css">
 </head>
 
+</style>
 
 <body>
-     <header>
+  <header id="header"></header>
+  <aside id="sidebar"></aside>
 
-    <h1>Pedidos</h1>
-    <nav>
-      <a href="/app/dashboard/index.html">Dashboard</a>
-      <a href="/app/users/index.html">Usuarios</a>
-      <a href="/app/products/index.html">Productos</a>
-    </nav>
-  </header>
 
-  <table id="tabla-pedidos">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Usuario</th>
-        <th>Total</th>
-        <th>Fecha</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-    <aside id="sidebar"></aside>
-    <main id="main">
-        <section class="products-section">
-            <h1>Gestión de Productos</h1>
-            <!-- Content will go here -->
-        </section>
-         <!-- Modal Detalle Pedido -->
-        <div id="modal" class="hidden modal">
-            <div class="modal-content">
-            <h2>Detalle del Pedido</h2>
-            <pre id="detalle-pedido"></pre>
-            <button id="btn-cerrar">Cerrar</button>
-            </div>
-        </div>
-    </main>
 
-    <!-- Components -->
-    <script type="module" src="order.js"></script>
-    <script src="../../components/Header.js"></script>
-    <script src="../../components/SideBar.js"></script>
+  <main id="main">
+    <section class="products-section">
+      <h1>Gestión de Productos</h1>
+      <table id="tabla-pedidos">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Usuario</th>
+            <th>Total</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <!-- Content will go here -->
+    </section>
+    <!-- Modal Detalle Pedido -->
+    <div id="modal" class="hidden modal">
+      <div class="modal-content">
+        <h2>Detalle del Pedido</h2>
+        <pre id="detalle-pedido"></pre>
+        <button id="btn-cerrar">Cerrar</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Components -->
+  <script type="module" src="order.js"></script>
+  <script src="../../components/Header.js"></script>
+  <script src="../../components/SideBar.js"></script>
 </body>
 
 </html>
