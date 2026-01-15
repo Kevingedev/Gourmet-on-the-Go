@@ -13,24 +13,6 @@ function checkAdminAccess() {
     const currentUser = localStorage.getItem('currentUser');
     console.log('Current user from localStorage:', currentUser);
     
-    // TEMPORARY: Admin bypass for testing - remove this in production!
-    if (window.location.search.includes('bypass=admin') || !currentUser) {
-        console.log('Admin bypass activated - creating test admin user');
-        const testAdmin = {
-            id: 1,
-            username: 'admin',
-            nombre_completo: 'Admin User',
-            email: 'admin@admin.com',
-            rol: 'admin',
-            role: 'admin'
-        };
-        localStorage.setItem('currentUser', JSON.stringify(testAdmin));
-        console.log('Test admin user created and saved to localStorage');
-        // Reload the page to pick up the new user data
-        window.location.reload();
-        return;
-    }
-    
     if (!currentUser) {
         console.log('No user found in localStorage - redirecting to home');
         redirectToHome();
@@ -265,25 +247,56 @@ function populateProductsList(products) {
         return;
     }
 
-    // Show first 5 products
-    const recentProducts = products.slice(0, 5);
+    let showingAll = false;
+    const initialCount = 4;
     
-    productsList.innerHTML = recentProducts.map(product => {
-        // Extract data from the actual API structure
-        const name = product.nombre ? product.nombre.ES || product.nombre.EN || 'Sin nombre' : 'Sin nombre';
-        const description = product.descripcion ? product.descripcion.ES || product.descripcion.EN || 'Sin descripción' : 'Sin descripción';
-        const price = product.precio ? `$${product.precio}` : '';
-        const id = product.id_producto || product.id || 'N/A';
+    function renderProducts() {
+        const productsToShow = showingAll ? products : products.slice(0, initialCount);
         
-        return `
-        <div class="data-item">
-            <div class="data-item-info">
-                <h3>${name}</h3>
-                <p>ID: ${id} | ${description} ${price ? `- ${price}` : ''}</p>
+        const productsHTML = productsToShow.map(product => {
+            // Extract data from the actual API structure
+            const name = product.nombre ? product.nombre.ES || product.nombre.EN || 'Sin nombre' : 'Sin nombre';
+            const description = product.descripcion ? product.descripcion.ES || product.descripcion.EN || 'Sin descripción' : 'Sin descripción';
+            const price = product.precio ? `$${product.precio}` : '';
+            const id = product.id_producto || product.id || 'N/A';
+            
+            return `
+            <div class="data-item">
+                <div class="data-item-info">
+                    <h3>${name}</h3>
+                    <p>ID: ${id} | ${description} ${price ? `- ${price}` : ''}</p>
+                </div>
             </div>
-        </div>
-    `;
-    }).join('');
+        `;
+        }).join('');
+        
+        // Add show more/less button if there are more products than initial count
+        let buttonHTML = '';
+        if (products.length > initialCount) {
+            buttonHTML = `
+                <div class="data-item show-more-container">
+                    <button class="btn-action show-more-btn" id="toggle-products">
+                        ${showingAll ? 'Mostrar menos' : 'Mostrar más'}
+                        <i class="fas fa-chevron-${showingAll ? 'up' : 'down'}"></i>
+                    </button>
+                </div>
+            `;
+        }
+        
+        productsList.innerHTML = productsHTML + buttonHTML;
+        
+        // Add event listener to the toggle button
+        const toggleBtn = document.getElementById('toggle-products');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                showingAll = !showingAll;
+                renderProducts();
+            });
+        }
+    }
+    
+    // Initial render
+    renderProducts();
 }
 
 // Populate categories list
@@ -369,54 +382,7 @@ function populateOrdersList(orders) {
     }).join('');
 }
 
-// Placeholder functions for actions
-function editProduct(id) {
-    console.log('Edit product:', id);
-    alert('Editar producto: ' + id);
-}
 
-function deleteProduct(id) {
-    console.log('Delete product:', id);
-    if (confirm('¿Estás seguro de eliminar este producto?')) {
-        alert('Producto eliminado: ' + id);
-    }
-}
-
-function editCategory(id) {
-    console.log('Edit category:', id);
-    alert('Editar categoría: ' + id);
-}
-
-function deleteCategory(id) {
-    console.log('Delete category:', id);
-    if (confirm('¿Estás seguro de eliminar esta categoría?')) {
-        alert('Categoría eliminada: ' + id);
-    }
-}
-
-function editUser(id) {
-    console.log('Edit user:', id);
-    alert('Editar usuario: ' + id);
-}
-
-function deleteUser(id) {
-    console.log('Delete user:', id);
-    if (confirm('¿Estás seguro de eliminar este usuario?')) {
-        alert('Usuario eliminado: ' + id);
-    }
-}
-
-function viewOrder(id) {
-    console.log('View order:', id);
-    alert('Ver pedido: ' + id);
-}
-
-function deleteOrder(id) {
-    console.log('Delete order:', id);
-    if (confirm('¿Estás seguro de eliminar este pedido?')) {
-        alert('Pedido eliminado: ' + id);
-    }
-}
 
 // Refresh data every 30 seconds
 setInterval(() => {

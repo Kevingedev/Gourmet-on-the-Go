@@ -48,7 +48,7 @@ const Header = {
                     </div>
                     <div class="dropdown-menu" id="userDropdownMenu">
                         <a href="${profileUrl}"><i class="fas fa-user-circle"></i> Mi Perfil</a>
-                        <a href="#"><i class="fas fa-cog"></i> Configuración</a>
+                       
                         <hr>
                         <a href="#" onclick="Header.handleLogout()" class="logout-link">
                             <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
@@ -77,7 +77,15 @@ const Header = {
 
     handleLogout: function () {
         console.log('Logging out...');
-        // Add logout logic here
+        
+        // Clear user session
+        localStorage.removeItem('currentUser');
+        
+        // Get user's preferred language and redirect to home
+        const userLanguage = this.getUserLanguage();
+        
+        // Redirect to home page
+        window.location.href = `/${userLanguage}/index.html`;
     }
 };
 
