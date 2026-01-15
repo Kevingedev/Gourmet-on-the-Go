@@ -27,10 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     </span>
                 </td>
                 <td data-label="Acciones">
-                    <button class="action-btn edit" data-id="${user.id}" data-tooltip="Editar usuario">
+                    <button class="action-btn edit" data-id="${user.id}">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="action-btn delete" data-id="${user.id}" data-tooltip="Eliminar usuario">
+                    <button class="action-btn delete" data-id="${user.id}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
