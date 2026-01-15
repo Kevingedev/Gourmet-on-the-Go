@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin | Productos</title>
+  <title>Admin | Pedidos</title>
   <!-- Fonts and Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,39 +12,64 @@
   <link rel="stylesheet" href="../../assets/header.css">
   <link rel="stylesheet" href="../../assets/sidebar.css">
   <link rel="stylesheet" href="table.css">
+  <link rel="stylesheet" href="../products/modal.css">
 </head>
-
-</style>
 
 <body>
   <header id="header"></header>
   <aside id="sidebar"></aside>
 
-
-
   <main id="main">
     <section class="products-section">
-      <h1>Gestión de Productos</h1>
-      <table id="tabla-pedidos">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Total</th>
-            <th>Fecha</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <!-- Content will go here -->
+      <h1>Gestión de Pedidos</h1>
+      <div class="products-container">
+        <table id="tabla-pedidos">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Total</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </section>
+    
     <!-- Modal Detalle Pedido -->
     <div id="modal" class="hidden modal">
       <div class="modal-content">
-        <h2>Detalle del Pedido</h2>
-        <pre id="detalle-pedido"></pre>
-        <button id="btn-cerrar">Cerrar</button>
+        <div class="modal-header">
+          <h2>Detalle del Pedido</h2>
+          <button type="button" class="close-btn" id="btn-cerrar">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="detalle-pedido"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Confirmación Eliminar -->
+    <div id="deleteModal" class="hidden modal">
+      <div class="modal-content modal-content--small">
+        <div class="modal-header modal-header--danger">
+          <h2>
+            <i class="fas fa-exclamation-triangle"></i>
+            Confirmar Eliminación
+          </h2>
+          <button type="button" class="close-btn" id="btn-cerrar-delete">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="delete-message">¿Estás seguro de que deseas eliminar este pedido?</p>
+          <p class="delete-product-name">Pedido #<span id="deleteOrderId"></span></p>
+          <p class="delete-warning">Esta acción no se puede deshacer</p>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" id="btn-cancel-delete">Cancelar</button>
+          <button class="btn-delete" id="btn-confirm-delete">Eliminar</button>
+        </div>
       </div>
     </div>
   </main>
