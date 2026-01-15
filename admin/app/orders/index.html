@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Administración de Pedidos</title>
-  <link rel="stylesheet" href="/assets/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Productos</title>
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Assets -->
+    <link rel="stylesheet" href="../../assets/header.css">
+    <link rel="stylesheet" href="../../assets/sidebar.css">
 </head>
+
+
 <body>
-
-
-
-  
-  <header>
+     <header>
 
     <h1>Pedidos</h1>
     <nav>
@@ -32,16 +37,26 @@
     </thead>
     <tbody></tbody>
   </table>
+    <aside id="sidebar"></aside>
+    <main id="main">
+        <section class="products-section">
+            <h1>Gestión de Productos</h1>
+            <!-- Content will go here -->
+        </section>
+         <!-- Modal Detalle Pedido -->
+        <div id="modal" class="hidden modal">
+            <div class="modal-content">
+            <h2>Detalle del Pedido</h2>
+            <pre id="detalle-pedido"></pre>
+            <button id="btn-cerrar">Cerrar</button>
+            </div>
+        </div>
+    </main>
 
-  <!-- Modal Detalle Pedido -->
-  <div id="modal" class="hidden modal">
-    <div class="modal-content">
-      <h2>Detalle del Pedido</h2>
-      <pre id="detalle-pedido"></pre>
-      <button id="btn-cerrar">Cerrar</button>
-    </div>
-  </div>
-
-  <script type="module" src="order.js"></script>
+    <!-- Components -->
+    <script type="module" src="order.js"></script>
+    <script src="../../components/Header.js"></script>
+    <script src="../../components/SideBar.js"></script>
 </body>
+
 </html>
