@@ -5,7 +5,7 @@ const Sidebar = {
         { label: 'Products', icon: 'fas fa-box', link: '../products/index.html' },
         { label: 'Orders', icon: 'fas fa-shopping-cart', link: '../orders/index.html' },
         { label: 'Users', icon: 'fas fa-users', link: '../users/index.html' },
-        { label: 'Settings', icon: 'fas fa-cog', link: '#settings' }
+        { label: 'Settings', icon: 'fas fa-cog', link: '../settings/index.html' }
     ],
 
     getCurrentPage: function() {
@@ -15,6 +15,7 @@ const Sidebar = {
         if (currentPath.includes('/products/')) return 'products';
         if (currentPath.includes('/orders/')) return 'orders';
         if (currentPath.includes('/users/')) return 'users';
+        if (currentPath.includes('/settings/')) return 'settings';
         
         return 'dashboard'; // default
     },
@@ -37,6 +38,7 @@ const Sidebar = {
             else if (item.link.includes('/products/') && currentPage === 'products') isActive = true;
             else if (item.link.includes('/orders/') && currentPage === 'orders') isActive = true;
             else if (item.link.includes('/users/') && currentPage === 'users') isActive = true;
+            else if (item.link.includes('/settings/') && currentPage === 'settings') isActive = true;
             
             return `
             <li>
