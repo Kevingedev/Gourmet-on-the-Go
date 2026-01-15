@@ -6,7 +6,7 @@ const Sidebar = {
         { label: 'Orders', icon: 'fas fa-shopping-cart', link: '../orders/' },
         { label: 'Users', icon: 'fas fa-users', link: '../users/' },
         { label: 'Categories', icon: 'fas fa-users', link: '../categories/' },
-        { label: 'Settings', icon: 'fas fa-cog', link: '#settings' }
+        { label: 'Settings', icon: 'fas fa-cog', link: '#settings' },
         { label: 'Dashboard', icon: 'fas fa-chart-line', link: '../dashboard/index.html' },
         { label: 'Products', icon: 'fas fa-box', link: '../products/index.html' },
         { label: 'Orders', icon: 'fas fa-shopping-cart', link: '../orders/index.html' },
