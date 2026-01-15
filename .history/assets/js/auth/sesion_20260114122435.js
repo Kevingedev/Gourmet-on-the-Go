@@ -121,7 +121,11 @@ const accountMenuTexts = {
         title: 'Mi cuenta',
         viewAccount: 'Ver mi cuenta',
         favorites: 'Mis favoritos',
+<<<<<<< HEAD
         adminDashboard: 'Panel de Administración',
+=======
+        adminDashboard: 'Panel de administración',
+>>>>>>> 3d1b0e3b3ac7b8d8f1721e7407676a3e8c81bb26
         logout: 'Cerrar sesión',
         closePanel: 'Cerrar panel',
         confirmLogout: 'Cerrar sesión',
@@ -151,7 +155,11 @@ const accountMenuTexts = {
         title: 'Mon Compte',
         viewAccount: 'Voir mon compte',
         favorites: 'Mes Favoris',
+<<<<<<< HEAD
         adminDashboard: 'Tableau de Bord Admin',
+=======
+        adminDashboard: 'Tableau de bord admin',
+>>>>>>> 3d1b0e3b3ac7b8d8f1721e7407676a3e8c81bb26
         logout: 'Déconnexion',
         closePanel: 'Fermer le panneau',
         confirmLogout: 'Déconnexion',
@@ -166,7 +174,11 @@ const accountMenuTexts = {
         title: 'Nire Kontua',
         viewAccount: 'Ikusi nire kontua',
         favorites: 'Nire Gogokoak',
+<<<<<<< HEAD
         adminDashboard: 'Admin Panela',
+=======
+        adminDashboard: 'Admin panela',
+>>>>>>> 3d1b0e3b3ac7b8d8f1721e7407676a3e8c81bb26
         logout: 'Saioa Itxi',
         closePanel: 'Panela itxi',
         confirmLogout: 'Saioa Itxi',
@@ -274,8 +286,13 @@ function renderAccountMenu() {
                     
                     <a href="${PATH}${texts.favoritesPage}" class="links-sesion account-item"><span><i class="fa-regular fa-heart icon-sesion"></i> ${texts.favorites}</span></a>
 
+<<<<<<< HEAD
                     ${currentUser.rol === 'admin' || currentUser.role === 'admin' || currentUser.admin === true || currentUser.userType === 'admin' ? 
                         `<a href="${ADMIN_PATH}" class="links-sesion account-item"><span><i class="fa-solid fa-gear icon-sesion"></i> ${texts.adminDashboard}</span></a>` 
+=======
+                    ${currentUser.rol === 'admin' || currentUser.role === 'admin' ? 
+                        `<a href="../../admin/app/dashboard/index.html" class="links-sesion account-item"><span><i class="fa-solid fa-gear icon-sesion"></i> ${texts.adminDashboard}</span></a>` 
+>>>>>>> 3d1b0e3b3ac7b8d8f1721e7407676a3e8c81bb26
                         : ''}
 
                     <a role="button" class="links-sesion account-item account-item-danger" id="logout"><span><i class="fa-solid fa-arrow-right-from-bracket"></i> ${texts.logout}</span></a>
