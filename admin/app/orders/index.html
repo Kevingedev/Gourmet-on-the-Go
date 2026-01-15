@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Administración de Pedidos</title>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+
+
+  
+  <header>
+
+    <h1>Pedidos</h1>
+    <nav>
+      <a href="/app/dashboard/index.html">Dashboard</a>
+      <a href="/app/users/index.html">Usuarios</a>
+      <a href="/app/products/index.html">Productos</a>
+    </nav>
+  </header>
+
+  <table id="tabla-pedidos">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Total</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- Modal Detalle Pedido -->
+  <div id="modal" class="hidden modal">
+    <div class="modal-content">
+      <h2>Detalle del Pedido</h2>
+      <pre id="detalle-pedido"></pre>
+      <button id="btn-cerrar">Cerrar</button>
+    </div>
+  </div>
+
+  <script type="module" src="order.js"></script>
+</body>
+</html>
