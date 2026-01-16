@@ -22,17 +22,29 @@ async function cargarPedidos() {
 
   tabla.innerHTML = await Promise.all(
     pedidos.map(async (p) => {
-      const user = await fetch(`${USERS_URL}/${p.userId}`).then(r => r.json());
+      let user = { username: 'Usuario eliminado' };
+      try {
+        const userResponse = await fetch(`${USERS_URL}/${p.userId}`);
+        if (userResponse.ok) {
+          user = await userResponse.json();
+        }
+      } catch (error) {
+        console.log(`Usuario ${p.userId} no encontrado`);
+      }
 
       return `
         <tr>
           <td>${p.id}</td>
           <td>${user.username}</td>
-          <td>${p.total} €</td>
-          <td>${p.date}</td>
+          <td>${p.total ? p.total.toFixed(2) + ' €' : '0.00 €'}</td>
+          <td>${p.orderDate ? new Date(p.orderDate).toLocaleString('es-ES') : 'Sin fecha'}</td>
           <td>
-            <button class="btn-detalle" data-id="${p.id}">Ver</button>
-            <button class="btn-borrar" data-id="${p.id}">Eliminar</button>
+            <button class="btn-detalle" data-id="${p.id}" title="Ver detalles">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="btn-borrar" data-id="${p.id}" title="Eliminar pedido">
+              <i class="fas fa-trash"></i>
+            </button>
           </td>
         </tr>
       `;
@@ -77,6 +89,10 @@ async function verDetalle(id) {
         <span>${pedido.productId}</span>
       </div>
       <div class="detalle-item">
+        <label>Nombre del Producto:</label>
+        <span>${pedido.nombreproducto}</span>
+      </div>
+      <div class="detalle-item">
         <label>Cantidad:</label>
         <span>${pedido.quantity}</span>
       </div>
@@ -86,7 +102,7 @@ async function verDetalle(id) {
       </div>
       <div class="detalle-item">
         <label>Fecha del Pedido:</label>
-        <span>${new Date(pedido.orderDate).toLocaleString('es-ES')}</span>
+        <span>${pedido.orderDate ? new Date(pedido.orderDate).toLocaleString('es-ES') : 'Sin fecha'}</span>
       </div>
     </div>
   `;
