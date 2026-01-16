@@ -1,17 +1,39 @@
+// ======================================================================
+//  USERS.JS — Gestión completa de usuarios con modales premium
+// ======================================================================
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const API_URL = "http://localhost:3005/users";
 
+    // ======================================================================
+    //  REFERENCIAS DEL DOM
+    // ======================================================================
+
     const tabla = document.querySelector("#tabla-usuarios tbody");
-    const modal = document.getElementById("modal");
-    const form = document.getElementById("form-usuario");
+
+    // NUEVO — Referencias del modal Crear/Editar
+    const userModal = document.getElementById("userModal");
+    const userModalTitle = document.getElementById("userModalTitle");
+    const closeUserModal = document.getElementById("closeUserModal");
+    const userForm = document.getElementById("userForm");
+
+    // NUEVO — Referencias del modal Eliminar
+    const deleteUserModal = document.getElementById("deleteUserModal");
+    const closeDeleteUserModal = document.getElementById("closeDeleteUserModal");
+    const cancelDeleteUser = document.getElementById("cancelDeleteUser");
+    const confirmDeleteUser = document.getElementById("confirmDeleteUser");
+    const deleteUserName = document.getElementById("deleteUserName");
+
     const btnNuevo = document.getElementById("btn-nuevo");
-    const btnCerrar = document.getElementById("btn-cerrar");
-    const modalTitle = document.getElementById("modal-title");
 
     let editando = false;
     let usuarioId = null;
+    let userToDelete = null;
 
+    // ======================================================================
+    //  CARGAR USUARIOS
+    // ======================================================================
     async function cargarUsuarios() {
         const res = await fetch(API_URL);
         const data = await res.json();
@@ -30,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <button class="action-btn edit" data-id="${user.id}">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="action-btn delete" data-id="${user.id}">
+                    <button class="action-btn delete" data-id="${user.id}" data-username="${user.username}">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
@@ -40,24 +62,45 @@ document.addEventListener("DOMContentLoaded", () => {
         activarBotones();
     }
 
+    // ======================================================================
+    //  ACTIVAR BOTONES
+    // ======================================================================
     function activarBotones() {
+
+        // Editar
         document.querySelectorAll(".action-btn.edit").forEach(btn => {
             btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id));
         });
 
+        // Eliminar
         document.querySelectorAll(".action-btn.delete").forEach(btn => {
-            btn.addEventListener("click", () => borrarUsuario(btn.dataset.id));
+            btn.addEventListener("click", () => {
+                abrirModalEliminar(btn.dataset.id, btn.dataset.username);
+            });
         });
     }
 
+    // ======================================================================
+    //  NUEVO — MODAL CREAR NUEVO USUARIO
+    // ======================================================================
     btnNuevo.addEventListener("click", () => {
         editando = false;
         usuarioId = null;
-        modalTitle.textContent = "Nuevo Usuario";
-        form.reset();
-        modal.classList.remove("hidden");
+
+        userModalTitle.textContent = "Nuevo Usuario";
+        userForm.reset();
+
+        userModal.style.display = "block";
     });
 
+    // NUEVO — Cerrar modal Crear/Editar
+    closeUserModal.addEventListener("click", () => {
+        userModal.style.display = "none";
+    });
+
+    // ======================================================================
+    //  NUEVO — MODAL EDITAR USUARIO
+    // ======================================================================
     async function abrirModalEditar(id) {
         editando = true;
         usuarioId = id;
@@ -65,26 +108,29 @@ document.addEventListener("DOMContentLoaded", () => {
         const res = await fetch(`${API_URL}/${id}`);
         const user = await res.json();
 
-        modalTitle.textContent = "Editar Usuario";
+        userModalTitle.textContent = "Editar Usuario";
 
-        form.username.value = user.username;
-        form.email.value = user.email;
-        form.nombre_completo.value = user.nombre_completo;
-        form.password.value = user.password;
-        form.rol.value = user.rol;
+        userForm.username.value = user.username;
+        userForm.email.value = user.email;
+        userForm.nombre_completo.value = user.nombre_completo;
+        userForm.password.value = user.password;
+        userForm.rol.value = user.rol;
 
-        modal.classList.remove("hidden");
+        userModal.style.display = "block";
     }
 
-    form.addEventListener("submit", async (e) => {
+    // ======================================================================
+    //  NUEVO — GUARDAR USUARIO (CREAR O EDITAR)
+    // ======================================================================
+    userForm.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const userData = {
-            username: form.username.value,
-            email: form.email.value,
-            nombre_completo: form.nombre_completo.value,
-            password: form.password.value,
-            rol: form.rol.value,
+            username: userForm.username.value,
+            email: userForm.email.value,
+            nombre_completo: userForm.nombre_completo.value,
+            password: userForm.password.value,
+            rol: userForm.rol.value,
             fecha_registro: new Date().toISOString().slice(0, 10),
             provider: "local"
         };
@@ -93,26 +139,48 @@ document.addEventListener("DOMContentLoaded", () => {
         const url = editando ? `${API_URL}/${usuarioId}` : API_URL;
 
         await fetch(url, {
-            method,
+            method: method,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(userData)
         });
 
-        modal.classList.add("hidden");
+        userModal.style.display = "none";
         cargarUsuarios();
     });
 
-    async function borrarUsuario(id) {
-        if (confirm("¿Eliminar usuario?")) {
-            await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-            cargarUsuarios();
+    // ======================================================================
+    //  🟦 NUEVO — MODAL ELIMINAR USUARIO
+    // ======================================================================
+    function abrirModalEliminar(id, username) {
+
+        // NUEVO — PROTECCIÓN SUPERADMIN
+        if (id === "1" || username.toLowerCase() === "superadmin") {
+            alert("El usuario superadmin no puede ser eliminado.");
+            return;
         }
+
+        userToDelete = id;
+        deleteUserName.textContent = username;
+
+        deleteUserModal.style.display = "block";
     }
 
-    btnCerrar.addEventListener("click", () => {
-        modal.classList.add("hidden");
+    closeDeleteUserModal.addEventListener("click", () => {
+        deleteUserModal.style.display = "none";
     });
 
-    // INICIAR
+    cancelDeleteUser.addEventListener("click", () => {
+        deleteUserModal.style.display = "none";
+    });
+
+    confirmDeleteUser.addEventListener("click", async () => {
+        await fetch(`${API_URL}/${userToDelete}`, { method: "DELETE" });
+        deleteUserModal.style.display = "none";
+        cargarUsuarios();
+    });
+
+    // ======================================================================
+    //  INICIAR
+    // ======================================================================
     cargarUsuarios();
 });
