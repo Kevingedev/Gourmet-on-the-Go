@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | Categorías</title>
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Assets -->
+    <link rel="stylesheet" href="../../assets/header.css">
+    <link rel="stylesheet" href="../../assets/sidebar.css">
+    <style>
+        .categories-section {
+            padding: 2rem;
+            background: transparent;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .coming-soon-container {
+            text-align: center;
+            max-width: 600px;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e5e7eb;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coming-soon-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0c8038, #10a34a, #0c8038);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .coming-soon-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #0c8038, #10a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            box-shadow: 0 10px 25px rgba(12, 128, 56, 0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .coming-soon-icon i {
+            font-size: 3rem;
+            color: white;
+        }
+
+        .coming-soon-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a1f1c;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #0c8038, #10a34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .coming-soon-subtitle {
+            font-size: 1.2rem;
+            color: #5f6d64;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .coming-soon-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-item {
+            padding: 1.5rem;
+            background: #f8faf9;
+            border-radius: 0.75rem;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: #0c8038;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: #0c8038;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .feature-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1f1c;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            font-size: 0.85rem;
+            color: #5f6d64;
+            line-height: 1.4;
+        }
+
+        .coming-soon-footer {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .notify-btn {
+            background: linear-gradient(135deg, #0c8038, #10a34a);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(12, 128, 56, 0.2);
+        }
+
+        .notify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(12, 128, 56, 0.3);
+        }
+
+        .notify-btn:active {
+            transform: translateY(0);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0c8038, #10a34a);
+            border-radius: 4px;
+            width: 40%;
+            animation: progressGrow 2s ease-out;
+        }
+
+        @keyframes progressGrow {
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: 40%;
+            }
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #5f6d64;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .categories-section {
+                padding: 1rem;
+            }
+
+            .coming-soon-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .coming-soon-title {
+                font-size: 2rem;
+            }
+
+            .coming-soon-subtitle {
+                font-size: 1rem;
+            }
+
+            .coming-soon-features {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .coming-soon-icon {
+                width: 80px;
+                height: 80px;
+            }
+
+            .coming-soon-icon i {
+                font-size: 2rem;
+            }
+
+            .coming-soon-title {
+                font-size: 1.5rem;
+            }
+
+            .notify-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header"></header>
+    <aside id="sidebar"></aside>
+
+    <main id="main">
+        <section class="categories-section">
+            <div class="coming-soon-container">
+                <div class="coming-soon-icon">
+                    <i class="fas fa-folder-tree"></i>
+                </div>
+
+                <h1 class="coming-soon-title">Próximamente</h1>
+                <p class="coming-soon-subtitle">
+                    Estamos desarrollando un sistema completo de gestión de categorías.
+                    Pronto podrás organizar y clasificar todos tus productos de manera eficiente.
+                </p>
+
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <p class="progress-text">Progreso del desarrollo: 40%</p>
+
+                <div class="coming-soon-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <h3 class="feature-title">Crear Categorías</h3>
+                        <p class="feature-description">Añade nuevas categorías con nombre, descripción e imagen</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <h3 class="feature-title">Editar y Eliminar</h3>
+                        <p class="feature-description">Modifica o elimina categorías existentes fácilmente</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <h3 class="feature-title">Subcategorías</h3>
+                        <p class="feature-description">Organiza tus productos con categorías jerárquicas</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <h3 class="feature-title">Filtros Avanzados</h3>
+                        <p class="feature-description">Filtra y busca categorías de forma rápida y sencilla</p>
+                    </div>
+                </div>
+
+                <div class="coming-soon-footer">
+                    <button class="notify-btn" onclick="notifyWhenReady()">
+                        <i class="fas fa-bell"></i>
+                        Notificarme cuando esté listo
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Components -->
+    <script src="../../components/Header.js"></script>
+    <script src="../../components/SideBar.js"></script>
+    <script>
+        function notifyWhenReady() {
+            // Create a simple notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #0c8038, #10a34a);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 4px 12px rgba(12, 128, 56, 0.3);
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Te notificaremos cuando las categorías estén disponibles</span>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add slide animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

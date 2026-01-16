@@ -642,26 +642,111 @@
     }
   ],
   "orders": [
-     {
-            "id": 1,
-            "userId": 1,
-            "productId": 2,
-            "nombreproducto": "papas fritas",
-            "quantity": 3,
-            "total": 10,
-            "status": "completed",
-            "orderDate": "2026-10-01T12:00:00Z"
+    {
+      "id": 1,
+      "userId": 1,
+      "checkoutData": {
+        "shipping": {
+          "fullName": "Super Admin",
+          "email": "admin@admin.com",
+          "phone": "637041191",
+          "address": "Zurbaranbarri, Bilbao",
+          "city": "Bilbao",
+          "country": "España",
+          "postalCode": "48007",
+          "method": "standard"
         },
-        {
-            "id": 2,
-            "userId": 2,
-            "productId": 1,
-            "nombreproducto": "papas fritas",
-            "quantity": 1,
-            "total": 10,
-            "status": "completed",
-            "orderDate": "2026-10-02T14:30:00Z"
-        }
+        "payment": {
+          "method": "paypal",
+          "cardNumber": "",
+          "expiryDate": "",
+          "cvv": "",
+          "cardholderName": ""
+        },
+        "cart": [
+          {
+            "id": "PM001",
+            "name": "Pollo Asado con Hierbas",
+            "price": "14.99€",
+            "image": "http://localhost:5501/assets/img/product-images/pollo-asado.jpg",
+            "quantity": 1
+          },
+          {
+            "id": "FS002",
+            "name": "Gambas al Ajillo Estilo Scampi",
+            "price": "15.5€",
+            "image": "http://localhost:5501/assets/img/product-images/gammbas-ajillo.jpg",
+            "quantity": 1
+          },
+          {
+            "id": "FS004",
+            "name": "Relleno para Tacos de Pescado",
+            "price": "10.99€",
+            "image": "http://localhost:5501/assets/img/product-images/relleno-tacos.jpg",
+            "quantity": 1
+          }
+        ],
+        "total": "46.43€"
+      },
+      "status": "completed",
+      "orderDate": "2026-01-16T09:44:33.199Z"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "checkoutData": {
+        "shipping": {
+          "fullName": "SuperMan",
+          "email": "admin@admin.com",
+          "phone": "666666666666",
+          "address": "calle cualquiera",
+          "city": "madrid",
+          "country": "spain",
+          "postalCode": "040411",
+          "method": "standard"
+        },
+        "payment": {
+          "method": "paypal",
+          "cardNumber": "",
+          "expiryDate": "",
+          "cvv": "",
+          "cardholderName": ""
+        },
+        "cart": [
+          {
+            "id": "PM001",
+            "name": "Pollo Asado con Hierbas",
+            "price": "14.99€",
+            "image": "http://localhost:5501/assets/img/product-images/pollo-asado.jpg",
+            "quantity": 1
+          },
+          {
+            "id": "FS002",
+            "name": "Gambas al Ajillo Estilo Scampi",
+            "price": "15.5€",
+            "image": "http://localhost:5501/assets/img/product-images/gammbas-ajillo.jpg",
+            "quantity": 3
+          },
+          {
+            "id": "FS004",
+            "name": "Relleno para Tacos de Pescado",
+            "price": "10.99€",
+            "image": "http://localhost:5501/assets/img/product-images/relleno-tacos.jpg",
+            "quantity": 1
+          },
+          {
+            "id": "BB004",
+            "name": "Salchichas de Desayuno Precocidas",
+            "price": "7.99€",
+            "image": "http://localhost:5501/assets/img/product-images/salchichas.jpg",
+            "quantity": 1
+          }
+        ],
+        "total": "80.47€"
+      },
+      "status": "completed",
+      "orderDate": "2026-01-16T11:09:49.287Z"
+    }
   ],
   "users": [
     {
