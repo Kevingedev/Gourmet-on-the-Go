@@ -52,7 +52,6 @@
     background-color: var(--admin-surface);
     width: 100%;
     max-width: 700px;
-    /* Más ancho */
     border-radius: var(--admin-radius-lg);
     box-shadow: var(--admin-shadow-modal);
     position: relative;
@@ -160,10 +159,11 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border-radius: var(--admin-radius-md);
-    font-weight: 600;
-    font-size: 0.95rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.75rem;
+    color: var(--admin-primary);
+    font-weight: 400;
+    font-size: 1.0rem;
     cursor: pointer;
     border: none;
     transition: all 0.25s ease;
@@ -204,6 +204,26 @@
     border-color: var(--admin-primary);
     color: var(--admin-primary);
     transform: translateY(-2px);
+}
+
+.btn-save-user {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.75rem;
+    font-weight: 300;
+    font-size: 1.0rem;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    justify-self: end;
+    height: 50%; */
+    width: 100%;
+    background-color: var(--admin-primary);
 }
 
 /* Responsive */

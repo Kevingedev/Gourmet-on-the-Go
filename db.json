@@ -652,6 +652,46 @@
       "fecha_registro": "2026-01-16",
       "provider": "local",
       "id": 1
+    },
+    {
+      "username": "Juan",
+      "email": "juan@loqsea.com",
+      "nombre_completo": "Juan Loquesea",
+      "password": "juan123",
+      "rol": "usuario",
+      "fecha_registro": "2026-01-16",
+      "provider": "local",
+      "id": 2
+    },
+    {
+      "username": "man",
+      "email": "man@portfolio.dev",
+      "nombre_completo": "mman mmm nnn mmm",
+      "password": "man123",
+      "rol": "usuario",
+      "fecha_registro": "2026-01-16",
+      "provider": "local",
+      "id": 3
+    },
+    {
+      "username": "may",
+      "email": "may@gmail.com",
+      "nombre_completo": "may nnn mmm",
+      "password": "may123",
+      "rol": "usuario",
+      "fecha_registro": "2026-01-16",
+      "provider": "local",
+      "id": 4
+    },
+    {
+      "username": "mirel",
+      "email": "mirelmarsoli.volcan@estudioenpenascal.com",
+      "nombre_completo": "mirel nnnn mmm",
+      "password": "mirel123",
+      "rol": "usuario",
+      "fecha_registro": "2026-01-16",
+      "provider": "local",
+      "id": 5
     }
   ]
 }
