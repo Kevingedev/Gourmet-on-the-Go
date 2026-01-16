@@ -89,10 +89,6 @@ async function verDetalle(id) {
         <span>${pedido.productId}</span>
       </div>
       <div class="detalle-item">
-        <label>Nombre del Producto:</label>
-        <span>${pedido.nombreproducto}</span>
-      </div>
-      <div class="detalle-item">
         <label>Cantidad:</label>
         <span>${pedido.quantity}</span>
       </div>
