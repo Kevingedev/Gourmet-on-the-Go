@@ -36,7 +36,7 @@ async function cargarPedidos() {
         <tr>
           <td>${p.id}</td>
           <td>${user.username}</td>
-          <td>${p.total ? p.total.toFixed(2) + ' €' : '0.00 €'}</td>
+          <td>${p.checkoutData?.total ? p.checkoutData?.total : '0.00 €'}</td>
           <td>${p.orderDate ? new Date(p.orderDate).toLocaleString('es-ES') : 'Sin fecha'}</td>
           <td>
             <button class="btn-detalle" data-id="${p.id}" title="Ver detalles">

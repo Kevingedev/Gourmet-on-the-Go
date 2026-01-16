@@ -781,6 +781,48 @@
       },
       "status": "completed",
       "orderDate": "2026-01-16T11:14:33.380Z"
+    },
+    {
+      "id": 4,
+      "userId": 4,
+      "checkoutData": {
+        "shipping": {
+          "fullName": "may nnn mmm",
+          "email": "may@gmail.com",
+          "phone": "2342343",
+          "address": "aqui",
+          "city": "bilbo",
+          "country": "spain",
+          "postalCode": "040411",
+          "method": "standard"
+        },
+        "payment": {
+          "method": "paypal",
+          "cardNumber": "",
+          "expiryDate": "",
+          "cvv": "",
+          "cardholderName": ""
+        },
+        "cart": [
+          {
+            "id": "PM001",
+            "name": "Pollo Asado con Hierbas",
+            "price": "14.99€",
+            "image": "http://localhost:5501/assets/img/product-images/pollo-asado.jpg",
+            "quantity": 1
+          },
+          {
+            "id": "FS002",
+            "name": "Gambas al Ajillo Estilo Scampi",
+            "price": "15.5€",
+            "image": "http://localhost:5501/assets/img/product-images/gammbas-ajillo.jpg",
+            "quantity": 1
+          }
+        ],
+        "total": "35.44€"
+      },
+      "status": "completed",
+      "orderDate": "2026-01-16T11:23:08.257Z"
     }
   ],
   "users": [
