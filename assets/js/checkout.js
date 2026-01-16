@@ -659,7 +659,7 @@ function handleCheckoutSubmit(e) {
     }
     createOrder(order);
 
-    alert(successMessage + checkoutData.total);
+    // alert(successMessage + checkoutData.total);
 
     // Clear cart-
     cartStore.removeItem(cartStore.cartLoadFromStorage().map(item => item.id));
@@ -667,5 +667,6 @@ function handleCheckoutSubmit(e) {
     // Redirect to home
     const basePath = getBasePath();
     window.location.href = `${basePath}${userLanguage}/`;
+    //ainsknf
 }
 
