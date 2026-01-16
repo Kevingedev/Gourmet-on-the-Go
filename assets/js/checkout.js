@@ -623,6 +623,42 @@ function handleCheckoutSubmit(e) {
     };
     const successMessage = successMessages[userLanguage] || successMessages.ES;
 
+    const currentUser = authService.getUser();
+    const API_URL = 'http://localhost:3005';
+
+    async function getOrderLength() {
+        const response = await fetch(`${API_URL}/orders`);
+        const data = await response.json();
+        return data.length;
+    }
+
+    const orderLength = parseInt(getOrderLength()) + 1;
+
+    const order = {
+            id: orderLength,
+            userId: currentUser.id,
+            checkoutData: checkoutData,
+            status: "completed",
+            orderDate: new Date().toISOString() //estoy usando una fecha con formato ISO 8601
+        };
+    
+    
+        // Save order to db.json (simulated here by logging to console)
+    console.log('Order saved:', order);
+    async function createOrder(order) {
+        // console.log(product);
+        const response = await fetch(`${API_URL}/orders`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(order),
+        });
+        /* const data = await response.json();
+        return data; */
+    }
+    createOrder(order);
+
     alert(successMessage + checkoutData.total);
 
     // Clear cart-
