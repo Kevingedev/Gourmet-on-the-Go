@@ -641,34 +641,17 @@
       "img_url": "assets/img/product-images/img-test.jpg"
     }
   ],
-  "orders": [
-    {
-      "id": 1,
-      "userId": 1,
-      "productId": 2,
-      "quantity": 3,
-      "status": "completed",
-      "orderDate": "2023-10-01T12:00:00Z"
-    },
-    {
-      "id": 2,
-      "userId": 2,
-      "productId": 1,
-      "quantity": 1,
-      "status": "completed",
-      "orderDate": "2023-10-02T14:30:00Z"
-    }
-  ],
+  "orders": [],
   "users": [
     {
-      "id": 1,
       "username": "superadmin",
+      "email": "mmvolcan@gmail.com",
+      "nombre_completo": "mirel",
       "password": "admin123",
       "rol": "admin",
-      "nombre_completo": "Super Admin",
-      "email": "admin@admin.com",
-      "edad": null,
-      "fecha_registro": "2025-12-10"
+      "fecha_registro": "2026-01-16",
+      "provider": "local",
+      "id": 1
     }
   ]
 }
