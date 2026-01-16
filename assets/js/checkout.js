@@ -667,5 +667,6 @@ function handleCheckoutSubmit(e) {
     // Redirect to home
     const basePath = getBasePath();
     window.location.href = `${basePath}${userLanguage}/`;
+    //ainsknf
 }
 
