@@ -48,7 +48,7 @@ const Header = {
                     </div>
                     <div class="dropdown-menu" id="userDropdownMenu">
                         <a href="${profileUrl}"><i class="fas fa-user-circle"></i> Mi Perfil</a>
-                       
+                        <a href="/${userLanguage}/" target="_blank"><i class="fas fa-home"></i> Ir a la Tienda</a>
                         <hr>
                         <a href="#" onclick="Header.handleLogout()" class="logout-link">
                             <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
