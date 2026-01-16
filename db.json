@@ -655,6 +655,7 @@
             "id": 2,
             "userId": 2,
             "productId": 1,
+            "nombreproducto": "papas fritas",
             "quantity": 1,
             "total": 10,
             "status": "completed",
