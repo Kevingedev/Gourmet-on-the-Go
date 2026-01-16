@@ -642,14 +642,24 @@
     }
   ],
   "orders": [
-    {
-      "id": 1,
-      "userId": 1,
-      "productId": 2,
-      "quantity": 3,
-      "status": "completed",
-      "orderDate": "2023-10-01T12:00:00Z"
-    }
+     {
+            "id": 1,
+            "userId": 1,
+            "productId": 2,
+            "quantity": 3,
+            "total": 10,
+            "status": "completed",
+            "orderDate": "2026-10-01T12:00:00Z"
+        },
+        {
+            "id": 2,
+            "userId": 2,
+            "productId": 1,
+            "quantity": 1,
+            "total": 10,
+            "status": "completed",
+            "orderDate": "2026-10-02T14:30:00Z"
+        }
   ],
   "users": [
     {
