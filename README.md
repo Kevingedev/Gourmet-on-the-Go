@@ -162,6 +162,7 @@ Proyecto bajo licencia **MIT**. Consulta el archivo `LICENSE` si existe o añade
 - Kevin Ruiz — `https://github.com/Kevingedev`
 - Achraf RZZ — `https://www.linkedin.com/in/achrafrzz/`
 - German Illan — `https://github.com/German2024279/`
+- Mirel Volcán — `hhttps://github.com/MirelSIG`
 
 ---
 
