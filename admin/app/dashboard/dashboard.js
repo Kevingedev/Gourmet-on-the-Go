@@ -255,8 +255,8 @@ function populateProductsList(products) {
         
         const productsHTML = productsToShow.map(product => {
             // Extract data from the actual API structure
-            const name = product.nombre ? product.nombre.ES || product.nombre.EN || 'Sin nombre' : 'Sin nombre';
-            const description = product.descripcion ? product.descripcion.ES || product.descripcion.EN || 'Sin descripción' : 'Sin descripción';
+            const name = product.nombre ? product.nombre.ES || product.nombre.EN || 'Sin nombre' : 'Without name';
+            const description = product.descripcion ? product.descripcion.ES || product.descripcion.EN || 'Sin descripción' : 'Without Description';
             const price = product.precio ? `$${product.precio}` : '';
             const id = product.id_producto || product.id || 'N/A';
             
@@ -308,20 +308,54 @@ function populateCategoriesList(categories) {
         return;
     }
 
-    categoriesList.innerHTML = categories.map(category => {
-        const name = category.nombre ? category.nombre.ES || category.nombre.EN || 'Sin nombre' : 'Sin nombre';
-        const description = category.descripcion ? category.descripcion.ES || category.descripcion.EN || 'Sin descripción' : 'Sin descripción';
-        const id = category.id_categoria || category.id || 'N/A';
+    let showingAll = false;
+    const initialCount = 4;
+    
+    function renderCategories() {
+        const categoriesToShow = showingAll ? categories : categories.slice(0, initialCount);
         
-        return `
-        <div class="data-item">
-            <div class="data-item-info">
-                <h3>${name}</h3>
-                <p>ID: ${id} | ${description}</p>
+        const categoriesHTML = categoriesToShow.map(category => {
+            const name = category.nombre ? category.nombre.ES || category.nombre.EN || 'Sin nombre' : 'Sin nombre';
+            const description = category.descripcion ? category.descripcion.ES || category.descripcion.EN || 'Sin descripción' : 'Sin descripción';
+            const id = category.id_categoria || category.id || 'N/A';
+            
+            return `
+            <div class="data-item">
+                <div class="data-item-info">
+                    <h3>${name}</h3>
+                    <p>ID: ${id} | ${description}</p>
+                </div>
             </div>
-        </div>
-    `;
-    }).join('');
+        `;
+        }).join('');
+        
+        // Add show more/less button if there are more categories than initial count
+        let buttonHTML = '';
+        if (categories.length > initialCount) {
+            buttonHTML = `
+                <div class="data-item show-more-container">
+                    <button class="btn-action show-more-btn" id="toggle-categories">
+                        ${showingAll ? 'Mostrar menos' : 'Mostrar más'}
+                        <i class="fas fa-chevron-${showingAll ? 'up' : 'down'}"></i>
+                    </button>
+                </div>
+            `;
+        }
+        
+        categoriesList.innerHTML = categoriesHTML + buttonHTML;
+        
+        // Add event listener to the toggle button
+        const toggleBtn = document.getElementById('toggle-categories');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                showingAll = !showingAll;
+                renderCategories();
+            });
+        }
+    }
+    
+    // Initial render
+    renderCategories();
 }
 
 // Populate users list
@@ -333,24 +367,55 @@ function populateUsersList(users) {
         return;
     }
 
-    // Show first 5 users
-    const recentUsers = users.slice(0, 5);
+    let showingAll = false;
+    const initialCount = 5;
     
-    usersList.innerHTML = recentUsers.map(user => {
-        const name = user.nombre_completo || user.username || user.name || 'Sin nombre';
-        const email = user.email || 'Sin email';
-        const role = user.rol || user.role || 'Sin rol';
-        const id = user.id || 'N/A';
+    function renderUsers() {
+        const usersToShow = showingAll ? users : users.slice(0, initialCount);
         
-        return `
-        <div class="data-item">
-            <div class="data-item-info">
-                <h3>${name}</h3>
-                <p>ID: ${id} | ${email} | Rol: ${role}</p>
+        const usersHTML = usersToShow.map(user => {
+            const name = user.nombre_completo || user.username || user.name || 'Sin nombre';
+            const email = user.email || 'Sin email';
+            const role = user.rol || user.role || 'Sin rol';
+            const id = user.id || 'N/A';
+            
+            return `
+            <div class="data-item">
+                <div class="data-item-info">
+                    <h3>${name}</h3>
+                    <p>ID: ${id} | ${email} | Rol: ${role}</p>
+                </div>
             </div>
-        </div>
-    `;
-    }).join('');
+        `;
+        }).join('');
+        
+        // Add show more/less button if there are more users than initial count
+        let buttonHTML = '';
+        if (users.length > initialCount) {
+            buttonHTML = `
+                <div class="data-item show-more-container">
+                    <button class="btn-action show-more-btn" id="toggle-users">
+                        ${showingAll ? 'Mostrar menos' : 'Mostrar más'}
+                        <i class="fas fa-chevron-${showingAll ? 'up' : 'down'}"></i>
+                    </button>
+                </div>
+            `;
+        }
+        
+        usersList.innerHTML = usersHTML + buttonHTML;
+        
+        // Add event listener to the toggle button
+        const toggleBtn = document.getElementById('toggle-users');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                showingAll = !showingAll;
+                renderUsers();
+            });
+        }
+    }
+    
+    // Initial render
+    renderUsers();
 }
 
 // Populate orders list
@@ -362,24 +427,55 @@ function populateOrdersList(orders) {
         return;
     }
 
-    // Show first 5 orders
-    const recentOrders = orders.slice(0, 5);
+    let showingAll = false;
+    const initialCount = 5;
     
-    ordersList.innerHTML = recentOrders.map(order => {
-        const id = order.id || order.id_pedido || 'N/A';
-        const status = order.estado || order.status || 'Sin estado';
-        const total = order.total ? `$${order.total}` : 'Sin total';
-        const date = order.fecha || order.date || 'Sin fecha';
+    function renderOrders() {
+        const ordersToShow = showingAll ? orders : orders.slice(0, initialCount);
         
-        return `
-        <div class="data-item">
-            <div class="data-item-info">
-                <h3>Pedido #${id}</h3>
-                <p>Fecha: ${date} | Estado: ${status} | Total: ${total}</p>
+        const ordersHTML = ordersToShow.map(order => {
+            const id = order.id || order.id_pedido || 'N/A';
+            const status = order.estado || order.status || 'Sin estado';
+            const total = order.total ? `$${order.total}` : 'Sin total';
+            const date = order.fecha || order.date || 'Sin fecha';
+            
+            return `
+            <div class="data-item">
+                <div class="data-item-info">
+                    <h3>Pedido #${id}</h3>
+                    <p>Fecha: ${date} | Estado: ${status} | Total: ${total}</p>
+                </div>
             </div>
-        </div>
-    `;
-    }).join('');
+        `;
+        }).join('');
+        
+        // Add show more/less button if there are more orders than initial count
+        let buttonHTML = '';
+        if (orders.length > initialCount) {
+            buttonHTML = `
+                <div class="data-item show-more-container">
+                    <button class="btn-action show-more-btn" id="toggle-orders">
+                        ${showingAll ? 'Mostrar menos' : 'Mostrar más'}
+                        <i class="fas fa-chevron-${showingAll ? 'up' : 'down'}"></i>
+                    </button>
+                </div>
+            `;
+        }
+        
+        ordersList.innerHTML = ordersHTML + buttonHTML;
+        
+        // Add event listener to the toggle button
+        const toggleBtn = document.getElementById('toggle-orders');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                showingAll = !showingAll;
+                renderOrders();
+            });
+        }
+    }
+    
+    // Initial render
+    renderOrders();
 }
 
 
