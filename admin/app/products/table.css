@@ -179,47 +179,28 @@
         margin-bottom: 20px;
     }
 
-    /* Transform table into cards */
-    .products-container table,
-    .products-container thead,
-    .products-container tbody,
+    /* Keep table layout on mobile and allow horizontal scrolling.
+       The prior implementation converted rows to stacked cards which
+       made columns appear vertically. We prefer a horizontal table
+       with overflow-x so columns stay side-by-side. */
+    .products-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .products-container table {
+        min-width: 720px; /* ensures columns remain side-by-side on small screens */
+    }
+
     .products-container th,
-    .products-container td,
-    .products-container tr {
-        display: block;
-    }
-
-    .products-container thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-
-    .products-container tr {
-        border-bottom: 8px solid var(--table-header-bg);
-        padding: 10px 0;
+    .products-container td {
+        white-space: nowrap;
+        padding: 12px 14px;
     }
 
     .products-container td {
-        border: none;
-        position: relative;
-        padding-left: 50% !important;
-        text-align: right;
-        min-height: 45px;
-    }
-
-    .products-container td:before {
-        position: absolute;
-        left: 20px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align: left;
-        font-weight: 600;
-        color: var(--admin-text-secondary);
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        content: attr(data-label);
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 }
 
