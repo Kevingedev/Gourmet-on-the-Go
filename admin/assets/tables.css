@@ -61,6 +61,18 @@
     font-size: 0.95rem;
 }
 
+/* Alineación coherente entre encabezado y contenido */
+.users-container th,
+.users-container td {
+    text-align: left;
+}
+
+/* Última columna (Acciones) centrada en header y body */
+.users-container th:last-child,
+.users-container td:last-child {
+    text-align: center;
+}
+
 .users-container thead {
     background: var(--table-header-bg);
     border-bottom: 1px solid var(--admin-border);
@@ -193,38 +205,23 @@
         font-size: 1.5rem;
     }
 
-    .users-container table,
-    .users-container thead,
-    .users-container tbody,
+    .users-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .users-container table {
+        min-width: 720px;
+    }
+
     .users-container th,
-    .users-container td,
-    .users-container tr {
-        display: block;
-    }
-
-    .users-container thead tr {
-        position: absolute;
-        top: -9999px;
-    }
-
-    .users-container tr {
-        border-bottom: 8px solid var(--table-header-bg);
-        padding: 10px 0;
+    .users-container td {
+        white-space: nowrap;
+        padding: 12px 14px;
     }
 
     .users-container td {
-        padding-left: 50% !important;
-        text-align: right;
-        border: none;
-        position: relative;
-    }
-
-    .users-container td:before {
-        content: attr(data-label);
-        position: absolute;
-        left: 20px;
-        font-weight: 600;
-        color: var(--admin-text-secondary);
-        text-transform: uppercase;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 }
