@@ -17,159 +17,157 @@ Gourmet-on-the-Go is a complete online shop for selling high-quality precooked f
 - ❤️ **Favoritos** / Favorites/Wishlist
 - 🔍 **Búsqueda de Productos** / Product Search
 - 📱 **Diseño Responsive** / Responsive Design
-- 🌐 **Multi-idioma** / Multi-language Support (ES, EN, FR, EU)
-- 💳 **Proceso de Checkout Completo** / Complete Checkout Process
-- 📦 **Gestión de Categorías** / Category Management
-- 👥 **Perfiles de Usuario** / User Profiles
+# Gourmet-on-the-Go — Tienda Online (Frontend estático)
 
-## 🛠️ Tecnologías / Technologies
+Una aplicación multiidioma de e-commerce construida con HTML5, CSS3 y JavaScript (módulos ES6). Está diseñada como un frontend tradicional (páginas estáticas organizadas por idioma) y utiliza archivos JSON para datos de ejemplo. El objetivo del repositorio es educativo y práctico: servir como plantilla para aprender patrones de estructura, localStorage-based state management y comunicación con una API de desarrollo (json-server).
 
-- **HTML5** - Estructura semántica
-- **CSS3** - Estilos y diseño responsive
-- **JavaScript (ES6+)** - Lógica de la aplicación con módulos ES6
-- **JSON** - Almacenamiento de datos (productos, categorías, usuarios)
+**Estado:** Frontend estático completo + API de desarrollo mediante `json-server` (db en `assets/data/`).
 
-## 📁 Estructura del Proyecto / Project Structure
+**Nota rápida:** El proyecto no depende de un backend real en producción por defecto. Para desarrollo se incluye `db.js` que conecta los JSON de `assets/data/` con `json-server`.
 
-```
-Gourmet-on-the-Go/
-├── assets/
-│   ├── css/              # Estilos CSS modulares
-│   ├── js/               # Código JavaScript
-│   │   ├── auth/         # Sistema de autenticación
-│   │   ├── cart/         # Gestión del carrito
-│   │   ├── favorites/    # Sistema de favoritos
-│   │   ├── data-loader/  # Carga de datos
-│   │   └── product-detail/ # Detalles de productos
-│   ├── data/             # Archivos JSON (productos, categorías, usuarios)
-│   ├── img/              # Imágenes y recursos visuales
-│   ├── fonts/            # Fuentes personalizadas
-│   └── icons/            # Iconos (Font Awesome)
-├── ES/                   # Páginas en Español
-├── EN/                   # Páginas en Inglés
-├── FR/                   # Páginas en Francés
-├── EU/                   # Páginas en Euskera
-├── index.html            # Página principal (redirección)
-└── main.js               # Script principal
+**Índice rápido**
+- **Requisitos** y cómo arrancar
+- **Arquitectura** y puntos clave (multi-idioma, carga de assets, stores)
+- **Datos**: formato multi-idioma
+- **Comandos útiles**
+- **Tips de desarrollo y debugging**
+
+**Requisitos**
+- Node.js (para `json-server` si vas a usar la API de desarrollo)
+- Un servidor estático para servir las páginas (por ejemplo `python -m http.server` o `npx http-server`)
+
+**Instalación (rápida)**
+1. Clona el repositorio:
+
+```bash
+git clone <repository-url>
+cd Gourmet-on-the-Go-Online-Shop
 ```
 
-## 🚀 Inicio Rápido / Quick Start
+2. Instala dependencias de desarrollo (solo `json-server` está en `package.json`):
 
-1. **Clonar el repositorio** / Clone the repository
-   ```bash
-   git clone <repository-url>
-   cd Gourmet-on-the-Go
-   ```
+```bash
+npm install
+```
 
-2. **Abrir en un servidor local** / Open in a local server
-   
-   Para desarrollo local, se recomienda usar un servidor HTTP. Puedes usar:
-   For local development, an HTTP server is recommended. You can use:
-   
-   ```bash
-   # Con Python 3
-   python -m http.server 8000
-   
-   # Con Node.js (http-server)
-   npx http-server
-   
-   # Con PHP
-   php -S localhost:8000
-   ```
+3. Variables de entorno (opcional):
+- Usa `.env.example` como referencia. Crea un archivo `.env` local para ajustar puertos o rutas (ya añadimos `.env` en el repo y `.env` está ignorado por Git).
 
-3. **Abrir en el navegador** / Open in browser
-   ```
-   http://localhost:8000
-   ```
+**Correr servidor de datos (json-server)**
+El proyecto incluye un `package.json` con un script `dev` que arrancará `json-server` usando `assets/data/db.js`.
 
-## 📋 Funcionalidades Principales / Main Functionalities
+```bash
+# Levanta json-server en http://localhost:3005
+npm run dev
+```
 
-### Autenticación / Authentication
-- Registro e inicio de sesión
-- Autenticación con Google
-- Gestión de sesiones
-- Perfiles de usuario
+`json-server` servirá endpoints REST como `GET /products`, `GET /categories`, `GET /users`, `GET /orders` — útiles para pruebas del panel admin.
 
-### Catálogo de Productos / Product Catalog
-- Visualización por categorías:
-  - 🍳 Desayunos / Breakfast
-  - 🥩 Carnes / Meat
-  - 🐟 Mariscos / Seafood
-  - 🥗 Complementos / Complements
-- Detalles de productos
-- Búsqueda avanzada
+**Servir el frontend (páginas estáticas)**
+Puedes usar un servidor estático cualquiera. Ejemplos:
 
-### Carrito de Compras / Shopping Cart
-- Agregar/eliminar productos
-- Actualizar cantidades
-- Cálculo automático de totales
-- Persistencia en localStorage
+```bash
+# Python 3
+python -m http.server 8000
 
-### Checkout / Finalización de Compra
-- Proceso de compra paso a paso
-- Información de envío
-- Métodos de pago
-- Confirmación de pedido
+# Node http-server
+npx http-server -p 5501
 
-## 📝 Datos de Ejemplo / Sample Data
+# Luego abre en el navegador:
+http://localhost:8000
+```
 
-Los datos se almacenan en archivos JSON dentro de `assets/data/`:
-- `products.json` - Catálogo de productos
-- `categories.json` - Categorías disponibles
-- `users.json` - Usuarios registrados
+**Arquitectura y puntos clave**
 
-## 🌐 Idiomas Soportados / Supported Languages
+- **Estructura por idioma:** las páginas se organizan en carpetas `ES/`, `EN/`, `FR/`, `EU/`. El archivo `main.js` detecta el idioma y redirige a la carpeta apropiada.
+- **Carga de datos:** `assets/js/data-loader/productService.js` es la capa de datos. Por defecto intenta consumir `http://localhost:3005/products` (json-server) y tiene lógica para calcular rutas a recursos estáticos según la profundidad de la URL.
+- **Formato multi-idioma:** los productos y categorías usan objetos con claves por idioma. Ejemplo:
 
-- 🇪🇸 **Español (ES)** - `/ES/`
-- 🇬🇧 **English (EN)** - `/EN/`
-- 🇫🇷 **Français (FR)** - `/FR/`
-- 🇪🇺 **Euskera (EU)** - `/EU/`
+```json
+"nombre": { "ES": "Pollo Asado", "EN": "Roasted Chicken", "FR": "Poulet Rôti", "EU": "Oilaskoa Errea" }
+```
 
-## 🎨 Estilos / Styling
+- **Almacenamiento del estado:** El frontend utiliza `localStorage` para persistir carrito (`'cart'`), favoritos (`'wishlist'`) y sesión (`'currentUser'`). Los módulos relevantes están en `assets/js/cart/`, `assets/js/favorites/` y `assets/js/auth/`.
 
-El proyecto utiliza CSS modular organizado por componentes:
-- `main.css` - Estilos principales
-- `nav.css` - Navegación
-- `footer.css` - Pie de página
-- `checkout.css` - Proceso de checkout
-- `modal.css` - Modales y popups
-- `vars.css` - Variables CSS
+- **Reglas del carrito:** `cartStore` contiene la lógica de negocio: contadores, incremento/decremento, cálculo del total y una función `loyaltyDiscount()` que aplica una promoción (si hay más de 5 items, los 3 más baratos son gratis). Revisa `assets/js/cart/cartStore.js` para entender el cálculo y adaptar la política.
 
-## 🔧 Desarrollo / Development
+- **Protección de páginas:** `assets/js/auth/middleware.js` exporta `protectPage()` que redirige a la página de inicio de sesión cuando el usuario no está autenticado.
 
-### Estructura de Módulos JavaScript
+**API de desarrollo (json-server)**
+- Endpoints principales:
+  - `GET /products` — lista de productos
+  - `GET /products/:id` — producto por `id` (json-server agrega `id` automático)
+  - `GET /products?id_producto=PM001` — búsqueda por `id_producto` original
+  - `POST /products`, `PUT /products/:id`, `DELETE /products/:id` — operaciones de CRUD (útiles para panel admin)
 
-El código JavaScript está organizado en módulos ES6:
-- `authService.js` - Servicio de autenticación
-- `cartStore.js` - Gestión del estado del carrito
-- `productService.js` - Servicio de productos
-- `favoriteStore.js` - Gestión de favoritos
+Ejemplo `curl`:
 
-## 👥 Equipo / Team
+```bash
+# Obtener productos
+curl http://localhost:3005/products
 
-### Achraf RZZ
-- 🔗 [LinkedIn](https://www.linkedin.com/in/achrafrzz/)
+# Buscar por id_producto
+curl "http://localhost:3005/products?id_producto=PM001"
+```
 
-### Kevin Ruiz
-- 🔗 [GitHub](https://github.com/Kevingedev/)
+**Buenas prácticas y recomendaciones**
 
-### German Illan
-- 🔗 [GitHub](https://github.com/German2024279/)
+- Mantén `assets/data/` como data de ejemplo. Para producción reemplaza por una API real.
+- Comprueba que `gestorDeDatos.language` devuelva el idioma correcto antes de renderizar texto multi-idioma.
+- Evita cambiar selectores y `data-*` attributes usados por `cartStore`/`favoriteStore` (p. ej. `data-product-id`), porque partes del código dependen de ellos.
+- Si trabajas con `json-server`, revisa `assets/data/db.js` (resume los JSON), y usa `npm run dev` para levantar la API de desarrollo.
 
-## 📄 Licencia / License
+**Debugging rápido**
 
-Este proyecto es de código abierto y está disponible bajo la licencia MIT.
+- Si los assets no cargan, confirma la ruta base calculada en `assets/js/data-loader/productService.js` (función `getBasePath()`).
+- Si `validateLogin()` no encuentra usuarios, verifica `http://localhost:3005/users` y que el script `npm run dev` esté corriendo.
+- Para ver el contenido del carrito y favoritos en tiempo real, usa `localStorage` desde la consola del navegador:
 
-This project is open source and available under the MIT License.
+```js
+JSON.parse(localStorage.getItem('cart'))
+JSON.parse(localStorage.getItem('wishlist'))
+```
 
-## 👥 Contribuciones / Contributions
+**Comandos útiles**
 
-Las contribuciones son bienvenidas. Por favor, abre un issue o pull request para cualquier mejora.
+- Instalar dependencias
 
-Contributions are welcome. Please open an issue or pull request for any improvements.
+```bash
+npm install
+```
+
+- Levantar json-server (API de desarrollo)
+
+```bash
+npm run dev
+```
+
+- Servir frontend estático (ej. con Python)
+
+```bash
+python -m http.server 8000
+```
+
+**Contribuir**
+
+- Forkea, crea branch con nombre descriptivo (`feature/<nombre>` o `fix/<issue>`), abre PR y describe los cambios.
+- Añade tests manuales o scripts de verificación cuando modifiques lógica del carrito, autenticación o la estructura de datos.
+
+**Licencia**
+
+Proyecto bajo licencia **MIT**. Consulta el archivo `LICENSE` si existe o añade uno si vas a publicar.
+
+**Contacto y autores**
+
+- Kevin Ruiz — `https://github.com/Kevingedev`
+- Achraf RZZ — `https://www.linkedin.com/in/achrafrzz/`
+- German Illan — `https://github.com/German2024279/`
+- Mirel Volcán — `hhttps://github.com/MirelSIG`
 
 ---
 
-**Desarrollado con ❤️ para amantes de la comida gourmet**
+Si quieres, puedo también:
+- Añadir un script `start` en `package.json` que arranque `json-server` y un servidor estático en paralelo.
+- Implementar tests básicos (scripts Node) para verificar CRUD contra `json-server`.
 
-**Developed with ❤️ for gourmet food lovers**
+Indica qué prefieres y lo preparo.

@@ -823,6 +823,41 @@
       },
       "status": "completed",
       "orderDate": "2026-01-16T11:23:08.257Z"
+    },
+    {
+      "id": 5,
+      "userId": 2,
+      "checkoutData": {
+        "shipping": {
+          "fullName": "Kevin Ruiz",
+          "email": "kevin@gmail.com",
+          "phone": "637041191",
+          "address": "Zurbaranbarri, Bilbao",
+          "city": "Bilbao",
+          "country": "España",
+          "postalCode": "48007",
+          "method": "standard"
+        },
+        "payment": {
+          "method": "cash",
+          "cardNumber": "",
+          "expiryDate": "",
+          "cvv": "",
+          "cardholderName": ""
+        },
+        "cart": [
+          {
+            "id": "PM001",
+            "name": "Pollo Asado con Hierbas",
+            "price": "\n            14.99€\n            / 1 Unidad (aprox. 1.2 kg)\n          ",
+            "image": "http://127.0.0.1:5501/assets/img/product-images/pollo-asado.jpg",
+            "quantity": 2
+          }
+        ],
+        "total": "34.93€"
+      },
+      "status": "completed",
+      "orderDate": "2026-01-16T11:51:27.479Z"
     }
   ],
   "users": [
@@ -835,6 +870,16 @@
       "email": "admin@admin.com",
       "edad": null,
       "fecha_registro": "2025-12-10"
+    },
+    {
+      "username": "kevin",
+      "email": "kevin@gmail.com",
+      "nombre_completo": "Kevin Ruiz",
+      "password": "kevin123",
+      "rol": "admin",
+      "fecha_registro": "2026-01-16",
+      "provider": "local",
+      "id": 2
     }
   ]
 }
