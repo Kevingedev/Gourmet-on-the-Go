@@ -165,9 +165,3 @@ Proyecto bajo licencia **MIT**. Consulta el archivo `LICENSE` si existe o añade
 - Mirel Volcán — `hhttps://github.com/MirelSIG`
 
 ---
-
-Si quieres, puedo también:
-- Añadir un script `start` en `package.json` que arranque `json-server` y un servidor estático en paralelo.
-- Implementar tests básicos (scripts Node) para verificar CRUD contra `json-server`.
-
-Indica qué prefieres y lo preparo.
