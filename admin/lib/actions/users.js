@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td data-label="Usuario">${user.username}</td>
                 <td data-label="Email">${user.email}</td>
                 <td data-label="Rol">
-                    <span ${user.rol === "admin" ? "badge-success" : "badge-warning"}">
+                    <span class="${user.rol === "admin" ? "badge-success" : "badge-warning"}">
                         ${user.rol}
                     </span>
                 </td>
@@ -61,6 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         activarBotones();
     }
+    window.cerrarAlertModal = function () {
+        document.getElementById("alertModal").style.display = "none";
+    };
 
     // ======================================================================
     //  ACTIVAR BOTONES
@@ -153,9 +156,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // ======================================================================
     function abrirModalEliminar(id, username) {
 
-        // NUEVO — PROTECCIÓN SUPERADMIN
+        // PROTECCIÓN SUPERADMIN
         if (id === "1" || username.toLowerCase() === "superadmin") {
-            alert("El usuario superadmin no puede ser eliminado.");
+            document.getElementById("alertModal").style.display = "block";
             return;
         }
 
@@ -163,6 +166,10 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteUserName.textContent = username;
 
         deleteUserModal.style.display = "block";
+    }
+
+    function cerrarAlertModal() {
+        document.getElementById("alertModal").style.display = "none";
     }
 
     closeDeleteUserModal.addEventListener("click", () => {
@@ -178,6 +185,8 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteUserModal.style.display = "none";
         cargarUsuarios();
     });
+
+
 
     // ======================================================================
     //  INICIAR

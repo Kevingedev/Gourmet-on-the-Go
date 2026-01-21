@@ -120,6 +120,23 @@
                 </div>
             </div>
         </div>
+        <!-- Modal de Alerta (Superadmin protegido) -->
+        <div id="alertModal" class="modal">
+            <div class="modal-content modal-content--small">
+                <div class="modal-header modal-header--danger">
+                    <h2><i class="fas fa-ban"></i> Acción no permitida</h2>
+                </div>
+
+                <div class="modal-body">
+                    <p class="delete-message">El usuario superadmin no puede ser eliminado.</p>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-base btn-neutral" onclick="cerrarAlertModal()">Aceptar</button>
+                </div>
+            </div>
+        </div>
+
 
     </main>
 

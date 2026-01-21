@@ -16,7 +16,7 @@
 }
 
 /* ===============================
-   OVERLAY
+OVERLAY
 ================================ */
 .modal {
     display: none;
@@ -43,8 +43,15 @@
     visibility: visible !important;
 }
 
+#alertModal[style*="display: block"] {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+
 /* ===============================
-   MODAL BOX
+MODAL BOX
 ================================ */
 .modal-content {
     background-color: var(--admin-surface);
@@ -71,7 +78,7 @@
 }
 
 /* ===============================
-   DELETE MODAL
+DELETE MODAL
 ================================ */
 .modal-header--danger {
     background: rgba(229, 62, 62, 0.08);
@@ -150,7 +157,7 @@
 }
 
 /* ===============================
-   HEADER
+HEADER
 ================================ */
 .modal-header {
     padding: 1.25rem 1.5rem;
@@ -189,7 +196,7 @@
 }
 
 /* ===============================
-   FORMULARIO
+FORMULARIO
 ================================ */
 #userForm {
     padding: 2rem;
@@ -231,7 +238,7 @@
 }
 
 /* ===============================
-   BOTONES UNIFICADOS
+BOTONES UNIFICADOS
 ================================ */
 .btn-base {
     display: inline-flex;
