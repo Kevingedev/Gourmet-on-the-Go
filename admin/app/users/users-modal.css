@@ -24,8 +24,8 @@
     inset: 0;
     z-index: 2000;
     background-color: var(--admin-shadow-overlay);
-    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     padding: 1.5rem;
     overflow-y: auto;
     align-items: center;
