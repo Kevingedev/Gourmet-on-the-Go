@@ -95,58 +95,6 @@
   ],
   "products": [
     {
-      "id": 1,
-      "id_producto": "PM001",
-      "id_categoria": "protein_meat",
-      "nombre": {
-        "ES": "Pollo Asado con Hierbas",
-        "EN": "Herb-Roasted Chicken",
-        "FR": "Poulet Rôti aux Herbes",
-        "EU": "Oilaskoa Belarrekin Errea"
-      },
-      "descripcion": {
-        "ES": "Pollo entero asado a la perfección con una mezcla de hierbas mediterráneas.",
-        "EN": "Whole chicken roasted to perfection with a blend of Mediterranean herbs.",
-        "FR": "Poulet entier rôti à la perfection avec un mélange d'herbes méditerranéennes.",
-        "EU": "Oilasko osoa perfekzioz erre belar mediterraneo nahasketa batekin."
-      },
-      "unidad_medida": {
-        "ES": "1 Unidad (aprox. 1.2 kg)",
-        "EN": "1 Unit (approx. 2.6 lb)",
-        "FR": "1 Unité (env. 1.2 kg)",
-        "EU": "1 Unitatea (gutxi gorabehera 1.2 kg)"
-      },
-      "featured": true,
-      "precio": 14.99,
-      "img_url": "assets/img/product-images/pollo-asado.jpg"
-    },
-    {
-      "id": 2,
-      "id_producto": "PM002",
-      "id_categoria": "protein_meat",
-      "nombre": {
-        "ES": "Solomillo de Cerdo Glaseado",
-        "EN": "Glazed Pork Tenderloin",
-        "FR": "Filet de Porc Glacé",
-        "EU": "Txerri Fileta Glaseatua"
-      },
-      "descripcion": {
-        "ES": "Tiernos medallones de solomillo de cerdo con un glaseado de miel y mostaza.",
-        "EN": "Tender pork tenderloin medallions with a honey-mustard glaze.",
-        "FR": "Médallons tendres de filet de porc avec un glaçage au miel et à la moutarde.",
-        "EU": "Txerri filet medailoi bigunak ezti eta ziape glaseatu batekin."
-      },
-      "unidad_medida": {
-        "ES": "500 gramos",
-        "EN": "1.1 lb",
-        "FR": "500 grammes",
-        "EU": "500 gramo"
-      },
-      "featured": false,
-      "precio": 12.5,
-      "img_url": "assets/img/product-images/solomillo-cerdo.jpg"
-    },
-    {
       "id": 3,
       "id_producto": "PM003",
       "id_categoria": "protein_meat",
@@ -781,103 +729,26 @@
       },
       "status": "completed",
       "orderDate": "2026-01-16T11:14:33.380Z"
-    },
-    {
-      "id": 4,
-      "userId": 4,
-      "checkoutData": {
-        "shipping": {
-          "fullName": "may nnn mmm",
-          "email": "may@gmail.com",
-          "phone": "2342343",
-          "address": "aqui",
-          "city": "bilbo",
-          "country": "spain",
-          "postalCode": "040411",
-          "method": "standard"
-        },
-        "payment": {
-          "method": "paypal",
-          "cardNumber": "",
-          "expiryDate": "",
-          "cvv": "",
-          "cardholderName": ""
-        },
-        "cart": [
-          {
-            "id": "PM001",
-            "name": "Pollo Asado con Hierbas",
-            "price": "14.99€",
-            "image": "http://localhost:5501/assets/img/product-images/pollo-asado.jpg",
-            "quantity": 1
-          },
-          {
-            "id": "FS002",
-            "name": "Gambas al Ajillo Estilo Scampi",
-            "price": "15.5€",
-            "image": "http://localhost:5501/assets/img/product-images/gammbas-ajillo.jpg",
-            "quantity": 1
-          }
-        ],
-        "total": "35.44€"
-      },
-      "status": "completed",
-      "orderDate": "2026-01-16T11:23:08.257Z"
-    },
-    {
-      "id": 5,
-      "userId": 2,
-      "checkoutData": {
-        "shipping": {
-          "fullName": "Kevin Ruiz",
-          "email": "kevin@gmail.com",
-          "phone": "637041191",
-          "address": "Zurbaranbarri, Bilbao",
-          "city": "Bilbao",
-          "country": "España",
-          "postalCode": "48007",
-          "method": "standard"
-        },
-        "payment": {
-          "method": "cash",
-          "cardNumber": "",
-          "expiryDate": "",
-          "cvv": "",
-          "cardholderName": ""
-        },
-        "cart": [
-          {
-            "id": "PM001",
-            "name": "Pollo Asado con Hierbas",
-            "price": "\n            14.99€\n            / 1 Unidad (aprox. 1.2 kg)\n          ",
-            "image": "http://127.0.0.1:5501/assets/img/product-images/pollo-asado.jpg",
-            "quantity": 2
-          }
-        ],
-        "total": "34.93€"
-      },
-      "status": "completed",
-      "orderDate": "2026-01-16T11:51:27.479Z"
     }
   ],
   "users": [
     {
-      "id": 1,
       "username": "superadmin",
+      "email": "admin@admin.com",
+      "nombre_completo": "Super Admin",
       "password": "admin123",
       "rol": "admin",
-      "nombre_completo": "Super Admin",
-      "email": "admin@admin.com",
-      "edad": null,
-      "fecha_registro": "2025-12-10"
+      "fecha_registro": "2026-01-19",
+      "provider": "local",
+      "id": 1
     },
     {
-      "username": "kevin",
-      "email": "kevin@gmail.com",
-      "nombre_completo": "Kevin Ruiz",
-      "password": "kevin123",
-      "rol": "admin",
-      "fecha_registro": "2026-01-16",
+      "username": "Juan",
+      "email": "juan@gmail.com",
+      "nombre_completo": "Juan García",
+      "password": "juan123",
+      "rol": "usuario",
+      "fecha_registro": "2026-01-21",
       "provider": "local",
       "id": 2
     }

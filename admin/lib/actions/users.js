@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td data-label="Usuario">${user.username}</td>
                 <td data-label="Email">${user.email}</td>
                 <td data-label="Rol">
-                    <span class="badge ${user.rol === "admin" ? "badge-success" : "badge-warning"}">
+                    <span ${user.rol === "admin" ? "badge-success" : "badge-warning"}">
                         ${user.rol}
                     </span>
                 </td>
